@@ -1,0 +1,1 @@
+/home/rashwan/projects/MagentoTest/EDU/lib/web/mage/apply/scripts.js

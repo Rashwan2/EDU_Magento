@@ -1,0 +1,1 @@
+/home/rashwan/projects/MagentoTest/EDU/vendor/magento/module-catalog/view/frontend/web/js/storage-manager.js

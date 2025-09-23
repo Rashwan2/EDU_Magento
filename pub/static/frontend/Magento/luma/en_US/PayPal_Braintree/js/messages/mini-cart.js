@@ -1,0 +1,1 @@
+/home/rashwan/projects/MagentoTest/EDU/vendor/paypal/module-braintree-core/view/frontend/web/js/messages/mini-cart.js

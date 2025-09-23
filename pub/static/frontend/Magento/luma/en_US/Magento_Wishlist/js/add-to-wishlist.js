@@ -1,0 +1,1 @@
+/home/rashwan/projects/MagentoTest/EDU/vendor/magento/module-wishlist/view/frontend/web/js/add-to-wishlist.js

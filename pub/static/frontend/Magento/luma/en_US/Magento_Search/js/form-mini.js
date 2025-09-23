@@ -1,0 +1,1 @@
+/home/rashwan/projects/MagentoTest/EDU/vendor/magento/module-search/view/frontend/web/js/form-mini.js
