@@ -12,7 +12,7 @@ class AddFreeGiftObserver implements ObserverInterface
 {
     protected $cart;
     protected $productFactory;
-    protected $eventManager;
+    protected $_eventManager;
 
     public function __construct(
         Cart $cart,
@@ -21,7 +21,7 @@ class AddFreeGiftObserver implements ObserverInterface
     ) {
         $this->cart = $cart;
         $this->productFactory = $productFactory;
-        $this->eventManager = $eventManager;
+        $this->_eventManager = $eventManager;
     }
 
     public function execute(Observer $observer)
@@ -32,7 +32,6 @@ class AddFreeGiftObserver implements ObserverInterface
             $freeGiftProductId = 2; // Replace with your free gift product ID
             $freeGiftProduct = $this->productFactory->create()->load($freeGiftProductId);
 
-            // Check if the free gift is already in the cart
             $items = $this->cart->getQuote()->getItemsCollection();
             $isGiftInCart = false;
 
@@ -43,13 +42,12 @@ class AddFreeGiftObserver implements ObserverInterface
                 }
             }
 
-            // Add the free gift if not already in the cart
             if (!$isGiftInCart) {
                 $this->cart->addProduct($freeGiftProduct, 1); // Add the free gift product
                 $this->cart->save();
 
-                // Dispatch the custom event after adding the free gift
-                $this->eventManager->dispatch('vendor_freegift_added', ['product_id' => $freeGiftProductId]);
+                // Notify the user about the free gift
+                $this->_eventManager->dispatch('vendor_freegift_added', ['product_id' => $freeGiftProductId]);
             }
         }
     }

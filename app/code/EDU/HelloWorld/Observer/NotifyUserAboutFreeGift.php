@@ -18,7 +18,7 @@ class NotifyUserAboutFreeGift implements ObserverInterface
     public function execute(Observer $observer)
     {
         // Get the product ID from the event
-        $productId = $observer->getEvent()->getData('product_id');
+        $productId = $observer->getData('product_id');
 
         // You can use the product ID to fetch more details about the free gift if needed
         if ($productId) {

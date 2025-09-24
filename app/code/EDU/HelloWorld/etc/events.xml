@@ -1,10 +1,16 @@
 <?xml version="1.0"?>
+<!--
+/**
+ * Copyright 2020 Adobe
+ * All Rights Reserved.
+ */
+-->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
-    <event name="checkout_cart_product_add_after">
-        <observer name="add_free_gift" instance="\EDU\HelloWorld\Observer\AddFreeGiftObserver"/>
+    <event name="checkout_cart_add_product_complete">
+        <observer name="giveuserfreegift" instance="EDU\HelloWorld\Observer\AddFreeGiftObserver" disabled="true"/>
     </event>
     <event name="vendor_freegift_added">
-        <observer name="notify_user_about_free_gift" instance="\EDU\HelloWorld\Observer\NotifyUserAboutFreeGift"/>
+        <observer name="notifyuser" instance="EDU\HelloWorld\Observer\NotifyUserAboutFreeGift" disabled="true"/>
     </event>
 </config>
