@@ -1,1 +1,0 @@
-/home/rashwan/projects/MagentoTest/EDU/vendor/magento/module-page-cache/view/frontend/web/js/page-cache.js
