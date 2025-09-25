@@ -1,4 +1,2 @@
-*
-!app/
-!app/code
-!app/code/EDU
+/*
+!/app
