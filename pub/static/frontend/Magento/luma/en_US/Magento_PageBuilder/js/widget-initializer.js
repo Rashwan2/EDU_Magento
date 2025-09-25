@@ -1,0 +1,1 @@
+/home/rashwan/projects/MagentoTest/EDU/vendor/magento/module-page-builder/view/base/web/js/widget-initializer.js

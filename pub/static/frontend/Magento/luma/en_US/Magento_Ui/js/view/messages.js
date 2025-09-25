@@ -1,0 +1,1 @@
+/home/rashwan/projects/MagentoTest/EDU/vendor/magento/module-ui/view/frontend/web/js/view/messages.js
