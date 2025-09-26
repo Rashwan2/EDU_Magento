@@ -1,13 +1,15 @@
 <?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
-        <add id="EDU_HelloWorld::helloWorld"
-             title="In-Stock Products"
-             module="EDU_HelloWorld"
-             sortOrder="50"
-             parent="Magento_Catalog::catalog"
-             resource="EDU_HelloWorld::helloWorld"
-             action="helloadmin/product/index"/>
+        <add id="EDU_HelloWorld::inventoryreport" title="inventory report" translate="title"
+             module="EDU_HelloWorld" sortOrder="20" parent="Magento_Reports::report_products"
+             action="reports/report_sales/bestsellers" resource="EDU_HelloWorld::inventoryreport"/>
     </menu>
 </config>
