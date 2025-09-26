@@ -1,1 +1,0 @@
-/home/rashwan/projects/MagentoTest/EDU/vendor/magento/module-bundle/view/frontend/web/js/validation.js

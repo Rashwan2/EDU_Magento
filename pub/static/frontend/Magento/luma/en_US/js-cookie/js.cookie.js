@@ -1,1 +1,0 @@
-/home/rashwan/projects/MagentoTest/EDU/lib/web/js-cookie/js.cookie.js
