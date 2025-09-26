@@ -10,6 +10,6 @@
     <menu>
         <add id="EDU_HelloWorld::inventoryreport" title="inventory report" translate="title"
              module="EDU_HelloWorld" sortOrder="20" parent="Magento_Reports::report_products"
-             action="reports/report_sales/bestsellers" resource="EDU_HelloWorld::inventoryreport"/>
+             action="helloworld/hello/index" resource="EDU_HelloWorld::inventoryreport"/>
     </menu>
 </config>

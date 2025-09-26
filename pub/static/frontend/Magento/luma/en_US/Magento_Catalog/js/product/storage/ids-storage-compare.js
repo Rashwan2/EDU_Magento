@@ -1,1 +1,0 @@
-/home/rashwan/projects/MagentoTest/EDU/vendor/magento/module-catalog/view/frontend/web/js/product/storage/ids-storage-compare.js
