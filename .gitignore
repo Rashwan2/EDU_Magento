@@ -1,2 +1,45 @@
-/*
-!/app
+# Magento generated files
+/app/etc/env.php
+/var/
+/generated/
+/pub/static/
+/pub/media/
+/pub/errors/
+/pub/sitemap.xml
+/pub/robots.txt
+/setup/
+/update/
+
+# Composer dependencies
+/vendor/
+
+# Log files
+/var/log/
+/var/report/
+
+# Cache files
+/var/cache/
+/var/page_cache/
+/var/view_preprocessed/
+
+# Session files
+/var/session/
+
+# Database backups
+*.sql
+*.sql.gz
+
+# IDE and OS generated files
+.idea/
+.DS_Store
+Thumbs.db
+*.iml
+.vscode/
+
+# Other temporary or sensitive files
+*.bak
+*.orig
+*.swp
+*.swo
+*.log
+*.tmp
