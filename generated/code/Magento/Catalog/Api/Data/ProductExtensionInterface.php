@@ -40,6 +40,17 @@ interface ProductExtensionInterface extends \Magento\Framework\Api\ExtensionAttr
     public function setStockItem(\Magento\CatalogInventory\Api\Data\StockItemInterface $stockItem);
 
     /**
+     * @return \Magento\Bundle\Api\Data\OptionInterface[]|null
+     */
+    public function getBundleProductOptions();
+
+    /**
+     * @param \Magento\Bundle\Api\Data\OptionInterface[] $bundleProductOptions
+     * @return $this
+     */
+    public function setBundleProductOptions($bundleProductOptions);
+
+    /**
      * @return \Magento\Downloadable\Api\Data\LinkInterface[]|null
      */
     public function getDownloadableProductLinks();
@@ -60,17 +71,6 @@ interface ProductExtensionInterface extends \Magento\Framework\Api\ExtensionAttr
      * @return $this
      */
     public function setDownloadableProductSamples($downloadableProductSamples);
-
-    /**
-     * @return \Magento\Bundle\Api\Data\OptionInterface[]|null
-     */
-    public function getBundleProductOptions();
-
-    /**
-     * @param \Magento\Bundle\Api\Data\OptionInterface[] $bundleProductOptions
-     * @return $this
-     */
-    public function setBundleProductOptions($bundleProductOptions);
 
     /**
      * @return \Magento\ConfigurableProduct\Api\Data\OptionInterface[]|null

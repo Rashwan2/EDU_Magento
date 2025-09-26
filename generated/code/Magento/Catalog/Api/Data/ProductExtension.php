@@ -61,6 +61,24 @@ class ProductExtension extends \Magento\Framework\Api\AbstractSimpleObject imple
     }
 
     /**
+     * @return \Magento\Bundle\Api\Data\OptionInterface[]|null
+     */
+    public function getBundleProductOptions()
+    {
+        return $this->_get('bundle_product_options');
+    }
+
+    /**
+     * @param \Magento\Bundle\Api\Data\OptionInterface[] $bundleProductOptions
+     * @return $this
+     */
+    public function setBundleProductOptions($bundleProductOptions)
+    {
+        $this->setData('bundle_product_options', $bundleProductOptions);
+        return $this;
+    }
+
+    /**
      * @return \Magento\Downloadable\Api\Data\LinkInterface[]|null
      */
     public function getDownloadableProductLinks()
@@ -93,24 +111,6 @@ class ProductExtension extends \Magento\Framework\Api\AbstractSimpleObject imple
     public function setDownloadableProductSamples($downloadableProductSamples)
     {
         $this->setData('downloadable_product_samples', $downloadableProductSamples);
-        return $this;
-    }
-
-    /**
-     * @return \Magento\Bundle\Api\Data\OptionInterface[]|null
-     */
-    public function getBundleProductOptions()
-    {
-        return $this->_get('bundle_product_options');
-    }
-
-    /**
-     * @param \Magento\Bundle\Api\Data\OptionInterface[] $bundleProductOptions
-     * @return $this
-     */
-    public function setBundleProductOptions($bundleProductOptions)
-    {
-        $this->setData('bundle_product_options', $bundleProductOptions);
         return $this;
     }
 

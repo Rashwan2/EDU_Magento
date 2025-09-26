@@ -247,23 +247,6 @@ require.config(config);
 var config = {
     map: {
         '*': {
-            quickSearch: 'Magento_Search/js/form-mini',
-            'Magento_Search/form-mini': 'Magento_Search/js/form-mini'
-        }
-    }
-};
-
-require.config(config);
-})();
-(function() {
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
-
-var config = {
-    map: {
-        '*': {
             priceBox:             'Magento_Catalog/js/price-box',
             priceOptionDate:      'Magento_Catalog/js/price-option-date',
             priceOptionFile:      'Magento_Catalog/js/price-option-file',
@@ -312,7 +295,8 @@ require.config(config);
 var config = {
     map: {
         '*': {
-            addToCart: 'Magento_Msrp/js/msrp'
+            quickSearch: 'Magento_Search/js/form-mini',
+            'Magento_Search/form-mini': 'Magento_Search/js/form-mini'
         }
     }
 };
@@ -329,6 +313,48 @@ var config = {
     map: {
         '*': {
             catalogSearch: 'Magento_CatalogSearch/form-mini'
+        }
+    }
+};
+
+require.config(config);
+})();
+(function() {
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+var config = {
+    map: {
+        '*': {
+            addToCart: 'Magento_Msrp/js/msrp'
+        }
+    }
+};
+
+require.config(config);
+})();
+(function() {
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+var config = {
+    map: {
+        '*': {
+            bundleOption:   'Magento_Bundle/bundle',
+            priceBundle:    'Magento_Bundle/js/price-bundle',
+            slide:          'Magento_Bundle/js/slide',
+            productSummary: 'Magento_Bundle/js/product-summary'
+        }
+    },
+    config: {
+        mixins: {
+            'mage/validation': {
+                'Magento_Bundle/js/validation': true
+            }
         }
     }
 };
@@ -380,6 +406,23 @@ require.config(config);
 var config = {
     map: {
         '*': {
+            downloadable: 'Magento_Downloadable/js/downloadable',
+            'Magento_Downloadable/downloadable': 'Magento_Downloadable/js/downloadable'
+        }
+    }
+};
+
+require.config(config);
+})();
+(function() {
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+var config = {
+    map: {
+        '*': {
             discountCode:           'Magento_Checkout/js/discount-codes',
             shoppingCart:           'Magento_Checkout/js/shopping-cart',
             regionUpdater:          'Magento_Checkout/js/region-updater',
@@ -393,6 +436,29 @@ var config = {
     shim: {
         'Magento_Checkout/js/model/totals' : {
             deps: ['Magento_Customer/js/customer-data']
+        }
+    }
+};
+
+require.config(config);
+})();
+(function() {
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+var config = {
+    map: {
+        '*': {
+            configurable: 'Magento_ConfigurableProduct/js/configurable'
+        }
+    },
+    config: {
+        mixins: {
+            'Magento_Catalog/js/catalog-add-to-cart': {
+                'Magento_ConfigurableProduct/js/catalog-add-to-cart-mixin': true
+            }
         }
     }
 };
@@ -425,23 +491,6 @@ require.config(config);
 var config = {
     map: {
         '*': {
-            downloadable: 'Magento_Downloadable/js/downloadable',
-            'Magento_Downloadable/downloadable': 'Magento_Downloadable/js/downloadable'
-        }
-    }
-};
-
-require.config(config);
-})();
-(function() {
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
-
-var config = {
-    map: {
-        '*': {
             subscriptionStatusResolver: 'Magento_Newsletter/js/subscription-status-resolver',
             newsletterSignUp:  'Magento_Newsletter/js/newsletter-sign-up'
         }
@@ -459,17 +508,24 @@ require.config(config);
 var config = {
     map: {
         '*': {
-            bundleOption:   'Magento_Bundle/bundle',
-            priceBundle:    'Magento_Bundle/js/price-bundle',
-            slide:          'Magento_Bundle/js/slide',
-            productSummary: 'Magento_Bundle/js/product-summary'
+            groupedProduct: 'Magento_GroupedProduct/js/grouped-product'
         }
-    },
-    config: {
-        mixins: {
-            'mage/validation': {
-                'Magento_Bundle/js/validation': true
-            }
+    }
+};
+
+require.config(config);
+})();
+(function() {
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+var config = {
+    map: {
+        '*': {
+            'taxToggle': 'Magento_Weee/js/tax-toggle',
+            'Magento_Weee/tax-toggle': 'Magento_Weee/js/tax-toggle'
         }
     }
 };
@@ -570,12 +626,20 @@ require.config(config);
  */
 
 var config = {
-    map: {
-        '*': {
-            groupedProduct: 'Magento_GroupedProduct/js/grouped-product'
+    shim: {
+        cardinaljs: {
+            exports: 'Cardinal'
+        },
+        cardinaljsSandbox: {
+            exports: 'Cardinal'
         }
+    },
+    paths: {
+        cardinaljsSandbox: 'https://includestest.ccdc02.com/cardinalcruise/v1/songbird',
+        cardinaljs: 'https://songbird.cardinalcommerce.com/edge/v1/songbird'
     }
 };
+
 
 require.config(config);
 })();
@@ -588,30 +652,13 @@ require.config(config);
 var config = {
     map: {
         '*': {
-            captcha: 'Magento_Captcha/js/captcha',
-            'Magento_Captcha/captcha': 'Magento_Captcha/js/captcha'
-        }
-    }
-};
-
-require.config(config);
-})();
-(function() {
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
-
-var config = {
-    map: {
-        '*': {
-            configurable: 'Magento_ConfigurableProduct/js/configurable'
+            configurableVariationQty: 'Magento_InventoryConfigurableProductFrontendUi/js/configurable-variation-qty'
         }
     },
     config: {
         mixins: {
-            'Magento_Catalog/js/catalog-add-to-cart': {
-                'Magento_ConfigurableProduct/js/catalog-add-to-cart-mixin': true
+            'Magento_ConfigurableProduct/js/configurable': {
+                'Magento_InventoryConfigurableProductFrontendUi/js/configurable': true
             }
         }
     }
@@ -771,20 +818,13 @@ require.config(config);
  */
 
 var config = {
-    shim: {
-        cardinaljs: {
-            exports: 'Cardinal'
-        },
-        cardinaljsSandbox: {
-            exports: 'Cardinal'
+    map: {
+        '*': {
+            captcha: 'Magento_Captcha/js/captcha',
+            'Magento_Captcha/captcha': 'Magento_Captcha/js/captcha'
         }
-    },
-    paths: {
-        cardinaljsSandbox: 'https://includestest.ccdc02.com/cardinalcruise/v1/songbird',
-        cardinaljs: 'https://songbird.cardinalcommerce.com/edge/v1/songbird'
     }
 };
-
 
 require.config(config);
 })();
@@ -871,27 +911,6 @@ require.config(config);
  * See COPYING.txt for license details.
  */
 
-var config = {
-    config: {
-        mixins: {
-            'Magento_Checkout/js/action/place-order': {
-                'Magento_CheckoutAgreements/js/model/place-order-mixin': true
-            },
-            'Magento_Checkout/js/action/set-payment-information': {
-                'Magento_CheckoutAgreements/js/model/set-payment-information-mixin': true
-            }
-        }
-    }
-};
-
-require.config(config);
-})();
-(function() {
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
-
 // eslint-disable-next-line no-unused-vars
 var config = {
     config: {
@@ -962,6 +981,51 @@ var config = {
         mixins: {
             'jquery': {
                 'Magento_ReCaptchaWebapiUi/js/jquery-mixin': true
+            }
+        }
+    }
+};
+
+require.config(config);
+})();
+(function() {
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+var config = {
+    config: {
+        mixins: {
+            'Magento_Checkout/js/view/payment/list': {
+                'Magento_PaypalCaptcha/js/view/payment/list-mixin': true
+            },
+            'Magento_Paypal/js/view/payment/method-renderer/payflowpro-method': {
+                'Magento_PaypalCaptcha/js/view/payment/method-renderer/payflowpro-method-mixin': true
+            },
+            'Magento_Captcha/js/view/checkout/defaultCaptcha': {
+                'Magento_PaypalCaptcha/js/view/checkout/defaultCaptcha-mixin': true
+            }
+        }
+    }
+};
+
+require.config(config);
+})();
+(function() {
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+var config = {
+    config: {
+        mixins: {
+            'Magento_Checkout/js/action/place-order': {
+                'Magento_CheckoutAgreements/js/model/place-order-mixin': true
+            },
+            'Magento_Checkout/js/action/set-payment-information': {
+                'Magento_CheckoutAgreements/js/model/set-payment-information-mixin': true
             }
         }
     }
@@ -1060,70 +1124,6 @@ var config = {
             editTrigger: 'mage/edit-trigger',
             addClass: 'Magento_Translation/js/add-class',
             'Magento_Translation/add-class': 'Magento_Translation/js/add-class'
-        }
-    }
-};
-
-require.config(config);
-})();
-(function() {
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
-
-var config = {
-    map: {
-        '*': {
-            configurableVariationQty: 'Magento_InventoryConfigurableProductFrontendUi/js/configurable-variation-qty'
-        }
-    },
-    config: {
-        mixins: {
-            'Magento_ConfigurableProduct/js/configurable': {
-                'Magento_InventoryConfigurableProductFrontendUi/js/configurable': true
-            }
-        }
-    }
-};
-
-require.config(config);
-})();
-(function() {
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
-
-var config = {
-    config: {
-        mixins: {
-            'Magento_Checkout/js/view/payment/list': {
-                'Magento_PaypalCaptcha/js/view/payment/list-mixin': true
-            },
-            'Magento_Paypal/js/view/payment/method-renderer/payflowpro-method': {
-                'Magento_PaypalCaptcha/js/view/payment/method-renderer/payflowpro-method-mixin': true
-            },
-            'Magento_Captcha/js/view/checkout/defaultCaptcha': {
-                'Magento_PaypalCaptcha/js/view/checkout/defaultCaptcha-mixin': true
-            }
-        }
-    }
-};
-
-require.config(config);
-})();
-(function() {
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
-
-var config = {
-    map: {
-        '*': {
-            'taxToggle': 'Magento_Weee/js/tax-toggle',
-            'Magento_Weee/tax-toggle': 'Magento_Weee/js/tax-toggle'
         }
     }
 };
