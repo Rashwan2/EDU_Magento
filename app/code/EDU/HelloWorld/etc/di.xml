@@ -13,4 +13,5 @@
                 sortOrder="1"
                 disabled="false"/>
     </type>
+    <preference for="EDU\HelloWorld\Api\CalculatorInterface" type="EDU\HelloWorld\Model\Calculator"/>
 </config>

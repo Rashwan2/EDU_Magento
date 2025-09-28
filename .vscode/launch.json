@@ -8,7 +8,7 @@
       "name": "Listen for XDebug",
       "type": "php",
       "request": "launch",
-      "port": 9014,
+      "port": 9015,
       "pathMappings": {
         "/home/rashwan/projects/MagentoTest/EDU": "${workspaceFolder}"
       }
