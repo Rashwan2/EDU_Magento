@@ -1,0 +1,66 @@
+{
+    "product_question": {
+        "column": {
+            "question_id": true,
+            "product_id": true,
+            "customer_name": true,
+            "customer_email": true,
+            "question_text": true,
+            "status": true,
+            "answered_count": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "index": {
+            "PRODUCT_QUESTION_PRODUCT_ID": true,
+            "PRODUCT_QUESTION_STATUS": true,
+            "PRODUCT_QUESTION_CREATED_AT": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "PRODUCT_QUESTION_PRODUCT_ID_CATALOG_PRODUCT_ENTITY_ENTITY_ID": true
+        }
+    },
+    "product_answer": {
+        "column": {
+            "answer_id": true,
+            "question_id": true,
+            "customer_name": true,
+            "admin_user_id": true,
+            "answer_text": true,
+            "is_admin_answer": true,
+            "helpful_count": true,
+            "created_at": true
+        },
+        "index": {
+            "PRODUCT_ANSWER_QUESTION_ID": true,
+            "PRODUCT_ANSWER_IS_ADMIN_ANSWER": true,
+            "PRODUCT_ANSWER_CREATED_AT": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "PRODUCT_ANSWER_QUESTION_ID_PRODUCT_QUESTION_QUESTION_ID": true,
+            "PRODUCT_ANSWER_ADMIN_USER_ID_ADMIN_USER_USER_ID": true
+        }
+    },
+    "question_vote": {
+        "column": {
+            "vote_id": true,
+            "voteable_id": true,
+            "voteable_type": true,
+            "customer_email": true,
+            "ip_address": true,
+            "vote_type": true,
+            "created_at": true
+        },
+        "index": {
+            "QUESTION_VOTE_VOTEABLE_ID_VOTEABLE_TYPE": true,
+            "QUESTION_VOTE_CUSTOMER_EMAIL": true,
+            "QUESTION_VOTE_IP_ADDRESS": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "QUESTION_VOTE_VOTEABLE_ID_VOTEABLE_TYPE_CUSTOMER_EMAIL": true
+        }
+    }
+}

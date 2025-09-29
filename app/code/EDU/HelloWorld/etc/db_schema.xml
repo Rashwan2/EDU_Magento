@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    
+    <!-- Product Questions Table -->
+    <table name="product_question" resource="default" engine="innodb" comment="Product Questions Table">
+        <column xsi:type="int" name="question_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Question ID"/>
+        <column xsi:type="int" name="product_id" padding="10" unsigned="true" nullable="false" comment="Product ID"/>
+        <column xsi:type="varchar" name="customer_name" length="255" nullable="false" comment="Customer Name"/>
+        <column xsi:type="varchar" name="customer_email" length="255" nullable="false" comment="Customer Email"/>
+        <column xsi:type="text" name="question_text" nullable="false" comment="Question Text"/>
+        <column xsi:type="varchar" name="status" length="20" nullable="false" default="pending" comment="Status"/>
+        <column xsi:type="int" name="answered_count" padding="10" unsigned="true" nullable="false" default="0" comment="Answered Count"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="question_id"/>
+        </constraint>
+        
+        <constraint xsi:type="foreign" referenceId="PRODUCT_QUESTION_PRODUCT_ID_CATALOG_PRODUCT_ENTITY_ENTITY_ID" 
+                    table="product_question" column="product_id" 
+                    referenceTable="catalog_product_entity" referenceColumn="entity_id" 
+                    onDelete="CASCADE"/>
+        
+        <index referenceId="PRODUCT_QUESTION_PRODUCT_ID" indexType="btree">
+            <column name="product_id"/>
+        </index>
+        
+        <index referenceId="PRODUCT_QUESTION_STATUS" indexType="btree">
+            <column name="status"/>
+        </index>
+        
+        <index referenceId="PRODUCT_QUESTION_CREATED_AT" indexType="btree">
+            <column name="created_at"/>
+        </index>
+    </table>
+    
+    <!-- Product Answers Table -->
+    <table name="product_answer" resource="default" engine="innodb" comment="Product Answers Table">
+        <column xsi:type="int" name="answer_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Answer ID"/>
+        <column xsi:type="int" name="question_id" padding="10" unsigned="true" nullable="false" comment="Question ID"/>
+        <column xsi:type="varchar" name="customer_name" length="255" nullable="true" comment="Customer Name"/>
+        <column xsi:type="int" name="admin_user_id" padding="10" unsigned="true" nullable="true" comment="Admin User ID"/>
+        <column xsi:type="text" name="answer_text" nullable="false" comment="Answer Text"/>
+        <column xsi:type="boolean" name="is_admin_answer" nullable="false" default="false" comment="Is Admin Answer"/>
+        <column xsi:type="int" name="helpful_count" padding="10" unsigned="true" nullable="false" default="0" comment="Helpful Count"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="answer_id"/>
+        </constraint>
+        
+        <constraint xsi:type="foreign" referenceId="PRODUCT_ANSWER_QUESTION_ID_PRODUCT_QUESTION_QUESTION_ID" 
+                    table="product_answer" column="question_id" 
+                    referenceTable="product_question" referenceColumn="question_id" 
+                    onDelete="CASCADE"/>
+        
+        <constraint xsi:type="foreign" referenceId="PRODUCT_ANSWER_ADMIN_USER_ID_ADMIN_USER_USER_ID" 
+                    table="product_answer" column="admin_user_id" 
+                    referenceTable="admin_user" referenceColumn="user_id" 
+                    onDelete="SET NULL"/>
+        
+        <index referenceId="PRODUCT_ANSWER_QUESTION_ID" indexType="btree">
+            <column name="question_id"/>
+        </index>
+        
+        <index referenceId="PRODUCT_ANSWER_IS_ADMIN_ANSWER" indexType="btree">
+            <column name="is_admin_answer"/>
+        </index>
+        
+        <index referenceId="PRODUCT_ANSWER_CREATED_AT" indexType="btree">
+            <column name="created_at"/>
+        </index>
+    </table>
+    
+    <!-- Question Vote Table -->
+    <table name="question_vote" resource="default" engine="innodb" comment="Question Vote Table">
+        <column xsi:type="int" name="vote_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Vote ID"/>
+        <column xsi:type="int" name="voteable_id" padding="10" unsigned="true" nullable="false" comment="Voteable ID"/>
+        <column xsi:type="varchar" name="voteable_type" length="20" nullable="false" comment="Voteable Type"/>
+        <column xsi:type="varchar" name="customer_email" length="255" nullable="true" comment="Customer Email"/>
+        <column xsi:type="varchar" name="ip_address" length="45" nullable="true" comment="IP Address"/>
+        <column xsi:type="varchar" name="vote_type" length="20" nullable="false" comment="Vote Type"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="vote_id"/>
+        </constraint>
+        
+        <index referenceId="QUESTION_VOTE_VOTEABLE" indexType="btree">
+            <column name="voteable_id"/>
+            <column name="voteable_type"/>
+        </index>
+        
+        <index referenceId="QUESTION_VOTE_CUSTOMER_EMAIL" indexType="btree">
+            <column name="customer_email"/>
+        </index>
+        
+        <index referenceId="QUESTION_VOTE_IP_ADDRESS" indexType="btree">
+            <column name="ip_address"/>
+        </index>
+        
+        <constraint xsi:type="unique" referenceId="QUESTION_VOTE_UNIQUE_VOTE">
+            <column name="voteable_id"/>
+            <column name="voteable_type"/>
+            <column name="customer_email"/>
+        </constraint>
+    </table>
+</schema>

@@ -15,6 +15,10 @@
                         <resource id="EDU_HelloWorld::inventory" title="inventory" translate="title" sortOrder="100"/>
                     </resource>
                 </resource>
+                <resource id="Magento_Catalog::catalog" title="Catalog" translate="title" sortOrder="30">
+                    <resource id="EDU_HelloWorld::question_manage" title="Product Q/A Management" translate="title"
+                              sortOrder="100"/>
+                </resource>
             </resource>
         </resources>
     </acl>

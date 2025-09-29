@@ -13,4 +13,114 @@
             <resource ref="anonymous"/>
         </resources>
     </route>
+    
+    <!-- Product Q&A API -->
+    
+    <!-- Questions API -->
+    <route url="/V1/questions" method="GET">
+        <service class="EDU\HelloWorld\Api\QuestionRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    
+    <route url="/V1/questions" method="POST">
+        <service class="EDU\HelloWorld\Api\QuestionRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    
+    <route url="/V1/questions/:questionId" method="GET">
+        <service class="EDU\HelloWorld\Api\QuestionRepositoryInterface" method="getById"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    
+    <route url="/V1/questions/:questionId" method="PUT">
+        <service class="EDU\HelloWorld\Api\QuestionRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    
+    <route url="/V1/questions/:questionId" method="DELETE">
+        <service class="EDU\HelloWorld\Api\QuestionRepositoryInterface" method="deleteById"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    
+    <route url="/V1/questions/product/:productId" method="GET">
+        <service class="EDU\HelloWorld\Api\QuestionRepositoryInterface" method="getByProductId"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    
+    <route url="/V1/questions/:questionId/approve" method="POST">
+        <service class="EDU\HelloWorld\Api\QuestionRepositoryInterface" method="approve"/>
+        <resources>
+            <resource ref="Magento_Catalog::products"/>
+        </resources>
+    </route>
+    
+    <route url="/V1/questions/:questionId/reject" method="POST">
+        <service class="EDU\HelloWorld\Api\QuestionRepositoryInterface" method="reject"/>
+        <resources>
+            <resource ref="Magento_Catalog::products"/>
+        </resources>
+    </route>
+    
+    <!-- Answers API -->
+    <route url="/V1/answers" method="POST">
+        <service class="EDU\HelloWorld\Api\AnswerRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    
+    <route url="/V1/answers/:answerId" method="GET">
+        <service class="EDU\HelloWorld\Api\AnswerRepositoryInterface" method="getById"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    
+    <route url="/V1/answers/:answerId" method="PUT">
+        <service class="EDU\HelloWorld\Api\AnswerRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    
+    <route url="/V1/answers/:answerId" method="DELETE">
+        <service class="EDU\HelloWorld\Api\AnswerRepositoryInterface" method="deleteById"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    
+    <route url="/V1/answers/question/:questionId" method="GET">
+        <service class="EDU\HelloWorld\Api\AnswerRepositoryInterface" method="getByQuestionId"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    
+    <route url="/V1/answers/:answerId/helpful" method="POST">
+        <service class="EDU\HelloWorld\Api\AnswerRepositoryInterface" method="incrementHelpfulCount"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    
+    <route url="/V1/answers/:answerId/not-helpful" method="POST">
+        <service class="EDU\HelloWorld\Api\AnswerRepositoryInterface" method="decrementHelpfulCount"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    
 </routes>

@@ -11,5 +11,12 @@
         <add id="EDU_HelloWorld::inventoryreport" title="inventory report" translate="title"
              module="EDU_HelloWorld" sortOrder="20" parent="Magento_Reports::report_products"
              action="helloworld/hello/index" resource="EDU_HelloWorld::inventoryreport"/>
+        <add id="EDU_HelloWorld::question_manage"
+             title="Product Q/A"
+             module="EDU_HelloWorld"
+             sortOrder="60"
+             parent="Magento_Catalog::catalog"
+             resource="EDU_HelloWorld::question_manage"
+             action="helloworld/question/index"/>
     </menu>
 </config>

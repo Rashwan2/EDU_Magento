@@ -14,4 +14,9 @@
                 disabled="false"/>
     </type>
     <preference for="EDU\HelloWorld\Api\CalculatorInterface" type="EDU\HelloWorld\Model\Calculator"/>
+    
+    <!-- Product Q&A System Preferences -->
+    <preference for="EDU\HelloWorld\Api\QuestionRepositoryInterface" type="EDU\HelloWorld\Model\QuestionRepository"/>
+    <preference for="EDU\HelloWorld\Api\AnswerRepositoryInterface" type="EDU\HelloWorld\Model\AnswerRepository"/>
+    <preference for="EDU\HelloWorld\Api\Data\QuestionSearchResultsInterface" type="EDU\HelloWorld\Model\QuestionSearchResults"/>
 </config>
