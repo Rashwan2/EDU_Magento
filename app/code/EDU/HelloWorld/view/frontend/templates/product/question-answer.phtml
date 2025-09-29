@@ -74,18 +74,20 @@
                                                 <?= (int)$answer->getHelpfulCount() ?> people found this helpful
                                             </span>
                                             <div class="helpful-buttons">
-                                                <button type="button" 
-                                                        class="action helpful-btn" 
-                                                        data-answer-id="<?= $answer->getAnswerId() ?>"
-                                                        data-vote-type="helpful">
-                                                    <span class="icon">👍</span> Helpful
-                                                </button>
-                                                <button type="button" 
-                                                        class="action not-helpful-btn" 
-                                                        data-answer-id="<?= $answer->getAnswerId() ?>"
-                                                        data-vote-type="not_helpful">
-                                                    <span class="icon">👎</span> Not Helpful
-                                                </button>
+                                                <form method="POST" action="<?= $block->getVoteUrl() ?>" style="display: inline;">
+                                                    <input type="hidden" name="answer_id" value="<?= $answer->getAnswerId() ?>">
+                                                    <input type="hidden" name="vote_type" value="helpful">
+                                                    <button type="submit" class="action helpful-btn">
+                                                        <span class="icon">👍</span> Helpful (<?= $answer->getHelpfulCount() ?>)
+                                                    </button>
+                                                </form>
+                                                <form method="POST" action="<?= $block->getVoteUrl() ?>" style="display: inline;">
+                                                    <input type="hidden" name="answer_id" value="<?= $answer->getAnswerId() ?>">
+                                                    <input type="hidden" name="vote_type" value="not_helpful">
+                                                    <button type="submit" class="action not-helpful-btn">
+                                                        <span class="icon">👎</span> Not Helpful
+                                                    </button>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -531,105 +533,7 @@ require(['jquery'], function($) {
             $(this).closest('.question-item').find('.answer-question-btn').show();
         });
         
-        // Form submissions
-        $('#question-submit-form').on('submit', function(e) {
-            e.preventDefault();
-            var $form = $(this);
-            var $submitBtn = $form.find('button[type="submit"]');
-            var originalText = $submitBtn.text();
-            
-            $submitBtn.text('Submitting...').prop('disabled', true);
-            
-            $.ajax({
-                url: $form.attr('action'),
-                type: 'POST',
-                data: $form.serialize(),
-                dataType: 'json',
-                success: function(response) {
-                    if (response.success) {
-                        alert(response.message);
-                        $form[0].reset();
-                        $('#question-form-modal').hide();
-                        location.reload(); // Reload to show new question
-                    } else {
-                        alert('Error: ' + response.message);
-                    }
-                },
-                error: function() {
-                    alert('An error occurred while submitting your question.');
-                },
-                complete: function() {
-                    $submitBtn.text(originalText).prop('disabled', false);
-                }
-            });
-        });
-        
-        $('.answer-submit-form').on('submit', function(e) {
-            e.preventDefault();
-            var $form = $(this);
-            var $submitBtn = $form.find('button[type="submit"]');
-            var originalText = $submitBtn.text();
-            
-            $submitBtn.text('Submitting...').prop('disabled', true);
-            
-            $.ajax({
-                url: $form.attr('action'),
-                type: 'POST',
-                data: $form.serialize(),
-                dataType: 'json',
-                success: function(response) {
-                    if (response.success) {
-                        alert(response.message);
-                        $form[0].reset();
-                        $form.closest('.answer-form').hide();
-                        $form.closest('.question-item').find('.answer-question-btn').show();
-                        location.reload(); // Reload to show new answer
-                    } else {
-                        alert('Error: ' + response.message);
-                    }
-                },
-                error: function() {
-                    alert('An error occurred while submitting your answer.');
-                },
-                complete: function() {
-                    $submitBtn.text(originalText).prop('disabled', false);
-                }
-            });
-        });
-        
-        // Vote buttons
-        $('.helpful-btn, .not-helpful-btn').on('click', function() {
-            var $btn = $(this);
-            var answerId = $btn.data('answer-id');
-            var voteType = $btn.data('vote-type');
-            var originalText = $btn.text();
-            
-            $btn.text('Voting...').prop('disabled', true);
-            
-            $.ajax({
-                url: '<?= $block->getVoteUrl() ?>',
-                type: 'POST',
-                data: {
-                    answer_id: answerId,
-                    vote_type: voteType
-                },
-                dataType: 'json',
-                success: function(response) {
-                    if (response.success) {
-                        alert(response.message);
-                        location.reload(); // Reload to show updated vote count
-                    } else {
-                        alert('Error: ' + response.message);
-                    }
-                },
-                error: function() {
-                    alert('An error occurred while recording your vote.');
-                },
-                complete: function() {
-                    $btn.text(originalText).prop('disabled', false);
-                }
-            });
-        });
+        // Forms will submit normally - no AJAX needed
     });
 });
 </script>

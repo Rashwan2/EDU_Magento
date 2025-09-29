@@ -5,44 +5,50 @@ namespace EDU\HelloWorld\Controller\Answer;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Action\HttpPostActionInterface;
-use Magento\Framework\Controller\Result\JsonFactory;
-use EDU\HelloWorld\Api\Data\AnswerInterfaceFactory;
+use Magento\Framework\Controller\Result\RedirectFactory;
+use Magento\Framework\Message\ManagerInterface;
+use EDU\HelloWorld\Model\AnswerFactory;
 use EDU\HelloWorld\Api\AnswerRepositoryInterface;
+use EDU\HelloWorld\Api\QuestionRepositoryInterface;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Exception\LocalizedException;
 
 class Submit extends Action implements HttpPostActionInterface
 {
-    protected $jsonFactory;
+    protected $redirectFactory;
+    protected $messageManager;
     protected $answerFactory;
     protected $answerRepository;
+    protected $questionRepository;
     protected $customerSession;
 
     public function __construct(
         Context $context,
-        JsonFactory $jsonFactory,
-        AnswerInterfaceFactory $answerFactory,
+        RedirectFactory $redirectFactory,
+        ManagerInterface $messageManager,
+        AnswerFactory $answerFactory,
         AnswerRepositoryInterface $answerRepository,
+        QuestionRepositoryInterface $questionRepository,
         CustomerSession $customerSession
     ) {
-        $this->jsonFactory = $jsonFactory;
+        $this->redirectFactory = $redirectFactory;
+        $this->messageManager = $messageManager;
         $this->answerFactory = $answerFactory;
         $this->answerRepository = $answerRepository;
+        $this->questionRepository = $questionRepository;
         $this->customerSession = $customerSession;
         parent::__construct($context);
     }
 
     public function execute()
     {
-        $result = $this->jsonFactory->create();
+        $redirect = $this->redirectFactory->create();
         
         try {
             // Check if customer is logged in
             if (!$this->customerSession->isLoggedIn()) {
-                return $result->setData([
-                    'success' => false,
-                    'message' => 'Please log in to answer questions.'
-                ]);
+                $this->messageManager->addErrorMessage('Please log in to answer questions.');
+                return $redirect->setPath('customer/account/login');
             }
 
             // Get form data
@@ -52,11 +58,13 @@ class Submit extends Action implements HttpPostActionInterface
 
             // Validate required fields
             if (empty($questionId) || empty($answerText)) {
-                return $result->setData([
-                    'success' => false,
-                    'message' => 'Question ID and answer text are required.'
-                ]);
+                $this->messageManager->addErrorMessage('Question ID and answer text are required.');
+                return $redirect->setRefererUrl();
             }
+
+            // Get question to find product ID
+            $question = $this->questionRepository->getById($questionId);
+            $productId = $question->getProductId();
 
             // Create answer
             $answer = $this->answerFactory->create();
@@ -68,22 +76,15 @@ class Submit extends Action implements HttpPostActionInterface
             // Save answer
             $this->answerRepository->save($answer);
 
-            return $result->setData([
-                'success' => true,
-                'message' => 'Your answer has been submitted successfully.',
-                'answer_id' => $answer->getAnswerId()
-            ]);
+            $this->messageManager->addSuccessMessage('Your answer has been submitted successfully.');
+            return $redirect->setPath('catalog/product/view', ['id' => $productId]);
 
         } catch (LocalizedException $e) {
-            return $result->setData([
-                'success' => false,
-                'message' => $e->getMessage()
-            ]);
+            $this->messageManager->addErrorMessage($e->getMessage());
+            return $redirect->setRefererUrl();
         } catch (\Exception $e) {
-            return $result->setData([
-                'success' => false,
-                'message' => 'An error occurred while submitting your answer.'
-            ]);
+            $this->messageManager->addErrorMessage('An error occurred while submitting your answer.');
+            return $redirect->setRefererUrl();
         }
     }
 }

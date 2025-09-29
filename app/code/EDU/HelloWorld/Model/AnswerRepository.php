@@ -3,7 +3,7 @@
 namespace EDU\HelloWorld\Model;
 
 use EDU\HelloWorld\Api\Data\AnswerInterface;
-use EDU\HelloWorld\Api\Data\AnswerInterfaceFactory;
+use EDU\HelloWorld\Model\AnswerFactory;
 use EDU\HelloWorld\Api\AnswerRepositoryInterface;
 use EDU\HelloWorld\Model\ResourceModel\Answer as AnswerResourceModel;
 use EDU\HelloWorld\Model\ResourceModel\Answer\Collection as AnswerCollection;
@@ -19,7 +19,7 @@ class AnswerRepository implements AnswerRepositoryInterface
     protected $answerCollectionFactory;
 
     public function __construct(
-        AnswerInterfaceFactory $answerFactory,
+        AnswerFactory $answerFactory,
         AnswerResourceModel $answerResourceModel,
         AnswerCollectionFactory $answerCollectionFactory
     ) {

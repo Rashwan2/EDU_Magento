@@ -5,40 +5,48 @@ namespace EDU\HelloWorld\Controller\Vote;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Action\HttpPostActionInterface;
-use Magento\Framework\Controller\Result\JsonFactory;
+use Magento\Framework\Controller\Result\RedirectFactory;
+use Magento\Framework\Message\ManagerInterface;
 use EDU\HelloWorld\Model\VoteFactory;
 use EDU\HelloWorld\Model\ResourceModel\Vote as VoteResource;
 use EDU\HelloWorld\Api\AnswerRepositoryInterface;
+use EDU\HelloWorld\Api\QuestionRepositoryInterface;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Exception\LocalizedException;
 
 class Submit extends Action implements HttpPostActionInterface
 {
-    protected $jsonFactory;
+    protected $redirectFactory;
+    protected $messageManager;
     protected $voteFactory;
     protected $voteResource;
     protected $answerRepository;
+    protected $questionRepository;
     protected $customerSession;
 
     public function __construct(
         Context $context,
-        JsonFactory $jsonFactory,
+        RedirectFactory $redirectFactory,
+        ManagerInterface $messageManager,
         VoteFactory $voteFactory,
         VoteResource $voteResource,
         AnswerRepositoryInterface $answerRepository,
+        QuestionRepositoryInterface $questionRepository,
         CustomerSession $customerSession
     ) {
-        $this->jsonFactory = $jsonFactory;
+        $this->redirectFactory = $redirectFactory;
+        $this->messageManager = $messageManager;
         $this->voteFactory = $voteFactory;
         $this->voteResource = $voteResource;
         $this->answerRepository = $answerRepository;
+        $this->questionRepository = $questionRepository;
         $this->customerSession = $customerSession;
         parent::__construct($context);
     }
 
     public function execute()
     {
-        $result = $this->jsonFactory->create();
+        $redirect = $this->redirectFactory->create();
         
         try {
             // Get form data
@@ -50,19 +58,20 @@ class Submit extends Action implements HttpPostActionInterface
 
             // Validate required fields
             if (empty($answerId) || empty($voteType)) {
-                return $result->setData([
-                    'success' => false,
-                    'message' => 'Answer ID and vote type are required.'
-                ]);
+                $this->messageManager->addErrorMessage('Answer ID and vote type are required.');
+                return $redirect->setRefererUrl();
             }
 
             // Check if user already voted
             if ($this->voteResource->hasVoted($answerId, 'answer', $customerEmail, $this->getRequest()->getClientIp())) {
-                return $result->setData([
-                    'success' => false,
-                    'message' => 'You have already voted on this answer.'
-                ]);
+                $this->messageManager->addErrorMessage('You have already voted on this answer.');
+                return $redirect->setRefererUrl();
             }
+
+            // Get answer to find product ID
+            $answer = $this->answerRepository->getById($answerId);
+            $question = $this->questionRepository->getById($answer->getQuestionId());
+            $productId = $question->getProductId();
 
             // Create vote
             $vote = $this->voteFactory->create();
@@ -80,22 +89,15 @@ class Submit extends Action implements HttpPostActionInterface
                 $this->answerRepository->incrementHelpfulCount($answerId);
             }
 
-            return $result->setData([
-                'success' => true,
-                'message' => 'Your vote has been recorded.',
-                'vote_type' => $voteType
-            ]);
+            $this->messageManager->addSuccessMessage('Your vote has been recorded.');
+            return $redirect->setPath('catalog/product/view', ['id' => $productId]);
 
         } catch (LocalizedException $e) {
-            return $result->setData([
-                'success' => false,
-                'message' => $e->getMessage()
-            ]);
+            $this->messageManager->addErrorMessage($e->getMessage());
+            return $redirect->setRefererUrl();
         } catch (\Exception $e) {
-            return $result->setData([
-                'success' => false,
-                'message' => 'An error occurred while recording your vote.'
-            ]);
+            $this->messageManager->addErrorMessage('An error occurred while recording your vote.');
+            return $redirect->setRefererUrl();
         }
     }
 }

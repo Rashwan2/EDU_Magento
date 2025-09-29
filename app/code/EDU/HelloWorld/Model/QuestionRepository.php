@@ -3,7 +3,7 @@
 namespace EDU\HelloWorld\Model;
 
 use EDU\HelloWorld\Api\Data\QuestionInterface;
-use EDU\HelloWorld\Api\Data\QuestionInterfaceFactory;
+use EDU\HelloWorld\Model\QuestionFactory;
 use EDU\HelloWorld\Api\Data\QuestionSearchResultsInterface;
 use EDU\HelloWorld\Api\Data\QuestionSearchResultsInterfaceFactory;
 use EDU\HelloWorld\Api\QuestionRepositoryInterface;
@@ -25,7 +25,7 @@ class QuestionRepository implements QuestionRepositoryInterface
     protected $collectionProcessor;
 
     public function __construct(
-        QuestionInterfaceFactory $questionFactory,
+        QuestionFactory $questionFactory,
         QuestionResourceModel $questionResourceModel,
         QuestionCollectionFactory $questionCollectionFactory,
         QuestionSearchResultsInterfaceFactory $searchResultsFactory,

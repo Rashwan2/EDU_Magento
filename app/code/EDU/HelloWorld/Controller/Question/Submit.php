@@ -5,28 +5,31 @@ namespace EDU\HelloWorld\Controller\Question;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Action\HttpPostActionInterface;
-use Magento\Framework\Controller\Result\JsonFactory;
-use Magento\Framework\DataObject;
-use EDU\HelloWorld\Api\Data\QuestionInterfaceFactory;
+use Magento\Framework\Controller\Result\RedirectFactory;
+use Magento\Framework\Message\ManagerInterface;
+use EDU\HelloWorld\Model\QuestionFactory;
 use EDU\HelloWorld\Api\QuestionRepositoryInterface;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Exception\LocalizedException;
 
 class Submit extends Action implements HttpPostActionInterface
 {
-    protected $jsonFactory;
+    protected $redirectFactory;
+    protected $messageManager;
     protected $questionFactory;
     protected $questionRepository;
     protected $customerSession;
 
     public function __construct(
         Context $context,
-        JsonFactory $jsonFactory,
-        QuestionInterfaceFactory $questionFactory,
+        RedirectFactory $redirectFactory,
+        ManagerInterface $messageManager,
+        QuestionFactory $questionFactory,
         QuestionRepositoryInterface $questionRepository,
         CustomerSession $customerSession
     ) {
-        $this->jsonFactory = $jsonFactory;
+        $this->redirectFactory = $redirectFactory;
+        $this->messageManager = $messageManager;
         $this->questionFactory = $questionFactory;
         $this->questionRepository = $questionRepository;
         $this->customerSession = $customerSession;
@@ -35,15 +38,13 @@ class Submit extends Action implements HttpPostActionInterface
 
     public function execute()
     {
-        $result = $this->jsonFactory->create();
+        $redirect = $this->redirectFactory->create();
         
         try {
             // Check if customer is logged in
             if (!$this->customerSession->isLoggedIn()) {
-                return $result->setData([
-                    'success' => false,
-                    'message' => 'Please log in to ask a question.'
-                ]);
+                $this->messageManager->addErrorMessage('Please log in to ask a question.');
+                return $redirect->setPath('customer/account/login');
             }
 
             // Get form data
@@ -54,10 +55,8 @@ class Submit extends Action implements HttpPostActionInterface
 
             // Validate required fields
             if (empty($productId) || empty($questionText)) {
-                return $result->setData([
-                    'success' => false,
-                    'message' => 'Product ID and question text are required.'
-                ]);
+                $this->messageManager->addErrorMessage('Product ID and question text are required.');
+                return $redirect->setPath('catalog/product/view', ['id' => $productId]);
             }
 
             // Create question
@@ -71,22 +70,15 @@ class Submit extends Action implements HttpPostActionInterface
             // Save question
             $this->questionRepository->save($question);
 
-            return $result->setData([
-                'success' => true,
-                'message' => 'Your question has been submitted and is pending approval.',
-                'question_id' => $question->getQuestionId()
-            ]);
+            $this->messageManager->addSuccessMessage('Your question has been submitted and is pending approval.');
+            return $redirect->setPath('catalog/product/view', ['id' => $productId]);
 
         } catch (LocalizedException $e) {
-            return $result->setData([
-                'success' => false,
-                'message' => $e->getMessage()
-            ]);
+            $this->messageManager->addErrorMessage($e->getMessage());
+            return $redirect->setPath('catalog/product/view', ['id' => $productId]);
         } catch (\Exception $e) {
-            return $result->setData([
-                'success' => false,
-                'message' => 'An error occurred while submitting your question.'
-            ]);
+            $this->messageManager->addErrorMessage('An error occurred while submitting your question.');
+            return $redirect->setPath('catalog/product/view', ['id' => $productId]);
         }
     }
 }
