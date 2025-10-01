@@ -28,4 +28,13 @@ class Question extends AbstractDb
         $object->setUpdatedAt(new \DateTime());
         return parent::_beforeSave($object);
     }
+
+    public function updateAnsweredCount($questionId, $count)
+    {
+        $this->getConnection()->update(
+            $this->getMainTable(),
+            ['answered_count' => $count],
+            ['question_id = ?' => $questionId]
+        );
+    }
 }
