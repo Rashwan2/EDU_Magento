@@ -24,28 +24,6 @@ class Collection extends AbstractCollection
         return $this;
     }
 
-    public function addAdminAnswerFilter($isAdmin = true)
-    {
-        $this->addFieldToFilter('is_admin_answer', $isAdmin ? 1 : 0);
-        return $this;
-    }
-
-    public function addCustomerAnswerFilter()
-    {
-        return $this->addAdminAnswerFilter(false);
-    }
-
-    public function addCustomerEmailFilter($email)
-    {
-        $this->addFieldToFilter('customer_name', ['like' => '%' . $email . '%']);
-        return $this;
-    }
-
-    public function addHelpfulCountFilter($minCount = 0)
-    {
-        $this->addFieldToFilter('helpful_count', ['gteq' => $minCount]);
-        return $this;
-    }
 
     public function orderByAdminFirst()
     {
@@ -54,11 +32,6 @@ class Collection extends AbstractCollection
         return $this;
     }
 
-    public function orderByHelpfulCount($direction = 'DESC')
-    {
-        $this->setOrder('helpful_count', $direction);
-        return $this;
-    }
 
     public function orderByCreatedAt($direction = 'ASC')
     {
@@ -66,16 +39,4 @@ class Collection extends AbstractCollection
         return $this;
     }
 
-    public function getAnswersWithVotes()
-    {
-        $this->getSelect()
-            ->joinLeft(
-                ['vote' => $this->getTable('question_vote')],
-                'main_table.answer_id = vote.voteable_id AND vote.voteable_type = "answer"',
-                ['helpful_votes' => 'SUM(CASE WHEN vote.vote_type = "helpful" THEN 1 ELSE 0 END)']
-            )
-            ->group('main_table.answer_id');
-
-        return $this;
-    }
 }

@@ -28,42 +28,4 @@ class Question extends AbstractDb
         $object->setUpdatedAt(new \DateTime());
         return parent::_beforeSave($object);
     }
-
-    public function loadByProductId($object, $productId)
-    {
-        $select = $this->getConnection()->select()
-            ->from($this->getMainTable())
-            ->where($this->getMainTable() . '.product_id = ?', $productId);
-
-        $data = $this->getConnection()->fetchRow($select);
-
-        if ($data) {
-            $object->setData($data);
-        }
-
-        return $this;
-    }
-
-    public function getQuestionsByProductId($productId, $status = null)
-    {
-        $select = $this->getConnection()->select()
-            ->from($this->getMainTable())
-            ->where('product_id = ?', $productId)
-            ->order('created_at DESC');
-
-        if ($status) {
-            $select->where('status = ?', $status);
-        }
-
-        return $this->getConnection()->fetchAll($select);
-    }
-
-    public function updateAnsweredCount($questionId, $count)
-    {
-        $this->getConnection()->update(
-            $this->getMainTable(),
-            ['answered_count' => $count],
-            ['question_id = ?' => $questionId]
-        );
-    }
 }

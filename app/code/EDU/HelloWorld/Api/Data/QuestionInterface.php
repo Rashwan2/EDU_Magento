@@ -148,25 +148,4 @@ interface QuestionInterface
      * @return $this
      */
     public function setUpdatedAt($updatedAt);
-
-    /**
-     * Check if question is approved
-     *
-     * @return bool
-     */
-    public function isApproved();
-
-    /**
-     * Check if question is pending
-     *
-     * @return bool
-     */
-    public function isPending();
-
-    /**
-     * Check if question is rejected
-     *
-     * @return bool
-     */
-    public function isRejected();
 }

@@ -116,20 +116,6 @@ class Question extends AbstractModel implements QuestionInterface, IdentityInter
         return $this->setData(self::UPDATED_AT, $updatedAt);
     }
 
-    public function isApproved()
-    {
-        return $this->getStatus() === self::STATUS_APPROVED;
-    }
-
-    public function isPending()
-    {
-        return $this->getStatus() === self::STATUS_PENDING;
-    }
-
-    public function isRejected()
-    {
-        return $this->getStatus() === self::STATUS_REJECTED;
-    }
 
     public function approve()
     {

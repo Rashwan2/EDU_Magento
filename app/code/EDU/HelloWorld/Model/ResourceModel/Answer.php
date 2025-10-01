@@ -38,21 +38,4 @@ class Answer extends AbstractDb
         return $this->getConnection()->fetchAll($select);
     }
 
-    public function getAnswerCountByQuestionId($questionId)
-    {
-        $select = $this->getConnection()->select()
-            ->from($this->getMainTable(), ['COUNT(*)'])
-            ->where('question_id = ?', $questionId);
-
-        return (int) $this->getConnection()->fetchOne($select);
-    }
-
-    public function updateHelpfulCount($answerId, $count)
-    {
-        $this->getConnection()->update(
-            $this->getMainTable(),
-            ['helpful_count' => $count],
-            ['answer_id = ?' => $answerId]
-        );
-    }
 }

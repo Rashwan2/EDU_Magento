@@ -43,29 +43,4 @@ class Vote extends AbstractDb
 
         return (bool) $this->getConnection()->fetchOne($select);
     }
-
-    public function getVoteCount($voteableId, $voteableType, $voteType = null)
-    {
-        $select = $this->getConnection()->select()
-            ->from($this->getMainTable(), ['COUNT(*)'])
-            ->where('voteable_id = ?', $voteableId)
-            ->where('voteable_type = ?', $voteableType);
-
-        if ($voteType) {
-            $select->where('vote_type = ?', $voteType);
-        }
-
-        return (int) $this->getConnection()->fetchOne($select);
-    }
-
-    public function getVotesByVoteable($voteableId, $voteableType)
-    {
-        $select = $this->getConnection()->select()
-            ->from($this->getMainTable())
-            ->where('voteable_id = ?', $voteableId)
-            ->where('voteable_type = ?', $voteableType)
-            ->order('created_at DESC');
-
-        return $this->getConnection()->fetchAll($select);
-    }
 }
