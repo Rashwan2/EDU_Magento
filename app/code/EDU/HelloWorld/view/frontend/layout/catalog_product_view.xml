@@ -3,10 +3,11 @@
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="content">
-        <block class="EDU\HelloWorld\Block\Product\QuestionAnswer" 
-               name="product.questions.answers" 
-               template="EDU_HelloWorld::product/question-answer.phtml" 
-               after="product.info.details"/>
+            <block class="EDU\HelloWorld\Block\Product\QuestionAnswer"
+                   name="product.questions.answers"
+                   template="EDU_HelloWorld::product/question-answer.phtml"
+                   after="product.info.details"/>
+
         </referenceContainer>
     </body>
 </page>

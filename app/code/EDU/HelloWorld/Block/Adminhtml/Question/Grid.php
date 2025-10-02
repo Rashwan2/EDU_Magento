@@ -140,11 +140,6 @@ class Grid extends Extended
                 'getter' => 'getQuestionId',
                 'actions' => [
                     [
-                        'caption' => __('View'),
-                        'url' => ['base' => '*/*/view'],
-                        'field' => 'question_id',
-                    ],
-                    [
                         'caption' => __('Approve'),
                         'url' => ['base' => '*/*/approve'],
                         'field' => 'question_id',

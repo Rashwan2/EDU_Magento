@@ -11,7 +11,7 @@
             Customer Questions & Answers
             <span class="question-count">(<?= $block->getQuestionCount() ?>)</span>
         </h3>
-        
+
         <?php if ($block->isCustomerLoggedIn()): ?>
         <button type="button" class="action primary ask-question-btn" id="ask-question-btn">
             <span class="icon">➕</span>
@@ -51,7 +51,7 @@
                                         <p class="answer-text"><?= $block->escapeHtml($answer->getAnswerText()) ?></p>
                                         <div class="answer-meta">
                                             <span class="answered-by">
-                                                By 
+                                                By
                                                 <strong>
                                                     <?php if ($answer->isAdminAnswer()): ?>
                                                         <?= $block->escapeHtml($answer->getCustomerName() ?: 'Store Admin') ?>
@@ -67,7 +67,7 @@
                                             </span>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="answer-actions">
                                         <div class="helpful-section">
                                             <span class="helpful-count">
@@ -105,16 +105,16 @@
                         <form class="answer-submit-form" data-question-id="<?= $question->getQuestionId() ?>" action="<?= $block->getAnswerSubmitUrl() ?>" method="POST">
                             <input type="hidden" name="question_id" value="<?= $question->getQuestionId() ?>">
                             <input type="hidden" name="customer_name" value="<?= $block->escapeHtml($block->getCustomerName()) ?>">
-                            
+
                             <div class="field required">
                                 <label for="answer-text-<?= $question->getQuestionId() ?>" class="label">
                                     <span>Your Answer</span>
                                 </label>
                                 <div class="control">
-                                    <textarea name="answer_text" 
-                                              id="answer-text-<?= $question->getQuestionId() ?>" 
-                                              class="input-text" 
-                                              rows="4" 
+                                    <textarea name="answer_text"
+                                              id="answer-text-<?= $question->getQuestionId() ?>"
+                                              class="input-text"
+                                              rows="4"
                                               required></textarea>
                                 </div>
                             </div>
@@ -164,21 +164,21 @@
                     <input type="hidden" name="product_id" value="<?= $block->getProductId() ?>">
                     <input type="hidden" name="customer_name" value="<?= $block->escapeHtml($block->getCustomerName()) ?>">
                     <input type="hidden" name="customer_email" value="<?= $block->escapeHtml($block->getCustomerEmail()) ?>">
-                    
+
                     <div class="field required">
                         <label for="question-text" class="label">
                             <span>Your Question</span>
                         </label>
                         <div class="control">
-                            <textarea name="question_text" 
-                                      id="question-text" 
-                                      class="input-text" 
-                                      rows="4" 
+                            <textarea name="question_text"
+                                      id="question-text"
+                                      class="input-text"
+                                      rows="4"
                                       placeholder="Ask a specific question about this product..."
                                       required></textarea>
                         </div>
                     </div>
-                    
+
                     <div class="actions-toolbar">
                         <button type="submit" class="action primary">
                             <span>Submit Question</span>
@@ -495,13 +495,13 @@
         gap: 15px;
         align-items: flex-start;
     }
-    
+
     .helpful-section {
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
     }
-    
+
     .modal-content {
         width: 95%;
         margin: 10px;
@@ -516,23 +516,23 @@ require(['jquery'], function($) {
         $('.ask-question-btn').on('click', function() {
             $('#question-form-modal').show();
         });
-        
+
         $('.close-modal').on('click', function() {
             $('#question-form-modal').hide();
         });
-        
+
         // Answer form toggle
         $('.answer-question-btn').on('click', function() {
             var $form = $(this).siblings('.answer-form');
             $form.toggle();
             $(this).hide();
         });
-        
+
         $('.cancel-answer').on('click', function() {
             $(this).closest('.answer-form').hide();
             $(this).closest('.question-item').find('.answer-question-btn').show();
         });
-        
+
         // Forms will submit normally - no AJAX needed
     });
 });
