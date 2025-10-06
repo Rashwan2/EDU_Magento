@@ -8,6 +8,7 @@ declare(strict_types=1);
 namespace EDU\HelloWorld\Controller\Adminhtml\hello;
 
 use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
 use Magento\Framework\View\Result\PageFactory;
 
 /**
@@ -17,7 +18,7 @@ use Magento\Framework\View\Result\PageFactory;
  *
  * @SuppressWarnings(PHPMD.NumberOfChildren)
  */
-class Index extends \Magento\Backend\App\Action
+class Index extends Action
 {
     /**
      * Authorization level of a basic admin session
@@ -28,7 +29,7 @@ class Index extends \Magento\Backend\App\Action
     private PageFactory $pageFactory;
 
     public function __construct(
-        \Magento\Backend\App\Action\Context $context,
+        Context $context,
         PageFactory $pageFactory,
 
     ) {
