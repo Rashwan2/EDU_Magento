@@ -2,9 +2,8 @@
 
 namespace EDU\HelloWorld\Controller\Vote;
 
-use Magento\Framework\App\Action\Action;
-use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Action\HttpPostActionInterface;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Controller\Result\RedirectFactory;
 use Magento\Framework\Message\ManagerInterface;
 use EDU\HelloWorld\Model\VoteFactory;
@@ -14,25 +13,51 @@ use EDU\HelloWorld\Api\QuestionRepositoryInterface;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Exception\LocalizedException;
 
-class Submit extends Action implements HttpPostActionInterface
+class Submit implements HttpPostActionInterface
 {
+    /**
+     * @var RedirectFactory
+     */
     protected $redirectFactory;
+    /**
+     * @var ManagerInterface
+     */
     protected $messageManager;
+    /**
+     * @var VoteFactory
+     */
     protected $voteFactory;
+    /**
+     * @var VoteResource
+     */
     protected $voteResource;
+    /**
+     * @var AnswerRepositoryInterface
+     */
     protected $answerRepository;
+    /**
+     * @var QuestionRepositoryInterface
+     */
     protected $questionRepository;
+    /**
+     * @var CustomerSession
+     */
     protected $customerSession;
 
+    /**
+     * @var RequestInterface
+     */
+    private $request;
+
     public function __construct(
-        Context $context,
         RedirectFactory $redirectFactory,
         ManagerInterface $messageManager,
         VoteFactory $voteFactory,
         VoteResource $voteResource,
         AnswerRepositoryInterface $answerRepository,
         QuestionRepositoryInterface $questionRepository,
-        CustomerSession $customerSession
+        CustomerSession $customerSession,
+        RequestInterface $request
     ) {
         $this->redirectFactory = $redirectFactory;
         $this->messageManager = $messageManager;
@@ -41,19 +66,19 @@ class Submit extends Action implements HttpPostActionInterface
         $this->answerRepository = $answerRepository;
         $this->questionRepository = $questionRepository;
         $this->customerSession = $customerSession;
-        parent::__construct($context);
+        $this->request = $request;
     }
 
     public function execute()
     {
         $redirect = $this->redirectFactory->create();
-        
+
         try {
             // Get form data
-            $answerId = $this->getRequest()->getParam('answer_id');
-            $voteType = $this->getRequest()->getParam('vote_type');
-            $customerEmail = $this->customerSession->isLoggedIn() 
-                ? $this->customerSession->getCustomer()->getEmail() 
+            $answerId = $this->request->getParam('answer_id');
+            $voteType = $this->request->getParam('vote_type');
+            $customerEmail = $this->customerSession->isLoggedIn()
+                ? $this->customerSession->getCustomer()->getEmail()
                 : null;
 
             // Validate required fields
@@ -63,7 +88,7 @@ class Submit extends Action implements HttpPostActionInterface
             }
 
             // Check if user already voted
-            if ($this->voteResource->hasVoted($answerId, 'answer', $customerEmail, $this->getRequest()->getClientIp())) {
+            if ($this->voteResource->hasVoted($answerId, 'answer', $customerEmail, $this->request->getClientIp())) {
                 $this->messageManager->addErrorMessage('You have already voted on this answer.');
                 return $redirect->setRefererUrl();
             }
@@ -78,7 +103,7 @@ class Submit extends Action implements HttpPostActionInterface
             $vote->setVoteableId($answerId);
             $vote->setVoteableType('answer');
             $vote->setCustomerEmail($customerEmail);
-            $vote->setIpAddress($this->getRequest()->getClientIp());
+            $vote->setIpAddress($this->request->getClientIp());
             $vote->setVoteType($voteType);
 
             // Save vote

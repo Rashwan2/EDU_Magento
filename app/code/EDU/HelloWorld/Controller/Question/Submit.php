@@ -2,8 +2,6 @@
 
 namespace EDU\HelloWorld\Controller\Question;
 
-use Magento\Framework\App\Action\Action;
-use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\Controller\Result\RedirectFactory;
 use Magento\Framework\Message\ManagerInterface;
@@ -11,35 +9,56 @@ use EDU\HelloWorld\Model\QuestionFactory;
 use EDU\HelloWorld\Api\QuestionRepositoryInterface;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\App\RequestInterface;
 
-class Submit extends Action implements HttpPostActionInterface
+class Submit implements HttpPostActionInterface
 {
+    /**
+     * @var RedirectFactory
+     */
     protected $redirectFactory;
+    /**
+     * @var ManagerInterface
+     */
     protected $messageManager;
+    /**
+     * @var QuestionFactory
+     */
     protected $questionFactory;
+    /**
+     * @var QuestionRepositoryInterface
+     */
     protected $questionRepository;
+    /**
+     * @var CustomerSession
+     */
     protected $customerSession;
 
+    /**
+     * @var RequestInterface
+     */
+    private $request;
+
     public function __construct(
-        Context $context,
         RedirectFactory $redirectFactory,
         ManagerInterface $messageManager,
         QuestionFactory $questionFactory,
         QuestionRepositoryInterface $questionRepository,
-        CustomerSession $customerSession
+        CustomerSession $customerSession,
+        RequestInterface $request
     ) {
         $this->redirectFactory = $redirectFactory;
         $this->messageManager = $messageManager;
         $this->questionFactory = $questionFactory;
         $this->questionRepository = $questionRepository;
         $this->customerSession = $customerSession;
-        parent::__construct($context);
+        $this->request = $request;
     }
 
     public function execute()
     {
         $redirect = $this->redirectFactory->create();
-        
+
         try {
             // Check if customer is logged in
             if (!$this->customerSession->isLoggedIn()) {
@@ -48,10 +67,10 @@ class Submit extends Action implements HttpPostActionInterface
             }
 
             // Get form data
-            $productId = $this->getRequest()->getParam('product_id');
-            $questionText = $this->getRequest()->getParam('question_text');
-            $customerName = $this->getRequest()->getParam('customer_name');
-            $customerEmail = $this->getRequest()->getParam('customer_email');
+            $productId = $this->request->getParam('product_id');
+            $questionText = $this->request->getParam('question_text');
+            $customerName = $this->request->getParam('customer_name');
+            $customerEmail = $this->request->getParam('customer_email');
 
             // Validate required fields
             if (empty($productId) || empty($questionText)) {

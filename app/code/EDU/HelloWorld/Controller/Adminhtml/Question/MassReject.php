@@ -7,7 +7,6 @@ use Magento\Backend\App\Action\Context;
 use Magento\Framework\Controller\Result\RedirectFactory;
 use Magento\Framework\Message\ManagerInterface;
 use EDU\HelloWorld\Api\QuestionRepositoryInterface;
-use Magento\Framework\Exception\LocalizedException;
 
 class MassReject extends Action
 {
