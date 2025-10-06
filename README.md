@@ -312,5 +312,4 @@ This module is part of an educational project and follows Magento's standard lic
 ---
 
 **Module Version**: 1.0.0  
-**Magento Compatibility**: 2.4+  
-**Last Updated**: 2024
+**Magento Compatibility**: 2.4+
