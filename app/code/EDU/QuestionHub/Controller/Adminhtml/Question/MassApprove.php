@@ -41,9 +41,7 @@ class MassApprove extends Action
 
         foreach ($questionIds as $questionId) {
             try {
-                $question = $this->questionRepository->getById($questionId);
-                $question->setStatus('approved');
-                $this->questionRepository->save($question);
+                $this->questionRepository->approveByQuestionId($questionId);
                 $approvedCount++;
             } catch (\Exception $e) {
                 $errorCount++;

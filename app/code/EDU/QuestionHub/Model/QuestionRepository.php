@@ -100,14 +100,14 @@ class QuestionRepository implements QuestionRepositoryInterface
         return $collection->getItems();
     }
 
-    public function approve($questionId)
+    public function approveByQuestionId($questionId)
     {
         $question = $this->getById($questionId);
         $question->approve();
         return $this->save($question);
     }
 
-    public function reject($questionId)
+    public function rejectByQuestionId($questionId)
     {
         $question = $this->getById($questionId);
         $question->reject();
