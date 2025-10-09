@@ -1,12 +1,12 @@
 <?php
 
-namespace EDU\QuestionHub\Observer;
+namespace EDU\HelloWorld\Observer;
 
+use Magento\Catalog\Model\ProductFactory;
+use Magento\Checkout\Model\Cart;
+use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use Magento\Checkout\Model\Cart;
-use Magento\Catalog\Model\ProductFactory;
-use Magento\Framework\Event\ManagerInterface;
 
 class AddFreeGiftObserver implements ObserverInterface
 {

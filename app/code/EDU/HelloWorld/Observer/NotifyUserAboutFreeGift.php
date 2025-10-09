@@ -1,6 +1,6 @@
 <?php
 
-namespace EDU\QuestionHub\Observer;
+namespace EDU\HelloWorld\Observer;
 
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;

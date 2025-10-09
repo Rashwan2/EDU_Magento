@@ -1,6 +1,6 @@
 <?php
 
-namespace EDU\QuestionHub\Plugin;
+namespace EDU\HelloWorld\Plugin;
 
 use Magento\Review\Model\Review;
 
