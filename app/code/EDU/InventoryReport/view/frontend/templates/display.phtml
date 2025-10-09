@@ -1,0 +1,73 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var $block EDU\InventoryReport\Block\Display */
+?>
+<?php
+$cartItems = $block->getCartItems();
+?>
+
+<div class="custom-cart-products">
+    <h3><?= __('Products in Your Cart') ?></h3>
+
+    <?php if (count($cartItems) > 0): ?>
+        <div class="cart-products-list">
+            <?php foreach ($cartItems as $item): ?>
+                <?php
+                $product = $block->getProductById($item->getProductId());
+                if (!$product) {
+                    continue;
+                }
+
+                ?>
+                <!--                getImageUrl($row())-->
+                <div class="cart-product-item">
+                    <div class="product-info">
+                        <h4><?= $product->getName() ?></h4>
+                        <p><strong>SKU:</strong> <?= $product->getSku() ?></p>
+                        <p><strong>Price:</strong> <?= $block->formatPrice($item->getPrice()) ?></p>
+                        <p><strong>Qty:</strong> <?= $item->getQty() ?></p>
+                        <p><strong>Subtotal:</strong> <?= $block->formatPrice($item->getRowTotal()) ?></p>
+                    </div>
+                </div>
+                <hr/>
+            <?php endforeach; ?>
+        </div>
+
+        <div class="cart-totals">
+            <p><strong>Total Items:</strong> <?= count($cartItems) ?></p>
+        </div>
+
+    <?php else: ?>
+        <p><?= __('Your cart is empty.') ?></p>
+    <?php endif; ?>
+</div>
+
+<style>
+    .custom-cart-products {
+        margin: 20px 0;
+    }
+
+    .cart-product-item {
+        display: flex;
+        gap: 15px;
+        margin: 15px 0;
+    }
+
+    .product-image img {
+        border: 1px solid #ddd;
+    }
+
+    .product-info h4 {
+        margin: 0 0 10px 0;
+    }
+
+    .cart-totals {
+        margin-top: 20px;
+        padding: 15px;
+        background: #f5f5f5;
+    }
+</style>
