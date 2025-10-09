@@ -1,0 +1,539 @@
+<?php
+/**
+ * @var \EDU\QuestionHub\Block\Product\QuestionAnswer $block
+ */
+?>
+
+<div class="product-questions-answers" id="product-questions-answers">
+    <div class="questions-header">
+        <h3 class="questions-title">
+            <span class="icon">❓</span>
+            Customer Questions & Answers
+            <span class="question-count">(<?= $block->getQuestionCount() ?>)</span>
+        </h3>
+
+        <?php if ($block->isCustomerLoggedIn()): ?>
+        <button type="button" class="action primary ask-question-btn" id="ask-question-btn">
+            <span class="icon">➕</span>
+            Ask a Question
+        </button>
+        <?php else: ?>
+        <p class="login-message">
+            <a href="<?= $block->getUrl('customer/account/login') ?>" class="action primary">
+                Sign in to ask a question
+            </a>
+        </p>
+        <?php endif; ?>
+    </div>
+
+    <?php if ($block->hasQuestions()): ?>
+        <div class="questions-list">
+            <?php foreach ($block->getQuestions() as $question): ?>
+                <div class="question-item" data-question-id="<?= $question->getQuestionId() ?>">
+                    <div class="question-header">
+                        <h4 class="question-text"><?= $block->escapeHtml($question->getQuestionText()) ?></h4>
+                        <div class="question-meta">
+                            <span class="asked-by">
+                                Asked by <strong><?= $block->escapeHtml($question->getCustomerName()) ?></strong>
+                            </span>
+                            <span class="question-date">
+                                on <?= $block->formatQuestionDate($question->getCreatedAt()) ?>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="answers-section">
+                        <?php $answers = $block->getAnswersByQuestionId($question->getQuestionId()) ?>
+                        <?php if (!empty($answers)): ?>
+                            <?php foreach ($answers as $answer): ?>
+                                <div class="answer-item <?= $answer->isAdminAnswer() ? 'admin-answer' : 'customer-answer' ?>">
+                                    <div class="answer-content">
+                                        <p class="answer-text"><?= $block->escapeHtml($answer->getAnswerText()) ?></p>
+                                        <div class="answer-meta">
+                                            <span class="answered-by">
+                                                By
+                                                <strong>
+                                                    <?php if ($answer->isAdminAnswer()): ?>
+                                                        <?= $block->escapeHtml($answer->getCustomerName() ?: 'Store Admin') ?>
+                                                        <span class="admin-badge">(Seller)</span>
+                                                    <?php else: ?>
+                                                        <?= $block->escapeHtml($answer->getCustomerName()) ?>
+                                                        <span class="verified-badge">(Verified Purchase)</span>
+                                                    <?php endif; ?>
+                                                </strong>
+                                            </span>
+                                            <span class="answer-date">
+                                                on <?= $block->formatQuestionDate($answer->getCreatedAt()) ?>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="answer-actions">
+                                        <div class="helpful-section">
+                                            <span class="helpful-count">
+                                                <?= (int)$answer->getHelpfulCount() ?> people found this helpful
+                                            </span>
+                                            <div class="helpful-buttons">
+                                                <form method="POST" action="<?= $block->getVoteUrl() ?>" style="display: inline;">
+                                                    <input type="hidden" name="answer_id" value="<?= $answer->getAnswerId() ?>">
+                                                    <input type="hidden" name="vote_type" value="helpful">
+                                                    <button type="submit" class="action helpful-btn">
+                                                        <span class="icon">👍</span> Helpful (<?= $answer->getHelpfulCount() ?>)
+                                                    </button>
+                                                </form>
+                                                <form method="POST" action="<?= $block->getVoteUrl() ?>" style="display: inline;">
+                                                    <input type="hidden" name="answer_id" value="<?= $answer->getAnswerId() ?>">
+                                                    <input type="hidden" name="vote_type" value="not_helpful">
+                                                    <button type="submit" class="action not-helpful-btn">
+                                                        <span class="icon">👎</span> Not Helpful
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <div class="no-answers">
+                                <p>No answers yet. Be the first to answer!</p>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+
+                    <?php if ($block->isCustomerLoggedIn()): ?>
+                    <div class="answer-form" style="display: none;">
+                        <form class="answer-submit-form" data-question-id="<?= $question->getQuestionId() ?>" action="<?= $block->getAnswerSubmitUrl() ?>" method="POST">
+                            <input type="hidden" name="question_id" value="<?= $question->getQuestionId() ?>">
+                            <input type="hidden" name="customer_name" value="<?= $block->escapeHtml($block->getCustomerName()) ?>">
+
+                            <div class="field required">
+                                <label for="answer-text-<?= $question->getQuestionId() ?>" class="label">
+                                    <span>Your Answer</span>
+                                </label>
+                                <div class="control">
+                                    <textarea name="answer_text"
+                                              id="answer-text-<?= $question->getQuestionId() ?>"
+                                              class="input-text"
+                                              rows="4"
+                                              required></textarea>
+                                </div>
+                            </div>
+                            <div class="actions-toolbar">
+                                <button type="submit" class="action primary">
+                                    <span>Submit Answer</span>
+                                </button>
+                                <button type="button" class="action secondary cancel-answer">
+                                    <span>Cancel</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <button type="button" class="action secondary answer-question-btn">
+                        <span class="icon">💬</span>
+                        Answer this question
+                    </button>
+                    <?php endif; ?>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    <?php else: ?>
+        <div class="no-questions">
+            <div class="no-questions-content">
+                <span class="icon">❓</span>
+                <h4>No questions yet</h4>
+                <p>Be the first to ask a question about this product!</p>
+                <?php if ($block->isCustomerLoggedIn()): ?>
+                    <button type="button" class="action primary ask-question-btn">
+                        <span class="icon">➕</span>
+                        Ask the first question
+                    </button>
+                <?php endif; ?>
+            </div>
+        </div>
+    <?php endif; ?>
+
+    <!-- Question Form Modal -->
+    <div class="question-form-modal" id="question-form-modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Ask a Question</h3>
+                <button type="button" class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form class="question-submit-form" id="question-submit-form" action="<?= $block->getQuestionSubmitUrl() ?>" method="POST">
+                    <input type="hidden" name="product_id" value="<?= $block->getProductId() ?>">
+                    <input type="hidden" name="customer_name" value="<?= $block->escapeHtml($block->getCustomerName()) ?>">
+                    <input type="hidden" name="customer_email" value="<?= $block->escapeHtml($block->getCustomerEmail()) ?>">
+
+                    <div class="field required">
+                        <label for="question-text" class="label">
+                            <span>Your Question</span>
+                        </label>
+                        <div class="control">
+                            <textarea name="question_text"
+                                      id="question-text"
+                                      class="input-text"
+                                      rows="4"
+                                      placeholder="Ask a specific question about this product..."
+                                      required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="actions-toolbar">
+                        <button type="submit" class="action primary">
+                            <span>Submit Question</span>
+                        </button>
+                        <button type="button" class="action secondary close-modal">
+                            <span>Cancel</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.product-questions-answers {
+    margin: 30px 0;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.questions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.questions-title {
+    margin: 0;
+    font-size: 1.5em;
+    color: #333;
+}
+
+.questions-title .icon {
+    margin-right: 8px;
+    font-size: 1.2em;
+}
+
+.question-count {
+    color: #666;
+    font-weight: normal;
+    font-size: 0.8em;
+}
+
+.ask-question-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.ask-question-btn:hover {
+    background: #0056b3;
+}
+
+.question-item {
+    margin-bottom: 25px;
+    padding: 20px;
+    border: 1px solid #e8e8e8;
+    border-radius: 8px;
+    background: #fafafa;
+}
+
+.question-header {
+    margin-bottom: 15px;
+}
+
+.question-text {
+    margin: 0 0 10px 0;
+    font-size: 1.1em;
+    color: #333;
+    line-height: 1.4;
+}
+
+.question-meta {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.answers-section {
+    margin-top: 15px;
+}
+
+.answer-item {
+    margin: 15px 0;
+    padding: 15px;
+    border-left: 4px solid #007bff;
+    background: white;
+    border-radius: 0 5px 5px 0;
+}
+
+.answer-item.admin-answer {
+    border-left-color: #28a745;
+    background: #f8fff8;
+}
+
+.answer-text {
+    margin: 0 0 10px 0;
+    line-height: 1.5;
+    color: #333;
+}
+
+.answer-meta {
+    color: #666;
+    font-size: 0.9em;
+    margin-bottom: 10px;
+}
+
+.admin-badge {
+    background: #28a745;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.8em;
+    margin-left: 5px;
+}
+
+.verified-badge {
+    background: #17a2b8;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.8em;
+    margin-left: 5px;
+}
+
+.helpful-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.helpful-count {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.helpful-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.helpful-btn, .not-helpful-btn {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.8em;
+}
+
+.helpful-btn:hover {
+    background: #e9ecef;
+}
+
+.not-helpful-btn:hover {
+    background: #e9ecef;
+}
+
+.no-questions {
+    text-align: center;
+    padding: 40px 20px;
+    color: #666;
+}
+
+.no-questions-content .icon {
+    font-size: 3em;
+    display: block;
+    margin-bottom: 15px;
+}
+
+.no-questions h4 {
+    margin: 0 0 10px 0;
+    color: #333;
+}
+
+.question-form-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.modal-header h3 {
+    margin: 0;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: #666;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.field {
+    margin-bottom: 15px;
+}
+
+.field.required .label::after {
+    content: ' *';
+    color: #e02b27;
+}
+
+.label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.input-text {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.actions-toolbar {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.action.primary {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.action.secondary {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.answer-form {
+    margin-top: 15px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 5px;
+}
+
+.answer-question-btn {
+    background: #17a2b8;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.login-message {
+    margin: 0;
+}
+
+.login-message a {
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+@media (max-width: 768px) {
+    .questions-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+
+    .helpful-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .modal-content {
+        width: 95%;
+        margin: 10px;
+    }
+}
+</style>
+
+<script>
+require(['jquery'], function($) {
+    $(document).ready(function() {
+        // Question form modal
+        $('.ask-question-btn').on('click', function() {
+            $('#question-form-modal').show();
+        });
+
+        $('.close-modal').on('click', function() {
+            $('#question-form-modal').hide();
+        });
+
+        // Answer form toggle
+        $('.answer-question-btn').on('click', function() {
+            var $form = $(this).siblings('.answer-form');
+            $form.toggle();
+            $(this).hide();
+        });
+
+        $('.cancel-answer').on('click', function() {
+            $(this).closest('.answer-form').hide();
+            $(this).closest('.question-item').find('.answer-question-btn').show();
+        });
+
+        // Forms will submit normally - no AJAX needed
+    });
+});
+</script>
