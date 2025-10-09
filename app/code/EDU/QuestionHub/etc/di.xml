@@ -7,13 +7,6 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <type name="Magento\Review\Model\Review">
-        <plugin name="CheckUserName"
-                type="EDU\QuestionHub\Plugin\CheckReview"
-                sortOrder="1"
-                disabled="false"/>
-    </type>
-
     <!-- Product Q&A System Preferences -->
     <preference for="EDU\QuestionHub\Api\QuestionRepositoryInterface" type="EDU\QuestionHub\Model\QuestionRepository"/>
     <preference for="EDU\QuestionHub\Api\AnswerRepositoryInterface" type="EDU\QuestionHub\Model\AnswerRepository"/>

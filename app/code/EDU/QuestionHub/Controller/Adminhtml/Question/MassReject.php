@@ -41,9 +41,7 @@ class MassReject extends Action
 
         foreach ($questionIds as $questionId) {
             try {
-                $question = $this->questionRepository->getById($questionId);
-                $question->setStatus('rejected');
-                $this->questionRepository->save($question);
+                $this->questionRepository->rejectByQuestionId($questionId);
                 $rejectedCount++;
             } catch (\Exception $e) {
                 $errorCount++;
@@ -51,7 +49,8 @@ class MassReject extends Action
         }
 
         if ($rejectedCount > 0) {
-            $this->messageManager->addSuccessMessage(__('%1 question(s) have been rejected successfully.', $rejectedCount));
+            $this->messageManager->addSuccessMessage(__('%1 question(s) have been rejected successfully.',
+                $rejectedCount));
         }
 
         if ($errorCount > 0) {

@@ -1,8 +1,8 @@
 <?php
 
-namespace EDU\InventoryReport\Model;
+namespace EDU\HelloWorld\Model;
 
-use \EDU\InventoryReport\Api\CalculatorInterface;
+use EDU\InventoryReport\Api\CalculatorInterface;
 
 class Calculator implements CalculatorInterface
 {

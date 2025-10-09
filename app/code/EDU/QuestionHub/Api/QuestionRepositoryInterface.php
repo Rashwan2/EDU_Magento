@@ -74,7 +74,7 @@ interface QuestionRepositoryInterface
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function approve($questionId);
+    public function approveByQuestionId($questionId);
 
     /**
      * Reject question
@@ -84,5 +84,5 @@ interface QuestionRepositoryInterface
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function reject($questionId);
+    public function rejectByQuestionId($questionId);
 }
