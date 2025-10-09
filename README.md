@@ -105,7 +105,7 @@ EDU/
 
 #### 2. **Admin Controller**
 
-- **File**: `Controller/Adminhtml/hello/Index.php`
+- **File**: `Controller/Adminhtml/Hello/Index.php`
 - **Route**: Admin panel controller with ACL protection
 - **Learning**: Admin controller patterns and authorization
 
