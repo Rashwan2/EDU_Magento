@@ -7,7 +7,6 @@
                    name="product.questions.answers"
                    template="EDU_InventoryReport::product/question-answer.phtml"
                    after="product.info.details"/>
-
         </referenceContainer>
     </body>
 </page>

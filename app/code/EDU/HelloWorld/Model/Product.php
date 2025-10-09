@@ -1,6 +1,6 @@
 <?php
 
-namespace EDU\QuestionHub\Model;
+namespace EDU\HelloWorld\Model;
 
 class Product extends \Magento\Catalog\Model\Product
 {
