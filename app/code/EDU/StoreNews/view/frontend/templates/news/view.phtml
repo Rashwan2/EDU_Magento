@@ -22,9 +22,9 @@ $news = $block->getCurrentNews();
             </div>
         </div>
 
-<!--        <div class="news-content">-->
-<!--            --><?php //= $block->escapeHtml($this->helper('Magento\Cms\Helper\Wysiwyg\Images')->getPageFilter($news->getContent())) ?>
-<!--        </div>-->
+        <div class="news-content">
+            <?= $block->filterWysiwygContent($news->getContent()) ?>
+        </div>
     </div>
 </div>
 

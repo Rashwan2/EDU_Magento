@@ -10,6 +10,7 @@ use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use EDU\StoreNews\Model\ResourceModel\News\CollectionFactory;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\Cms\Model\Template\FilterProvider;
 
 /**
  * News List Block
@@ -27,19 +28,27 @@ class ListBlock extends Template
     protected $storeManager;
 
     /**
+     * @var FilterProvider
+     */
+    protected $filterProvider;
+
+    /**
      * @param Context $context
      * @param CollectionFactory $newsCollectionFactory
      * @param StoreManagerInterface $storeManager
+     * @param FilterProvider $filterProvider
      * @param array $data
      */
     public function __construct(
         Context $context,
         CollectionFactory $newsCollectionFactory,
         StoreManagerInterface $storeManager,
+        FilterProvider $filterProvider,
         array $data = []
     ) {
         $this->newsCollectionFactory = $newsCollectionFactory;
         $this->storeManager = $storeManager;
+        $this->filterProvider = $filterProvider;
         parent::__construct($context, $data);
     }
 
@@ -85,6 +94,21 @@ class ListBlock extends Template
         }
 
         return parent::formatDate($date, $format, $showTime, $timezone);
+    }
+
+    /**
+     * Filter WYSIWYG content
+     *
+     * @param string $content
+     * @return string
+     */
+    public function filterWysiwygContent($content)
+    {
+        if (!$content) {
+            return '';
+        }
+
+        return $this->filterProvider->getPageFilter()->filter($content);
     }
 
 

@@ -10,6 +10,7 @@ use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use EDU\StoreNews\Api\NewsRepositoryInterface;
 use Magento\Framework\Registry;
+use Magento\Cms\Model\Template\FilterProvider;
 
 /**
  * News View Block
@@ -27,19 +28,27 @@ class ViewBlock extends Template
     protected $coreRegistry;
 
     /**
+     * @var FilterProvider
+     */
+    protected $filterProvider;
+
+    /**
      * @param Context $context
      * @param NewsRepositoryInterface $newsRepository
      * @param Registry $coreRegistry
+     * @param FilterProvider $filterProvider
      * @param array $data
      */
     public function __construct(
         Context $context,
         NewsRepositoryInterface $newsRepository,
         Registry $coreRegistry,
+        FilterProvider $filterProvider,
         array $data = []
     ) {
         $this->newsRepository = $newsRepository;
         $this->coreRegistry = $coreRegistry;
+        $this->filterProvider = $filterProvider;
         parent::__construct($context, $data);
     }
 
@@ -86,5 +95,20 @@ class ViewBlock extends Template
         }
 
         return parent::formatDate($date, $format, $showTime, $timezone);
+    }
+
+    /**
+     * Filter WYSIWYG content
+     *
+     * @param string $content
+     * @return string
+     */
+    public function filterWysiwygContent($content)
+    {
+        if (!$content) {
+            return '';
+        }
+
+        return $this->filterProvider->getPageFilter()->filter($content);
     }
 }
