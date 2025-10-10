@@ -377,6 +377,7 @@ return [
         'Magento_WishlistAnalytics' => 1,
         'Magento_WishlistGraphQl' => 1,
         'Magento_WishlistSampleData' => 1,
+        'EDU_HelloWorld' => 1,
         'EDU_InventoryReport' => 1,
         'EDU_QuestionHub' => 1,
         'MarkShust_DisableTwoFactorAuth' => 1,

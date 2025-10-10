@@ -105,14 +105,14 @@ EDU/
 
 #### 2. **Admin Controller**
 
-- **File**: `Controller/Adminhtml/Hello/Index.php`
+- **File**: `Controller/Adminhtml/Report/Index.php`
 - **Route**: Admin panel controller with ACL protection
 - **Learning**: Admin controller patterns and authorization
 
 #### 3. **Layout Management**
 
-- **Frontend Layout**: `view/frontend/layout/helloworld_index_index.xml`
-- **Admin Layout**: `view/adminhtml/layout/helloworld_hello_index.xml`
+- **Frontend Layout**: `view/frontend/layout/cart_index_index.xml`
+- **Admin Layout**: `view/adminhtml/layout/report_report_index.xml`
 - **Learning**: XML layout configuration and block assignment
 
 #### 4. **Template System**

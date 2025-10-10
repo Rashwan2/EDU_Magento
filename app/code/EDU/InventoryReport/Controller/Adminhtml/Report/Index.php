@@ -5,7 +5,7 @@
  */
 declare(strict_types=1);
 
-namespace EDU\InventoryReport\Controller\Adminhtml\Hello;
+namespace EDU\InventoryReport\Controller\Adminhtml\Report;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;

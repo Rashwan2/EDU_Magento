@@ -12,7 +12,8 @@
             <resource id="Magento_Backend::admin">
                 <resource id="Magento_Reports::report" title="Reports" translate="title" sortOrder="70">
                     <resource id="Magento_Reports::report_products" title="Products" translate="title" sortOrder="60">
-                        <resource id="EDU_HelloWorld::inventory" title="inventory" translate="title" sortOrder="100"/>
+                        <resource id="EDU_InventoryReport::inventory" title="inventory" translate="title"
+                                  sortOrder="100"/>
                     </resource>
                 </resource>
             </resource>

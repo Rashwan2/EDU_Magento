@@ -8,8 +8,8 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
-        <add id="EDU_HelloWorld::inventoryreport" title="inventory report" translate="title"
-             module="EDU_HelloWorld" sortOrder="20" parent="Magento_Reports::report_products"
-             action="helloworld/hello/index" resource="EDU_HelloWorld::inventoryreport"/>
+        <add id="EDU_InventoryReport::inventoryreport" title="inventory report" translate="title"
+             module="EDU_InventoryReport" sortOrder="20" parent="Magento_Reports::report_products"
+             action="report/report/index" resource="EDU_InventoryReport::inventoryreport"/>
     </menu>
 </config>
