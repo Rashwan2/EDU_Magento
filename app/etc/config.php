@@ -380,6 +380,7 @@ return [
         'EDU_HelloWorld' => 1,
         'EDU_InventoryReport' => 1,
         'EDU_QuestionHub' => 1,
+        'EDU_StoreNews' => 1,
         'MarkShust_DisableTwoFactorAuth' => 1,
         'PayPal_Braintree' => 1,
         'PayPal_BraintreeCustomerBalance' => 1,

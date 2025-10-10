@@ -60,14 +60,6 @@ class Inventory extends Template
         $collection->addAttributeToFilter('status',
             \Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_ENABLED);
 
-        // Filter by visibility (catalog, search, both)
-        $collection->addAttributeToFilter('visibility', [
-            'in' => [
-                \Magento\Catalog\Model\Product\Visibility::VISIBILITY_IN_CATALOG,
-                \Magento\Catalog\Model\Product\Visibility::VISIBILITY_IN_SEARCH,
-                \Magento\Catalog\Model\Product\Visibility::VISIBILITY_BOTH
-            ]
-        ]);
 
         // Add store filter
         $collection->addStoreFilter($this->storeManager->getStore());

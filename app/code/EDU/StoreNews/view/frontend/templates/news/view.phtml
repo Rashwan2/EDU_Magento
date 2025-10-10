@@ -1,0 +1,132 @@
+<?php
+/**
+ * @var \EDU\StoreNews\Block\News\ViewBlock $block
+ */
+$news = $block->getCurrentNews();
+?>
+
+<div class="store-news-view">
+    <div class="news-back">
+        <a href="<?= $block->escapeUrl($block->getBackUrl()) ?>" class="action back">
+            ← <?= $block->escapeHtml(__('Back to News List')) ?>
+        </a>
+    </div>
+
+    <div class="news-article">
+        <div class="news-header">
+            <h1 class="news-title"><?= $block->escapeHtml($news->getTitle()) ?></h1>
+            <div class="news-meta">
+                <span class="news-date">
+                    <?= $block->escapeHtml(__('Published: %1', $block->formatDate($news->getPublishedAt()))) ?>
+                </span>
+            </div>
+        </div>
+
+<!--        <div class="news-content">-->
+<!--            --><?php //= $block->escapeHtml($this->helper('Magento\Cms\Helper\Wysiwyg\Images')->getPageFilter($news->getContent())) ?>
+<!--        </div>-->
+    </div>
+</div>
+
+<style>
+.store-news-view {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.news-back {
+    margin-bottom: 20px;
+}
+
+.action.back {
+    display: inline-block;
+    padding: 8px 16px;
+    background: #6c757d;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+
+.action.back:hover {
+    background: #545b62;
+    color: #fff;
+    text-decoration: none;
+}
+
+.news-article {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.news-header {
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.news-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0 0 15px 0;
+    line-height: 1.2;
+    color: #333;
+}
+
+.news-meta {
+    color: #666;
+    font-size: 16px;
+}
+
+.news-content {
+    line-height: 1.8;
+    color: #444;
+    font-size: 16px;
+}
+
+.news-content h1,
+.news-content h2,
+.news-content h3,
+.news-content h4,
+.news-content h5,
+.news-content h6 {
+    margin-top: 30px;
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: #333;
+}
+
+.news-content p {
+    margin-bottom: 15px;
+}
+
+.news-content ul,
+.news-content ol {
+    margin-bottom: 15px;
+    padding-left: 30px;
+}
+
+.news-content li {
+    margin-bottom: 5px;
+}
+
+.news-content blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    background: #f8f9fa;
+    border-left: 4px solid #007bff;
+    font-style: italic;
+}
+
+.news-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin: 15px 0;
+}
+</style>
