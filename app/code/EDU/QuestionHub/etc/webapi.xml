@@ -7,8 +7,6 @@
 -->
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
-
-
     <!-- Questions API - Essential routes only -->
     <route url="/V1/questions" method="GET">
         <service class="EDU\QuestionHub\Api\QuestionRepositoryInterface" method="getList"/>
