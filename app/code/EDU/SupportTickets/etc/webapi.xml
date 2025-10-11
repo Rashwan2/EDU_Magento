@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    
+    <!-- Ticket API Routes -->
+    <route url="/V1/support-tickets" method="GET">
+        <service class="EDU\SupportTickets\Api\TicketRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <route url="/V1/support-tickets" method="POST">
+        <service class="EDU\SupportTickets\Api\TicketRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <route url="/V1/support-tickets/:ticketId" method="GET">
+        <service class="EDU\SupportTickets\Api\TicketRepositoryInterface" method="getById"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <route url="/V1/support-tickets/:ticketId" method="PUT">
+        <service class="EDU\SupportTickets\Api\TicketRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <route url="/V1/support-tickets/:ticketId" method="DELETE">
+        <service class="EDU\SupportTickets\Api\TicketRepositoryInterface" method="deleteById"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <route url="/V1/support-tickets/customer/:customerId" method="GET">
+        <service class="EDU\SupportTickets\Api\TicketRepositoryInterface" method="getByCustomerId"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <route url="/V1/support-tickets/status/:status" method="GET">
+        <service class="EDU\SupportTickets\Api\TicketRepositoryInterface" method="getByStatus"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <!-- Message API Routes -->
+    <route url="/V1/support-tickets/:ticketId/messages" method="GET">
+        <service class="EDU\SupportTickets\Api\MessageRepositoryInterface" method="getByTicketId"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <route url="/V1/support-tickets/:ticketId/messages" method="POST">
+        <service class="EDU\SupportTickets\Api\MessageRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <!-- Category API Routes -->
+    <route url="/V1/support-tickets/categories" method="GET">
+        <service class="EDU\SupportTickets\Api\CategoryRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <route url="/V1/support-tickets/categories/active" method="GET">
+        <service class="EDU\SupportTickets\Api\CategoryRepositoryInterface" method="getActiveCategories"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <!-- Priority API Routes -->
+    <route url="/V1/support-tickets/priorities" method="GET">
+        <service class="EDU\SupportTickets\Api\PriorityRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <route url="/V1/support-tickets/priorities/active" method="GET">
+        <service class="EDU\SupportTickets\Api\PriorityRepositoryInterface" method="getActivePriorities"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+</routes>

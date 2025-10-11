@@ -1,0 +1,22 @@
+{
+    "name": "edu/module-support-tickets",
+    "version": "1.0.0",
+    "description": "Customer Support Tickets System for Magento 2",
+    "type": "magento2-module",
+    "require": {
+        "magento/framework": "*",
+        "magento/module-customer": "*",
+        "magento/module-backend": "*"
+    },
+    "license": [
+        "OSL-3.0"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "EDU\\SupportTickets\\": ""
+        }
+    }
+}

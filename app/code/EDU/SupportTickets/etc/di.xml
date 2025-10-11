@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    
+    <!-- Repository Interfaces -->
+    <preference for="EDU\SupportTickets\Api\TicketRepositoryInterface" type="EDU\SupportTickets\Model\TicketRepository"/>
+    <preference for="EDU\SupportTickets\Api\MessageRepositoryInterface" type="EDU\SupportTickets\Model\MessageRepository"/>
+    <preference for="EDU\SupportTickets\Api\CategoryRepositoryInterface" type="EDU\SupportTickets\Model\CategoryRepository"/>
+    <preference for="EDU\SupportTickets\Api\PriorityRepositoryInterface" type="EDU\SupportTickets\Model\PriorityRepository"/>
+    <preference for="EDU\SupportTickets\Api\StatusHistoryRepositoryInterface" type="EDU\SupportTickets\Model\StatusHistoryRepository"/>
+
+    <!-- Data Interfaces -->
+    <preference for="EDU\SupportTickets\Api\Data\TicketInterface" type="EDU\SupportTickets\Model\Ticket"/>
+    <preference for="EDU\SupportTickets\Api\Data\MessageInterface" type="EDU\SupportTickets\Model\Message"/>
+    <preference for="EDU\SupportTickets\Api\Data\CategoryInterface" type="EDU\SupportTickets\Model\Category"/>
+    <preference for="EDU\SupportTickets\Api\Data\PriorityInterface" type="EDU\SupportTickets\Model\Priority"/>
+    <preference for="EDU\SupportTickets\Api\Data\StatusHistoryInterface" type="EDU\SupportTickets\Model\StatusHistory"/>
+
+    <!-- Search Results Interface -->
+    <preference for="Magento\Framework\Api\SearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+
+    <!-- Virtual Types for Search Results -->
+    <virtualType name="EDU\SupportTickets\Model\ResourceModel\Ticket\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">support_ticket</argument>
+            <argument name="resourceModel" xsi:type="string">EDU\SupportTickets\Model\ResourceModel\Ticket</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="EDU\SupportTickets\Model\ResourceModel\Message\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">support_ticket_message</argument>
+            <argument name="resourceModel" xsi:type="string">EDU\SupportTickets\Model\ResourceModel\Message</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="EDU\SupportTickets\Model\ResourceModel\Category\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">support_ticket_category</argument>
+            <argument name="resourceModel" xsi:type="string">EDU\SupportTickets\Model\ResourceModel\Category</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="EDU\SupportTickets\Model\ResourceModel\Priority\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">support_ticket_priority</argument>
+            <argument name="resourceModel" xsi:type="string">EDU\SupportTickets\Model\ResourceModel\Priority</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="EDU\SupportTickets\Model\ResourceModel\StatusHistory\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">support_ticket_status_history</argument>
+            <argument name="resourceModel" xsi:type="string">EDU\SupportTickets\Model\ResourceModel\StatusHistory</argument>
+        </arguments>
+    </virtualType>
+</config>
