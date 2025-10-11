@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="EDU_StoreBlogs::blogs" title="Store Blogs" module="EDU_StoreBlogs" sortOrder="100" resource="EDU_StoreBlogs::blogs" parent="Magento_Backend::marketing_communications" action="storeblogs/blog/index"/>
+        <add id="EDU_StoreBlogs::blogs_new" title="New Blog Post" module="EDU_StoreBlogs" sortOrder="101" resource="EDU_StoreBlogs::blogs" parent="Magento_Backend::marketing_communications" action="storeblogs/blog/newaction"/>
+    </menu>
+</config>

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="edu_store_blogs" resource="default" engine="innodb" comment="Store Blogs Table">
+        <column xsi:type="int" name="blog_id" unsigned="true" nullable="false" identity="true" comment="Blog ID"/>
+        <column xsi:type="varchar" name="title" length="255" nullable="false" comment="Blog Title"/>
+        <column xsi:type="text" name="content" nullable="false" comment="Blog Content"/>
+        <column xsi:type="varchar" name="status" length="20" nullable="false" default="draft" comment="Blog Status"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <column xsi:type="timestamp" name="published_at" on_update="false" nullable="true" comment="Published At"/>
+        <column xsi:type="smallint" name="store_id" unsigned="true" nullable="false" default="0" comment="Store ID"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="blog_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="EDU_STORE_BLOGS_STORE_ID_STORE_STORE_ID" table="edu_store_blogs" column="store_id" referenceTable="store" referenceColumn="store_id" onDelete="CASCADE"/>
+        <index referenceId="EDU_STORE_BLOGS_STATUS" indexType="btree">
+            <column name="status"/>
+        </index>
+        <index referenceId="EDU_STORE_BLOGS_STORE_ID" indexType="btree">
+            <column name="store_id"/>
+        </index>
+        <index referenceId="EDU_STORE_BLOGS_PUBLISHED_AT" indexType="btree">
+            <column name="published_at"/>
+        </index>
+    </table>
+</schema>

@@ -1,0 +1,104 @@
+<?php
+/**
+ * @var \EDU\StoreBlogs\Block\Adminhtml\Blog\Edit $block
+ */
+$blog = $block->getCoreRegistry()->registry('storeblogs_blog');
+?>
+
+<form id="edit_form" method="post" action="<?= $block->escapeUrl($block->getSaveUrl()) ?>">
+    <input name="form_key" type="hidden" value="<?= $block->escapeHtml($block->getFormKey()) ?>" />
+    <input name="blog_id" type="hidden" value="<?= $blog ? $blog->getBlogId() : '' ?>" />
+    
+    <div class="page-main-actions">
+        <div class="page-actions">
+            <div class="page-actions-buttons">
+                <button type="submit" class="action-primary">
+                    <span><?= $block->escapeHtml(__('Save Blog Article')) ?></span>
+                </button>
+                <button type="button" class="action-secondary" onclick="history.back();">
+                    <span><?= $block->escapeHtml(__('Back')) ?></span>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="admin__fieldset-wrapper">
+        <div class="admin__fieldset-wrapper-content">
+            <fieldset class="admin__fieldset">
+                <div class="admin__field">
+                    <label class="admin__field-label" for="title">
+                        <span><?= $block->escapeHtml(__('Title')) ?></span>
+                    </label>
+                    <div class="admin__field-control">
+                        <input type="text" 
+                               id="title" 
+                               name="title" 
+                               value="<?= $blog ? $block->escapeHtml($blog->getTitle()) : '' ?>" 
+                               class="admin__control-text" 
+                               required />
+                    </div>
+                </div>
+                
+                <div class="admin__field">
+                    <label class="admin__field-label" for="content">
+                        <span><?= $block->escapeHtml(__('Content')) ?></span>
+                    </label>
+                    <div class="admin__field-control">
+                        <textarea id="content" 
+                                  name="content" 
+                                  class="admin__control-textarea" 
+                                  rows="10" 
+                                  required><?= $blog ? $block->escapeHtml($blog->getContent()) : '' ?></textarea>
+                    </div>
+                </div>
+                
+                <div class="admin__field">
+                    <label class="admin__field-label" for="status">
+                        <span><?= $block->escapeHtml(__('Status')) ?></span>
+                    </label>
+                    <div class="admin__field-control">
+                        <select id="status" name="status" class="admin__control-select">
+                            <?php foreach ($block->getAvailableStatuses() as $value => $label): ?>
+                                <option value="<?= $block->escapeHtmlAttr($value) ?>" 
+                                        <?= $blog && $blog->getStatus() == $value ? 'selected' : '' ?>>
+                                    <?= $block->escapeHtml($label) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="admin__field">
+                    <label class="admin__field-label" for="store_id">
+                        <span><?= $block->escapeHtml(__('Store')) ?></span>
+                    </label>
+                    <div class="admin__field-control">
+                        <select id="store_id" name="store_id" class="admin__control-select">
+                            <option value="0"><?= $block->escapeHtml(__('All Store Views')) ?></option>
+                            <option value="1" <?= $blog && $blog->getStoreId() == 1 ? 'selected' : '' ?>>
+                                <?= $block->escapeHtml(__('Main Website Store')) ?>
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</form>
+
+<script>
+require(['jquery'], function($) {
+    $('#edit_form').on('submit', function(e) {
+        if (!$('#title').val().trim()) {
+            alert('<?= $block->escapeJs(__('Please enter a title.')) ?>');
+            e.preventDefault();
+            return false;
+        }
+        if (!$('#content').val().trim()) {
+            alert('<?= $block->escapeJs(__('Please enter content.')) ?>');
+            e.preventDefault();
+            return false;
+        }
+    });
+});
+</script>

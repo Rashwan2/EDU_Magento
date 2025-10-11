@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="EDU\StoreBlogs\Api\BlogRepositoryInterface" type="EDU\StoreBlogs\Model\BlogRepository"/>
+    <preference for="EDU\StoreBlogs\Api\Data\BlogInterface" type="EDU\StoreBlogs\Model\Blog"/>
+    <preference for="EDU\StoreBlogs\Api\Data\BlogSearchResultsInterface" type="EDU\StoreBlogs\Model\BlogSearchResults"/>
+</config>
