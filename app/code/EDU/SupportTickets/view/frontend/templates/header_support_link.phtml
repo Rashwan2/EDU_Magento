@@ -1,0 +1,71 @@
+<?php
+/** @var \Magento\Framework\View\Element\Template $block */
+?>
+<li class="support-ticket-header-item">
+    <a href="<?= $block->escapeUrl($block->getUrl('supporttickets/index/create')) ?>"
+       class="support-ticket-header-link"
+       title="<?= $block->escapeHtml(__('Submit Support Ticket')) ?>">
+        <span class="text"><?= $block->escapeHtml(__('Support')) ?></span>
+    </a>
+</li>
+
+<style>
+.support-ticket-header-item {
+    display: inline-block;
+    margin-left: 15px;
+}
+
+.support-ticket-header-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: white;
+    color: #333;
+    text-decoration: none;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: 13px;
+    transition: all 0.3s ease;
+    border: 1px solid #ddd;
+}
+
+.support-ticket-header-link:hover {
+    background: #f8f9fa;
+    color: #007bff;
+    text-decoration: none;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-color: #007bff;
+}
+
+.support-ticket-header-link .icon {
+    font-size: 14px;
+}
+
+.support-ticket-header-link .text {
+    font-size: 13px;
+}
+
+@media (max-width: 768px) {
+    .support-ticket-header-item {
+        margin-left: 10px;
+    }
+
+    .support-ticket-header-link {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .support-ticket-header-link .text {
+        display: none;
+    }
+
+    .support-ticket-header-link {
+        padding: 8px;
+        border-radius: 50%;
+    }
+}
+</style>

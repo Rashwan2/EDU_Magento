@@ -2,6 +2,87 @@
 // Support Tickets Module Styles
 //
 
+// Floating Support Button
+.support-ticket-floating {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    
+    .support-ticket-action {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        color: white;
+        text-decoration: none;
+        padding: 12px 20px;
+        border-radius: 25px;
+        font-weight: 500;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+        border: none;
+        
+        &:hover {
+            background: linear-gradient(135deg, #0056b3, #004085);
+            color: white;
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 123, 255, 0.4);
+        }
+    }
+}
+
+// Header Support Link
+.support-ticket-header-link {
+    display: inline-block;
+    margin-left: 15px;
+    
+    .support-ticket-action {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(255, 255, 255, 0.9);
+        color: #333;
+        text-decoration: none;
+        padding: 8px 14px;
+        border-radius: 20px;
+        font-weight: 500;
+        font-size: 13px;
+        transition: all 0.3s ease;
+        border: 1px solid #ddd;
+        
+        &:hover {
+            background: white;
+            color: #007bff;
+            text-decoration: none;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-color: #007bff;
+        }
+    }
+}
+
+// Top links specific styling for header support link
+.top.links .support-ticket-header-link {
+    margin-left: 10px;
+    margin-right: 0;
+    
+    .support-ticket-action {
+        background: white;
+        color: #333;
+        border: 1px solid #ddd;
+        
+        &:hover {
+            background: #f8f9fa;
+            color: #007bff;
+            border-color: #007bff;
+        }
+    }
+}
+
+// Legacy support-ticket-link class (for backward compatibility)
 .support-ticket-link {
     color: #007bff !important;
     text-decoration: none !important;
@@ -16,28 +97,6 @@
         color: white !important;
         text-decoration: none !important;
     }
-}
-
-// Top links specific styling
-.top.links .support-ticket-link {
-    margin-right: 15px;
-    border: 1px solid #007bff;
-    
-    &:hover {
-        background-color: #007bff !important;
-        color: white !important;
-    }
-}
-
-// Header panel support link
-.header.panel .support-ticket-link {
-    margin-left: 15px;
-    display: inline-block;
-}
-
-// Top links support link
-.top.links .support-ticket-link {
-    margin-right: 15px;
 }
 
 // Customer account navigation
@@ -117,6 +176,25 @@
 
 // Responsive design
 @media (max-width: 768px) {
+    .support-ticket-floating {
+        bottom: 15px;
+        right: 15px;
+        
+        .support-ticket-action {
+            padding: 10px 16px;
+            font-size: 13px;
+        }
+    }
+    
+    .support-ticket-header-link {
+        margin-left: 10px;
+        
+        .support-ticket-action {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+    }
+    
     .header.panel .support-ticket-link {
         margin-left: 5px;
         padding: 6px 8px;
@@ -127,5 +205,25 @@
         margin-right: 5px;
         padding: 6px 8px;
         font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .support-ticket-floating .support-ticket-action .text {
+        display: none;
+    }
+    
+    .support-ticket-floating .support-ticket-action {
+        padding: 12px;
+        border-radius: 50%;
+    }
+    
+    .support-ticket-header-link .support-ticket-action .text {
+        display: none;
+    }
+    
+    .support-ticket-header-link .support-ticket-action {
+        padding: 8px;
+        border-radius: 50%;
     }
 }

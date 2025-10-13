@@ -10,6 +10,7 @@
                     <argument name="label" xsi:type="string">My Support Tickets</argument>
                     <argument name="path" xsi:type="string">supporttickets/index/index</argument>
                     <argument name="title" xsi:type="string">View My Support Tickets</argument>
+                    <argument name="class" xsi:type="string">support-tickets-nav-link</argument>
                 </arguments>
             </block>
         </referenceBlock>

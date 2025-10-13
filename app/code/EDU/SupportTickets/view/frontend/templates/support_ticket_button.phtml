@@ -1,10 +1,11 @@
 <?php
 /** @var \Magento\Framework\View\Element\Template $block */
+$cssClass = $block->getData('css_class') ?: 'support-ticket-floating';
 ?>
 
-<div class="support-ticket-button">
-    <a href="<?= $block->escapeUrl($block->getUrl('supporttickets/index/create')) ?>" 
-       class="action support-ticket-action" 
+<div class="support-ticket-button <?= $block->escapeHtml($cssClass) ?>">
+    <a href="<?= $block->escapeUrl($block->getUrl('supporttickets/index/create')) ?>"
+       class="action support-ticket-action"
        title="<?= $block->escapeHtml(__('Submit Support Ticket')) ?>">
         <span class="icon">🆘</span>
         <span class="text"><?= $block->escapeHtml(__('Support')) ?></span>
@@ -12,32 +13,66 @@
 </div>
 
 <style>
-.support-ticket-button {
-    display: inline-block;
-    margin: 0 10px;
+    /* Floating Support Button (default) */
+    .support-ticket-floating {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
 }
 
-.support-ticket-action {
+    .support-ticket-floating .support-ticket-action {
     display: inline-flex;
     align-items: center;
     gap: 8px;
     background: linear-gradient(135deg, #007bff, #0056b3);
     color: white;
     text-decoration: none;
-    padding: 10px 16px;
+        padding: 12px 20px;
     border-radius: 25px;
     font-weight: 500;
     font-size: 14px;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
+        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+        border: none;
 }
 
-.support-ticket-action:hover {
+    .support-ticket-floating .support-ticket-action:hover {
     background: linear-gradient(135deg, #0056b3, #004085);
     color: white;
     text-decoration: none;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 123, 255, 0.4);
+    }
+
+    /* Header Support Link */
+    .support-ticket-header-link {
+        display: inline-block;
+        margin-left: 15px;
+    }
+
+    .support-ticket-header-link .support-ticket-action {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(255, 255, 255, 0.9);
+        color: #333;
+        text-decoration: none;
+        padding: 8px 14px;
+        border-radius: 20px;
+        font-weight: 500;
+        font-size: 13px;
+        transition: all 0.3s ease;
+        border: 1px solid #ddd;
+    }
+
+    .support-ticket-header-link .support-ticket-action:hover {
+        background: white;
+        color: #007bff;
+        text-decoration: none;
     transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.4);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-color: #007bff;
 }
 
 .support-ticket-action .icon {
@@ -50,19 +85,38 @@
 
 /* Responsive design */
 @media (max-width: 768px) {
-    .support-ticket-action {
-        padding: 8px 12px;
+    .support-ticket-floating {
+        bottom: 15px;
+        right: 15px;
+    }
+
+    .support-ticket-floating .support-ticket-action {
+        padding: 10px 16px;
         font-size: 13px;
     }
-    
+
+    .support-ticket-header-link .support-ticket-action {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
     .support-ticket-action .icon {
         font-size: 14px;
     }
-    
+
     .support-ticket-action .text {
         font-size: 13px;
     }
 }
+
+    @media (max-width: 480px) {
+        .support-ticket-floating .support-ticket-action .text {
+            display: none;
+        }
+
+        .support-ticket-floating .support-ticket-action {
+            padding: 12px;
+            border-radius: 50%;
+        }
+    }
 </style>
-
-
