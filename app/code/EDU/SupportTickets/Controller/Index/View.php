@@ -34,27 +34,28 @@ class View extends Action
     public function execute()
     {
         $ticketId = $this->getRequest()->getParam('id');
-        
+
         try {
             $ticket = $this->ticketRepository->getById($ticketId);
-            
+
             // Check if customer owns this ticket
-            if ($this->customerSession->isLoggedIn() && 
+            if ($this->customerSession->isLoggedIn() &&
                 $ticket->getCustomerId() != $this->customerSession->getCustomerId()) {
                 $this->messageManager->addErrorMessage(__('You are not authorized to view this ticket.'));
                 return $this->_redirect('supporttickets/index/index');
             }
-            
+
             $messages = $this->messageRepository->getByTicketId($ticketId);
-            
+
             $resultPage = $this->pageFactory->create();
             $resultPage->getConfig()->getTitle()->set(__('Ticket #%1', $ticket->getTicketNumber()));
-            
-            $resultPage->getLayout()->getBlock('ticket.view')->setData('ticket', $ticket);
+            $resultPage->getLayout()->getBlock('ticket.view')->setTicket($ticket);
+
+//            $resultPage->getLayout()->getBlock('ticket.view')->setData('ticket', $ticket);
             $resultPage->getLayout()->getBlock('ticket.view')->setData('messages', $messages);
-            
+
             return $resultPage;
-            
+
         } catch (NoSuchEntityException $e) {
             $this->messageManager->addErrorMessage(__('Ticket not found.'));
             return $this->_redirect('supporttickets/index/index');

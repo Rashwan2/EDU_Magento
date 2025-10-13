@@ -1,0 +1,238 @@
+<?php
+/** @var \EDU\SupportTickets\Block\Adminhtml\Ticket\Edit\Form $block */
+$ticket = $block->getTicket();
+$categories = $block->getCategories();
+$priorities = $block->getPriorities();
+$adminUsers = $block->getAdminUsers();
+$statusOptions = $block->getStatusOptions();
+?>
+<div class="page-main-actions">
+    <div class="page-actions">
+        <div class="page-actions-buttons">
+            <button type="button" class="action-default scalable back" onclick="setLocation('<?= $block->escapeUrl($block->getBackUrl()) ?>')">
+                <span><?= $block->escapeHtml(__('Back')) ?></span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<form action="<?= $block->escapeUrl($block->getFormAction()) ?>" method="post" id="ticket-edit-form">
+    <input name="form_key" type="hidden" value="<?= $block->escapeHtml($block->getFormKey()) ?>" />
+    <?php if ($ticket): ?>
+        <input name="ticket_id" type="hidden" value="<?= $block->escapeHtml($ticket->getTicketId()) ?>" />
+    <?php endif; ?>
+    
+    <div class="admin__fieldset-wrapper">
+        <div class="admin__fieldset-wrapper-content">
+            <fieldset class="admin__fieldset">
+                <legend class="admin__legend">
+                    <span><?= $block->escapeHtml(__('Ticket Information')) ?></span>
+                </legend>
+                
+                <?php if ($ticket): ?>
+                <div class="admin__field">
+                    <label class="admin__field-label" for="ticket_number">
+                        <span><?= $block->escapeHtml(__('Ticket Number')) ?></span>
+                    </label>
+                    <div class="admin__field-control">
+                        <input type="text" 
+                               id="ticket_number" 
+                               class="admin__control-text" 
+                               value="<?= $block->escapeHtml($ticket->getTicketNumber()) ?>" 
+                               readonly />
+                    </div>
+                </div>
+                <?php endif; ?>
+                
+                <div class="admin__field">
+                    <label class="admin__field-label" for="subject">
+                        <span><?= $block->escapeHtml(__('Subject')) ?></span>
+                    </label>
+                    <div class="admin__field-control">
+                        <input type="text" 
+                               id="subject" 
+                               name="subject" 
+                               class="admin__control-text" 
+                               value="<?= $block->escapeHtml($ticket ? $ticket->getSubject() : '') ?>" 
+                               required="required" />
+                    </div>
+                </div>
+                
+                <div class="admin__field">
+                    <label class="admin__field-label" for="description">
+                        <span><?= $block->escapeHtml(__('Description')) ?></span>
+                    </label>
+                    <div class="admin__field-control">
+                        <textarea id="description" 
+                                  name="description" 
+                                  class="admin__control-textarea" 
+                                  rows="6" 
+                                  required="required"><?= $block->escapeHtml($ticket ? $ticket->getDescription() : '') ?></textarea>
+                    </div>
+                </div>
+                
+                <div class="admin__field">
+                    <label class="admin__field-label" for="category_id">
+                        <span><?= $block->escapeHtml(__('Category')) ?></span>
+                    </label>
+                    <div class="admin__field-control">
+                        <select id="category_id" name="category_id" class="admin__control-select" required="required">
+                            <option value=""><?= $block->escapeHtml(__('Please select a category')) ?></option>
+                            <?php foreach ($categories as $category): ?>
+                                <option value="<?= $block->escapeHtml($category->getCategoryId()) ?>" 
+                                        <?= ($ticket && $ticket->getCategoryId() == $category->getCategoryId()) ? 'selected="selected"' : '' ?>>
+                                    <?= $block->escapeHtml($category->getName()) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="admin__field">
+                    <label class="admin__field-label" for="priority_id">
+                        <span><?= $block->escapeHtml(__('Priority')) ?></span>
+                    </label>
+                    <div class="admin__field-control">
+                        <select id="priority_id" name="priority_id" class="admin__control-select" required="required">
+                            <option value=""><?= $block->escapeHtml(__('Please select a priority')) ?></option>
+                            <?php foreach ($priorities as $priority): ?>
+                                <option value="<?= $block->escapeHtml($priority->getPriorityId()) ?>" 
+                                        <?= ($ticket && $ticket->getPriorityId() == $priority->getPriorityId()) ? 'selected="selected"' : '' ?>>
+                                    <?= $block->escapeHtml($priority->getName()) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="admin__field">
+                    <label class="admin__field-label" for="status">
+                        <span><?= $block->escapeHtml(__('Status')) ?></span>
+                    </label>
+                    <div class="admin__field-control">
+                        <select id="status" name="status" class="admin__control-select" required="required">
+                            <?php foreach ($statusOptions as $value => $label): ?>
+                                <option value="<?= $block->escapeHtml($value) ?>" 
+                                        <?= ($ticket && $ticket->getStatus() == $value) ? 'selected="selected"' : '' ?>>
+                                    <?= $block->escapeHtml($label) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="admin__field">
+                    <label class="admin__field-label" for="assigned_to">
+                        <span><?= $block->escapeHtml(__('Assigned To')) ?></span>
+                    </label>
+                    <div class="admin__field-control">
+                        <select id="assigned_to" name="assigned_to" class="admin__control-select">
+                            <option value=""><?= $block->escapeHtml(__('Unassigned')) ?></option>
+                            <?php foreach ($adminUsers as $user): ?>
+                                <option value="<?= $block->escapeHtml($user['value']) ?>" 
+                                        <?= ($ticket && $ticket->getAssignedTo() == $user['value']) ? 'selected="selected"' : '' ?>>
+                                    <?= $block->escapeHtml($user['label']) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                
+                <?php if ($ticket): ?>
+                <div class="admin__field">
+                    <label class="admin__field-label" for="customer_email">
+                        <span><?= $block->escapeHtml(__('Customer Email')) ?></span>
+                    </label>
+                    <div class="admin__field-control">
+                        <input type="email" 
+                               id="customer_email" 
+                               class="admin__control-text" 
+                               value="<?= $block->escapeHtml($ticket->getCustomerEmail()) ?>" 
+                               readonly />
+                    </div>
+                </div>
+                
+                <div class="admin__field">
+                    <label class="admin__field-label" for="customer_name">
+                        <span><?= $block->escapeHtml(__('Customer Name')) ?></span>
+                    </label>
+                    <div class="admin__field-control">
+                        <input type="text" 
+                               id="customer_name" 
+                               class="admin__control-text" 
+                               value="<?= $block->escapeHtml($ticket->getCustomerName()) ?>" 
+                               readonly />
+                    </div>
+                </div>
+                <?php else: ?>
+                <div class="admin__field">
+                    <label class="admin__field-label" for="customer_email">
+                        <span><?= $block->escapeHtml(__('Customer Email')) ?></span>
+                    </label>
+                    <div class="admin__field-control">
+                        <input type="email" 
+                               id="customer_email" 
+                               name="customer_email" 
+                               class="admin__control-text" 
+                               required="required" />
+                    </div>
+                </div>
+                
+                <div class="admin__field">
+                    <label class="admin__field-label" for="customer_name">
+                        <span><?= $block->escapeHtml(__('Customer Name')) ?></span>
+                    </label>
+                    <div class="admin__field-control">
+                        <input type="text" 
+                               id="customer_name" 
+                               name="customer_name" 
+                               class="admin__control-text" 
+                               required="required" />
+                    </div>
+                </div>
+                <?php endif; ?>
+                
+                <div class="admin__field">
+                    <label class="admin__field-label" for="order_number">
+                        <span><?= $block->escapeHtml(__('Order Number (Optional)')) ?></span>
+                    </label>
+                    <div class="admin__field-control">
+                        <input type="text" 
+                               id="order_number" 
+                               name="order_number" 
+                               class="admin__control-text" 
+                               value="<?= $block->escapeHtml($ticket ? $ticket->getOrderNumber() : '') ?>" />
+                    </div>
+                </div>
+                
+                <?php if ($ticket): ?>
+                <div class="admin__field">
+                    <label class="admin__field-label" for="created_at">
+                        <span><?= $block->escapeHtml(__('Created At')) ?></span>
+                    </label>
+                    <div class="admin__field-control">
+                        <input type="text" 
+                               id="created_at" 
+                               class="admin__control-text" 
+                               value="<?= $block->escapeHtml($ticket->getCreatedAt()) ?>" 
+                               readonly />
+                    </div>
+                </div>
+                <?php endif; ?>
+            </fieldset>
+        </div>
+    </div>
+    
+    <div class="page-main-actions">
+        <div class="page-actions">
+            <div class="page-actions-buttons">
+                <button type="submit" class="action-default scalable save primary">
+                    <span><?= $block->escapeHtml(__('Save Ticket')) ?></span>
+                </button>
+                <button type="button" class="action-default scalable back" onclick="setLocation('<?= $block->escapeUrl($block->getBackUrl()) ?>')">
+                    <span><?= $block->escapeHtml(__('Cancel')) ?></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

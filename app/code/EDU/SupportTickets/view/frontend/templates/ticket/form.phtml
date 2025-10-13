@@ -20,10 +20,10 @@ $priorities = $block->getPriorities();
                     <span><?= $block->escapeHtml(__('Subject')) ?></span>
                 </label>
                 <div class="control">
-                    <input type="text" 
-                           name="subject" 
-                           id="subject" 
-                           class="input-text required-entry" 
+                    <input type="text"
+                           name="subject"
+                           id="subject"
+                           class="input-text required-entry"
                            required>
                 </div>
             </div>
@@ -33,10 +33,10 @@ $priorities = $block->getPriorities();
                     <span><?= $block->escapeHtml(__('Description')) ?></span>
                 </label>
                 <div class="control">
-                    <textarea name="description" 
-                              id="description" 
-                              class="input-text required-entry" 
-                              rows="8" 
+                    <textarea name="description"
+                              id="description"
+                              class="input-text required-entry"
+                              rows="8"
                               required></textarea>
                 </div>
             </div>
@@ -46,14 +46,14 @@ $priorities = $block->getPriorities();
                     <span><?= $block->escapeHtml(__('Category')) ?></span>
                 </label>
                 <div class="control">
-                    <select name="category_id" 
-                            id="category_id" 
-                            class="select required-entry" 
+                    <select name="category_id"
+                            id="category_id"
+                            class="select required-entry"
                             required>
                         <option value=""><?= $block->escapeHtml(__('Please select a category')) ?></option>
                         <?php foreach ($categories as $category): ?>
-                            <option value="<?= $block->escapeHtml($category->getCategoryId()) ?>">
-                                <?= $block->escapeHtml($category->getName()) ?>
+                            <option value="<?= $block->escapeHtml($category['value']) ?>">
+                                <?= $block->escapeHtml($category['label']) ?>
                             </option>
                         <?php endforeach; ?>
                     </select>
@@ -65,14 +65,14 @@ $priorities = $block->getPriorities();
                     <span><?= $block->escapeHtml(__('Priority')) ?></span>
                 </label>
                 <div class="control">
-                    <select name="priority_id" 
-                            id="priority_id" 
-                            class="select required-entry" 
+                    <select name="priority_id"
+                            id="priority_id"
+                            class="select required-entry"
                             required>
                         <option value=""><?= $block->escapeHtml(__('Please select a priority')) ?></option>
                         <?php foreach ($priorities as $priority): ?>
-                            <option value="<?= $block->escapeHtml($priority->getPriorityId()) ?>">
-                                <?= $block->escapeHtml($priority->getName()) ?>
+                            <option value="<?= $block->escapeHtml($priority['value']) ?>">
+                                <?= $block->escapeHtml($priority['label']) ?>
                             </option>
                         <?php endforeach; ?>
                     </select>
@@ -85,10 +85,10 @@ $priorities = $block->getPriorities();
                         <span><?= $block->escapeHtml(__('Your Name')) ?></span>
                     </label>
                     <div class="control">
-                        <input type="text" 
-                               name="customer_name" 
-                               id="customer_name" 
-                               class="input-text required-entry" 
+                        <input type="text"
+                               name="customer_name"
+                               id="customer_name"
+                               class="input-text required-entry"
                                value="<?= $block->escapeHtml($block->getCustomerName()) ?>"
                                required>
                     </div>
@@ -99,10 +99,10 @@ $priorities = $block->getPriorities();
                         <span><?= $block->escapeHtml(__('Your Email')) ?></span>
                     </label>
                     <div class="control">
-                        <input type="email" 
-                               name="customer_email" 
-                               id="customer_email" 
-                               class="input-text required-entry validate-email" 
+                        <input type="email"
+                               name="customer_email"
+                               id="customer_email"
+                               class="input-text required-entry validate-email"
                                value="<?= $block->escapeHtml($block->getCustomerEmail()) ?>"
                                required>
                     </div>
@@ -117,7 +117,7 @@ $priorities = $block->getPriorities();
                 </button>
             </div>
             <div class="secondary">
-                <a href="<?= $block->escapeUrl($block->getUrl('supporttickets/index/index')) ?>" 
+                <a href="<?= $block->escapeUrl($block->getUrl('supporttickets/index/index')) ?>"
                    class="action back">
                     <?= $block->escapeHtml(__('Back to Tickets')) ?>
                 </a>
@@ -177,6 +177,39 @@ $priorities = $block->getPriorities();
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 14px;
+    box-sizing: border-box;
+}
+
+.support-ticket-form .control select {
+    height: auto;
+    min-height: 44px;
+    padding: 10px 12px;
+    background-color: #fff;
+    background-image: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23666' d='M2 0L0 2h4zm0 5L0 3h4z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 12px;
+    padding-right: 40px;
+}
+
+.support-ticket-form .control select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.support-ticket-form .control select option {
+    padding: 8px 12px;
+    background-color: #fff;
+    color: #333;
+    white-space: normal;
+    word-wrap: break-word;
+    min-height: 20px;
+    line-height: 1.4;
 }
 
 .support-ticket-form .control textarea {
@@ -217,16 +250,58 @@ $priorities = $block->getPriorities();
     text-decoration: underline;
 }
 
+/* Additional select styling for better appearance */
+.support-ticket-form .control select::-ms-expand {
+    display: none;
+}
+
+.support-ticket-form .control select:focus::-ms-value {
+    background: transparent;
+    color: #333;
+}
+
+.support-ticket-form .control select option:checked {
+    background-color: #007bff;
+    color: white;
+}
+
+.support-ticket-form .control select option:hover {
+    background-color: #f8f9fa;
+}
+
+/* Ensure proper spacing for select elements */
+.support-ticket-form .field select {
+    margin-bottom: 0;
+}
+
+/* Better visual hierarchy */
+.support-ticket-form .field.required .label {
+    position: relative;
+}
+
+.support-ticket-form .field.required .label::after {
+    content: ' *';
+    color: #e02b27;
+    font-weight: bold;
+    position: absolute;
+    right: -15px;
+    top: 0;
+}
+
 @media (max-width: 768px) {
     .support-ticket-form .actions-toolbar {
         flex-direction: column;
         gap: 15px;
     }
-    
+
     .support-ticket-form .actions-toolbar .primary,
     .support-ticket-form .actions-toolbar .secondary {
         width: 100%;
         text-align: center;
+    }
+
+    .support-ticket-form .control select {
+        font-size: 16px; /* Prevent zoom on iOS */
     }
 }
 </style>

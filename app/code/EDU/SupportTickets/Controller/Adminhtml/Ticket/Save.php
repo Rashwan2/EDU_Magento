@@ -50,7 +50,7 @@ class Save extends Action
             $ticket->setCategoryId($data['category_id']);
             $ticket->setPriorityId($data['priority_id']);
             $ticket->setStatus($data['status']);
-            $ticket->setAssignedTo($data['assigned_to'] ?? null);
+            $ticket->setAssignedTo($data['assigned_to'] ?? 1);
             $ticket->setOrderNumber($data['order_number'] ?? null);
 
             if (!$ticketId) {

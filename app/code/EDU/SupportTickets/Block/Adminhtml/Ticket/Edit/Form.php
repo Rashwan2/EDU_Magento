@@ -7,12 +7,14 @@ use EDU\SupportTickets\Api\TicketRepositoryInterface;
 use EDU\SupportTickets\Api\CategoryRepositoryInterface;
 use EDU\SupportTickets\Api\PriorityRepositoryInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\User\Model\ResourceModel\User\CollectionFactory as AdminUserCollectionFactory;
 
 class Form extends Template
 {
     protected $ticketRepository;
     protected $categoryRepository;
     protected $priorityRepository;
+    protected $adminUserCollectionFactory;
     protected $ticket;
 
     public function __construct(
@@ -20,11 +22,13 @@ class Form extends Template
         TicketRepositoryInterface $ticketRepository,
         CategoryRepositoryInterface $categoryRepository,
         PriorityRepositoryInterface $priorityRepository,
+        AdminUserCollectionFactory $adminUserCollectionFactory,
         array $data = []
     ) {
         $this->ticketRepository = $ticketRepository;
         $this->categoryRepository = $categoryRepository;
         $this->priorityRepository = $priorityRepository;
+        $this->adminUserCollectionFactory = $adminUserCollectionFactory;
         parent::__construct($context, $data);
     }
 
@@ -61,6 +65,22 @@ class Form extends Template
         } catch (\Exception $e) {
             return [];
         }
+    }
+
+    public function getAdminUsers()
+    {
+        $collection = $this->adminUserCollectionFactory->create();
+        $collection->addFieldToFilter('is_active', 1);
+        $collection->setOrder('firstname', 'ASC');
+        
+        $users = [];
+        foreach ($collection as $user) {
+            $users[] = [
+                'value' => $user->getId(),
+                'label' => $user->getFirstname() . ' ' . $user->getLastname() . ' (' . $user->getUsername() . ')'
+            ];
+        }
+        return $users;
     }
 
     public function getFormAction()

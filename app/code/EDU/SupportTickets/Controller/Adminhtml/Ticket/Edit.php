@@ -13,7 +13,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 class Edit extends Action
 {
     const ADMIN_RESOURCE = 'EDU_SupportTickets::tickets';
-    
+
     protected $pageFactory;
     protected $ticketRepository;
     protected $categoryRepository;
@@ -36,21 +36,21 @@ class Edit extends Action
     public function execute()
     {
         $ticketId = $this->getRequest()->getParam('id');
-        
+
         try {
             $ticket = $this->ticketRepository->getById($ticketId);
             $categories = $this->categoryRepository->getActiveCategories();
             $priorities = $this->priorityRepository->getActivePriorities();
-            
+
             $resultPage = $this->pageFactory->create();
             $resultPage->getConfig()->getTitle()->prepend(__('Edit Ticket #%1', $ticket->getTicketNumber()));
-            
-            $resultPage->getLayout()->getBlock('ticket.edit')->setData('ticket', $ticket);
-            $resultPage->getLayout()->getBlock('ticket.edit')->setData('categories', $categories);
-            $resultPage->getLayout()->getBlock('ticket.edit')->setData('priorities', $priorities);
-            
+
+            $resultPage->getLayout()->getBlock('ticket.edit.form')->setData('ticket', $ticket);
+            $resultPage->getLayout()->getBlock('ticket.edit.form')->setData('categories', $categories);
+            $resultPage->getLayout()->getBlock('ticket.edit.form')->setData('priorities', $priorities);
+
             return $resultPage;
-            
+
         } catch (NoSuchEntityException $e) {
             $this->messageManager->addErrorMessage(__('Ticket not found.'));
             return $this->_redirect('supporttickets/ticket/index');

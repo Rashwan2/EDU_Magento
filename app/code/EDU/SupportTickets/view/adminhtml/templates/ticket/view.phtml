@@ -1,0 +1,253 @@
+<?php
+/** @var \EDU\SupportTickets\Block\Adminhtml\Ticket\View $block */
+$ticket = $block->getTicket();
+$messages = $block->getMessages();
+?>
+<div class="page-main-actions">
+    <div class="page-actions">
+        <div class="page-actions-buttons">
+            <button type="button" class="action-default scalable back" onclick="setLocation('<?= $block->escapeUrl($block->getBackUrl()) ?>')">
+                <span><?= $block->escapeHtml(__('Back to Tickets')) ?></span>
+            </button>
+            <button type="button" class="action-default scalable edit" onclick="setLocation('<?= $block->escapeUrl($block->getEditUrl()) ?>')">
+                <span><?= $block->escapeHtml(__('Edit Ticket')) ?></span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<?php if ($ticket): ?>
+<div class="ticket-view">
+    <div class="ticket-header">
+        <div class="ticket-title">
+            <h1><?= $block->escapeHtml($ticket->getSubject()) ?></h1>
+            <span class="ticket-number">#<?= $block->escapeHtml($ticket->getTicketNumber()) ?></span>
+        </div>
+        <div class="ticket-status">
+            <span class="status-badge <?= $block->escapeHtml($block->getStatusClass($ticket->getStatus())) ?>">
+                <?= $block->escapeHtml($block->getStatusLabel($ticket->getStatus())) ?>
+            </span>
+        </div>
+    </div>
+
+    <div class="ticket-details">
+        <div class="admin__fieldset-wrapper">
+            <div class="admin__fieldset-wrapper-content">
+                <fieldset class="admin__fieldset">
+                    <legend class="admin__legend">
+                        <span><?= $block->escapeHtml(__('Ticket Details')) ?></span>
+                    </legend>
+                    
+                    <div class="ticket-info-grid">
+                        <div class="info-item">
+                            <label><?= $block->escapeHtml(__('Customer')) ?></label>
+                            <span><?= $block->escapeHtml($ticket->getCustomerName()) ?> (<?= $block->escapeHtml($ticket->getCustomerEmail()) ?>)</span>
+                        </div>
+                        
+                        <div class="info-item">
+                            <label><?= $block->escapeHtml(__('Created')) ?></label>
+                            <span><?= $block->escapeHtml($ticket->getCreatedAt()) ?></span>
+                        </div>
+                        
+                        <div class="info-item">
+                            <label><?= $block->escapeHtml(__('Last Updated')) ?></label>
+                            <span><?= $block->escapeHtml($ticket->getUpdatedAt()) ?></span>
+                        </div>
+                        
+                        <?php if ($ticket->getOrderNumber()): ?>
+                        <div class="info-item">
+                            <label><?= $block->escapeHtml(__('Order Number')) ?></label>
+                            <span><?= $block->escapeHtml($ticket->getOrderNumber()) ?></span>
+                        </div>
+                        <?php endif; ?>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+    <div class="ticket-description">
+        <div class="admin__fieldset-wrapper">
+            <div class="admin__fieldset-wrapper-content">
+                <fieldset class="admin__fieldset">
+                    <legend class="admin__legend">
+                        <span><?= $block->escapeHtml(__('Description')) ?></span>
+                    </legend>
+                    <div class="ticket-description-content">
+                        <?= nl2br($block->escapeHtml($ticket->getDescription())) ?>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+    <?php if (!empty($messages)): ?>
+    <div class="ticket-messages">
+        <div class="admin__fieldset-wrapper">
+            <div class="admin__fieldset-wrapper-content">
+                <fieldset class="admin__fieldset">
+                    <legend class="admin__legend">
+                        <span><?= $block->escapeHtml(__('Messages')) ?></span>
+                    </legend>
+                    
+                    <div class="messages-list">
+                        <?php foreach ($messages as $message): ?>
+                        <div class="message-item <?= $message->getSenderType() === 'admin' ? 'message-admin' : 'message-customer' ?>">
+                            <div class="message-header">
+                                <span class="sender">
+                                    <?= $message->getSenderType() === 'admin' ? __('Admin') : __('Customer') ?>
+                                </span>
+                                <span class="timestamp"><?= $block->escapeHtml($message->getCreatedAt()) ?></span>
+                                <?php if ($message->getIsInternal()): ?>
+                                <span class="internal-note"><?= $block->escapeHtml(__('Internal Note')) ?></span>
+                                <?php endif; ?>
+                            </div>
+                            <div class="message-content">
+                                <?= nl2br($block->escapeHtml($message->getMessage())) ?>
+                            </div>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
+</div>
+
+<style>
+.ticket-view {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.ticket-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+.ticket-title h1 {
+    margin: 0;
+    font-size: 24px;
+    color: #333;
+}
+
+.ticket-number {
+    color: #666;
+    font-size: 14px;
+    margin-left: 10px;
+}
+
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.status-open { background: #d4edda; color: #155724; }
+.status-in-progress { background: #fff3cd; color: #856404; }
+.status-waiting { background: #cce5ff; color: #004085; }
+.status-resolved { background: #d1ecf1; color: #0c5460; }
+.status-closed { background: #f8d7da; color: #721c24; }
+
+.ticket-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-item label {
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.info-item span {
+    color: #333;
+}
+
+.ticket-description-content {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 4px;
+    margin-top: 20px;
+    line-height: 1.6;
+}
+
+.messages-list {
+    margin-top: 20px;
+}
+
+.message-item {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 4px;
+    border-left: 4px solid #ddd;
+}
+
+.message-admin {
+    background: #e3f2fd;
+    border-left-color: #2196f3;
+}
+
+.message-customer {
+    background: #f3e5f5;
+    border-left-color: #9c27b0;
+}
+
+.message-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 12px;
+    color: #666;
+}
+
+.sender {
+    font-weight: bold;
+}
+
+.internal-note {
+    background: #ff9800;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+}
+
+.message-content {
+    line-height: 1.6;
+    color: #333;
+}
+
+@media (max-width: 768px) {
+    .ticket-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .ticket-info-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+<?php else: ?>
+<div class="message message-error">
+    <?= $block->escapeHtml(__('Ticket not found.')) ?>
+</div>
+<?php endif; ?>

@@ -1,7 +1,11 @@
 <?php
 namespace EDU\SupportTickets\Block\Ticket;
 
+use EDU\SupportTickets\Model\ResourceModel\Category\CollectionFactory;
+use EDU\SupportTickets\Model\ResourceModel\Priority\CollectionFactory as PriorityCollectionFactory;
+use Magento\Customer\Model\Session;
 use Magento\Framework\View\Element\Template;
+use Magento\Framework\View\Element\Template\Context;
 
 class FormBlock extends Template
 {
@@ -12,10 +16,10 @@ class FormBlock extends Template
     protected $priorityCollectionFactory;
 
     public function __construct(
-        \Magento\Framework\View\Element\Template\Context $context,
-        \Magento\Customer\Model\Session $customerSession,
-        \EDU\SupportTickets\Model\ResourceModel\Category\CollectionFactory $categoryCollectionFactory,
-        \EDU\SupportTickets\Model\ResourceModel\Priority\CollectionFactory $priorityCollectionFactory,
+        Context $context,
+        Session $customerSession,
+        CollectionFactory $categoryCollectionFactory,
+        PriorityCollectionFactory $priorityCollectionFactory,
         array $data = []
     ) {
         $this->customerSession = $customerSession;
@@ -62,5 +66,33 @@ class FormBlock extends Template
     public function getCurrentCustomer()
     {
         return $this->customerSession->getCustomer();
+    }
+
+    public function isCustomerLoggedIn()
+    {
+        return $this->customerSession->isLoggedIn();
+    }
+
+    public function getCustomerName()
+    {
+        if ($this->isCustomerLoggedIn()) {
+            $customer = $this->getCurrentCustomer();
+            return $customer->getFirstname() . ' ' . $customer->getLastname();
+        }
+        return '';
+    }
+
+    public function getCustomerEmail()
+    {
+        if ($this->isCustomerLoggedIn()) {
+            $customer = $this->getCurrentCustomer();
+            return $customer->getEmail();
+        }
+        return '';
+    }
+
+    public function getFormAction()
+    {
+        return $this->getUrl('supporttickets/index/save');
     }
 }

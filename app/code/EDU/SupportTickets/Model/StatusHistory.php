@@ -100,9 +100,9 @@ class StatusHistory extends AbstractModel implements StatusHistoryInterface, Ide
      */
     public function getStatusChangeDescription()
     {
-        $oldStatus = $this->getOldStatus() ?: 'New';
+        $oldStatus = $this->getOldStatus() ?? 'New';
         $newStatus = $this->getNewStatus();
-        
+
         return sprintf('Status changed from "%s" to "%s"', $oldStatus, $newStatus);
     }
 
