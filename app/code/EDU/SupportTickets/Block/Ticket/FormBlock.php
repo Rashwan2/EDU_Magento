@@ -3,6 +3,7 @@ namespace EDU\SupportTickets\Block\Ticket;
 
 use EDU\SupportTickets\Model\ResourceModel\Category\CollectionFactory;
 use EDU\SupportTickets\Model\ResourceModel\Priority\CollectionFactory as PriorityCollectionFactory;
+use EDU\SupportTickets\Model\ResourceModel\Ticket\CollectionFactory as TicketCollectionFactory;
 use Magento\Customer\Model\Session;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
@@ -11,20 +12,24 @@ class FormBlock extends Template
 {
     protected $categories = [];
     protected $priorities = [];
+    protected $customerTickets = [];
     protected $customerSession;
     protected $categoryCollectionFactory;
     protected $priorityCollectionFactory;
+    protected $ticketCollectionFactory;
 
     public function __construct(
         Context $context,
         Session $customerSession,
         CollectionFactory $categoryCollectionFactory,
         PriorityCollectionFactory $priorityCollectionFactory,
+        TicketCollectionFactory $ticketCollectionFactory,
         array $data = []
     ) {
         $this->customerSession = $customerSession;
         $this->categoryCollectionFactory = $categoryCollectionFactory;
         $this->priorityCollectionFactory = $priorityCollectionFactory;
+        $this->ticketCollectionFactory = $ticketCollectionFactory;
         parent::__construct($context, $data);
     }
 
@@ -94,5 +99,60 @@ class FormBlock extends Template
     public function getFormAction()
     {
         return $this->getUrl('supporttickets/index/save');
+    }
+
+    public function getCustomerTickets()
+    {
+        if (empty($this->customerTickets) && $this->isCustomerLoggedIn()) {
+            $customerId = $this->customerSession->getCustomerId();
+            $collection = $this->ticketCollectionFactory->create();
+            $collection->addFieldToFilter('customer_id', $customerId);
+            $collection->setOrder('created_at', 'DESC');
+            $collection->setPageSize(20); // Limit to 20 most recent tickets
+
+            foreach ($collection as $ticket) {
+                $this->customerTickets[] = $ticket;
+            }
+        }
+        return $this->customerTickets;
+    }
+
+    public function getStatusLabel($status)
+    {
+        $statusLabels = [
+            'open' => __('Open'),
+            'in_progress' => __('In Progress'),
+            'waiting_customer' => __('Waiting for Customer'),
+            'resolved' => __('Resolved'),
+            'closed' => __('Closed')
+        ];
+        return $statusLabels[$status] ?? $status;
+    }
+
+    public function getStatusClass($status)
+    {
+        $statusClasses = [
+            'open' => 'status-open',
+            'in_progress' => 'status-in-progress',
+            'waiting_customer' => 'status-waiting',
+            'resolved' => 'status-resolved',
+            'closed' => 'status-closed'
+        ];
+        return $statusClasses[$status] ?? 'status-default';
+    }
+
+    /**
+     * Format published date
+     *
+     * @param string $date
+     * @return string
+     */
+    public function formatDate($date = null, $format = \IntlDateFormatter::MEDIUM, $showTime = true, $timezone = null)
+    {
+        if (!$date) {
+            return '';
+        }
+
+        return parent::formatDate($date, $format, $showTime, $timezone);
     }
 }

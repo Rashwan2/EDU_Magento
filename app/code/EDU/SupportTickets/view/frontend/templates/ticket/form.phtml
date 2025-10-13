@@ -2,14 +2,31 @@
 /** @var \EDU\SupportTickets\Block\Ticket\FormBlock $block */
 $categories = $block->getCategories();
 $priorities = $block->getPriorities();
+$customerTickets = $block->getCustomerTickets();
 ?>
 
 <div class="support-ticket-form">
     <div class="page-title-wrapper">
-        <h1 class="page-title"><?= $block->escapeHtml(__('Create Support Ticket')) ?></h1>
+        <h1 class="page-title"><?= $block->escapeHtml(__('Support Tickets')) ?></h1>
     </div>
 
-    <form action="<?= $block->escapeUrl($block->getFormAction()) ?>" method="post" class="ticket-form">
+    <?php if ($block->isCustomerLoggedIn()): ?>
+    <div class="ticket-tabs">
+        <div class="tab-headers">
+            <button class="tab-header active" data-tab="create-ticket">
+                <?= $block->escapeHtml(__('Create New Ticket')) ?>
+            </button>
+            <button class="tab-header" data-tab="my-tickets">
+                <?= $block->escapeHtml(__('My Tickets')) ?>
+                <span class="ticket-count">(<?= count($customerTickets) ?>)</span>
+            </button>
+        </div>
+    </div>
+    <?php endif; ?>
+
+    <div class="tab-content">
+        <div class="tab-panel active" id="create-ticket">
+            <form action="<?= $block->escapeUrl($block->getFormAction()) ?>" method="post" class="ticket-form">
         <fieldset class="fieldset">
             <legend class="legend">
                 <span><?= $block->escapeHtml(__('Ticket Information')) ?></span>
@@ -123,13 +140,304 @@ $priorities = $block->getPriorities();
                 </a>
             </div>
         </div>
-    </form>
+            </form>
+        </div>
+
+        <?php if ($block->isCustomerLoggedIn()): ?>
+        <div class="tab-panel" id="my-tickets">
+            <div class="my-tickets-content">
+                <h2><?= $block->escapeHtml(__('My Support Tickets')) ?></h2>
+                
+                <?php if (empty($customerTickets)): ?>
+                    <div class="no-tickets">
+                        <p><?= $block->escapeHtml(__('You haven\'t submitted any support tickets yet.')) ?></p>
+                        <p><?= $block->escapeHtml(__('Click on "Create New Ticket" to submit your first ticket.')) ?></p>
+                    </div>
+                <?php else: ?>
+                    <div class="tickets-list">
+                        <?php foreach ($customerTickets as $ticket): ?>
+                            <div class="ticket-item">
+                                <div class="ticket-header">
+                                    <div class="ticket-title">
+                                        <h3>
+                                            <a href="<?= $block->escapeUrl($block->getUrl('supporttickets/index/view', ['id' => $ticket->getTicketId()])) ?>">
+                                                <?= $block->escapeHtml($ticket->getSubject()) ?>
+                                            </a>
+                                        </h3>
+                                        <span class="ticket-number">#<?= $block->escapeHtml($ticket->getTicketNumber()) ?></span>
+                                    </div>
+                                    <div class="ticket-status">
+                                        <span class="status-badge <?= $block->escapeHtml($block->getStatusClass($ticket->getStatus())) ?>">
+                                            <?= $block->escapeHtml($block->getStatusLabel($ticket->getStatus())) ?>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="ticket-meta">
+                                    <div class="ticket-date">
+                                        <strong><?= $block->escapeHtml(__('Created:')) ?></strong>
+                                        <span><?= $block->escapeHtml($block->formatDate($ticket->getCreatedAt())) ?></span>
+                                    </div>
+                                    <?php if ($ticket->getLastReplyAt()): ?>
+                                    <div class="ticket-last-reply">
+                                        <strong><?= $block->escapeHtml(__('Last Reply:')) ?></strong>
+                                        <span><?= $block->escapeHtml($block->formatDate($ticket->getLastReplyAt())) ?></span>
+                                    </div>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="ticket-description">
+                                    <p><?= $block->escapeHtml(substr($ticket->getDescription(), 0, 150)) ?><?= strlen($ticket->getDescription()) > 150 ? '...' : '' ?></p>
+                                </div>
+                                <div class="ticket-actions">
+                                    <a href="<?= $block->escapeUrl($block->getUrl('supporttickets/index/view', ['id' => $ticket->getTicketId()])) ?>" 
+                                       class="action view">
+                                        <?= $block->escapeHtml(__('View Details')) ?>
+                                    </a>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+        <?php endif; ?>
+    </div>
 </div>
 
 <style>
 .support-ticket-form {
     max-width: 800px;
     margin: 0 auto;
+}
+
+/* Tab Styles */
+.ticket-tabs {
+    margin-bottom: 30px;
+}
+
+.tab-headers {
+    display: flex;
+    border-bottom: 2px solid #e0e0e0;
+    margin-bottom: 20px;
+}
+
+.tab-header {
+    background: none;
+    border: none;
+    padding: 15px 25px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #666;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.tab-header:hover {
+    color: #007bff;
+    background-color: #f8f9fa;
+}
+
+.tab-header.active {
+    color: #007bff;
+    border-bottom-color: #007bff;
+    background-color: #fff;
+}
+
+.tab-header .ticket-count {
+    background: #007bff;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    margin-left: 8px;
+}
+
+.tab-content {
+    position: relative;
+}
+
+.tab-panel {
+    display: none;
+}
+
+.tab-panel.active {
+    display: block;
+}
+
+/* My Tickets Styles */
+.my-tickets-content h2 {
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+}
+
+.no-tickets {
+    text-align: center;
+    padding: 40px 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 2px dashed #ddd;
+}
+
+.no-tickets p {
+    margin: 10px 0;
+    color: #666;
+    font-size: 16px;
+}
+
+.tickets-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.ticket-item {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.ticket-item:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.ticket-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.ticket-title h3 {
+    margin: 0 0 5px 0;
+    font-size: 18px;
+}
+
+.ticket-title h3 a {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.ticket-title h3 a:hover {
+    color: #007bff;
+}
+
+.ticket-number {
+    color: #666;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.ticket-status {
+    flex-shrink: 0;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.status-open {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-in-progress {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-waiting {
+    background: #cce5ff;
+    color: #004085;
+}
+
+.status-resolved {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+.status-closed {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.ticket-meta {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: #666;
+}
+
+.ticket-meta > div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.ticket-meta strong {
+    color: #333;
+}
+
+.ticket-description {
+    margin-bottom: 15px;
+    color: #666;
+    line-height: 1.5;
+}
+
+.ticket-actions {
+    text-align: right;
+}
+
+.ticket-actions .action.view {
+    background: #007bff;
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.ticket-actions .action.view:hover {
+    background: #0056b3;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .tab-headers {
+        flex-direction: column;
+    }
+    
+    .tab-header {
+        text-align: center;
+        border-bottom: 1px solid #e0e0e0;
+        border-right: none;
+    }
+    
+    .ticket-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .ticket-meta {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .ticket-actions {
+        text-align: center;
+    }
 }
 
 .support-ticket-form .ticket-form {
@@ -305,3 +613,22 @@ $priorities = $block->getPriorities();
     }
 }
 </style>
+
+<script>
+require(['jquery'], function($) {
+    $(document).ready(function() {
+        // Tab functionality
+        $('.tab-header').on('click', function() {
+            var targetTab = $(this).data('tab');
+            
+            // Remove active class from all tabs and panels
+            $('.tab-header').removeClass('active');
+            $('.tab-panel').removeClass('active');
+            
+            // Add active class to clicked tab and corresponding panel
+            $(this).addClass('active');
+            $('#' + targetTab).addClass('active');
+        });
+    });
+});
+</script>
