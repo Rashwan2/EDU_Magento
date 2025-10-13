@@ -2,6 +2,7 @@
 
 namespace EDU\SupportTickets\Block\Ticket;
 
+use EDU\SupportTickets\Model\ResourceModel\Message\CollectionFactory as MessageCollectionFactory;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Framework\Locale\ResolverInterface;
@@ -13,13 +14,16 @@ class ViewBlock extends Template
     protected $ticket;
     protected $messages = [];
     protected $localeResolver;
+    protected $messageCollectionFactory;
 
     public function __construct(
         Context $context,
         ResolverInterface $localeResolver,
+        MessageCollectionFactory $messageCollectionFactory,
         array $data = []
     ) {
         $this->localeResolver = $localeResolver;
+        $this->messageCollectionFactory = $messageCollectionFactory;
         parent::__construct($context, $data);
     }
 
@@ -34,15 +38,15 @@ class ViewBlock extends Template
         return $this->ticket;
     }
 
-    public function setMessages($messages)
-    {
-        $this->messages = $messages;
-        return $this;
-    }
-
     public function getMessages()
     {
-        return $this->messages;
+        if (!$this->messages && $this->getTicket()) {
+            $collection = $this->messageCollectionFactory->create();
+            $collection->addFieldToFilter('ticket_id', $this->getTicket()->getTicketId());
+            $collection->setOrder('created_at', 'ASC');
+            $this->messages = $collection->getItems();
+        }
+        return $this->messages ?? [];
     }
 
     public function getStatusLabel($status)
@@ -87,7 +91,7 @@ class ViewBlock extends Template
      * @param string $date
      * @return string
      */
-    public function formatDate($date = null, $format = \IntlDateFormatter::MEDIUM, $showTime = false, $timezone = null)
+    public function formatDate($date = null, $format = \IntlDateFormatter::MEDIUM, $showTime = true, $timezone = null)
     {
         if (!$date) {
             return '';

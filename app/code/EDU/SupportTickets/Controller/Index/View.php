@@ -51,8 +51,6 @@ class View extends Action
             $resultPage->getConfig()->getTitle()->set(__('Ticket #%1', $ticket->getTicketNumber()));
             $resultPage->getLayout()->getBlock('ticket.view')->setTicket($ticket);
 
-//            $resultPage->getLayout()->getBlock('ticket.view')->setData('ticket', $ticket);
-            $resultPage->getLayout()->getBlock('ticket.view')->setData('messages', $messages);
 
             return $resultPage;
 

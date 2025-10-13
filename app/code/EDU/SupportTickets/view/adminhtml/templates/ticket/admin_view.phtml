@@ -1,5 +1,5 @@
 <?php
-/** @var \EDU\SupportTickets\Block\Ticket\ViewBlock $block */
+/** @var \EDU\SupportTickets\Block\Adminhtml\Ticket\View $block */
 $ticket = $block->getTicket();
 $messages = $block->getMessages();
 ?>
@@ -8,11 +8,12 @@ $messages = $block->getMessages();
     <div class="page-header">
         <h1><?= $block->escapeHtml(__('Ticket #%1', $ticket->getTicketNumber())) ?></h1>
         <div class="page-actions">
-            <a href="<?= $block->escapeUrl($block->getUrl('supporttickets/ticket/edit', ['id' => $ticket->getTicketId()])) ?>" 
+            <a href="<?= $block->escapeUrl($block->getUrl('supporttickets/ticket/edit',
+                    ['id' => $ticket->getTicketId()])) ?>"
                class="action-primary">
                 <?= $block->escapeHtml(__('Edit Ticket')) ?>
             </a>
-            <a href="<?= $block->escapeUrl($block->getUrl('supporttickets/ticket/index')) ?>" 
+            <a href="<?= $block->escapeUrl($block->getUrl('supporttickets/ticket/index')) ?>"
                class="action-secondary">
                 <?= $block->escapeHtml(__('Back to List')) ?>
             </a>
@@ -42,7 +43,7 @@ $messages = $block->getMessages();
                     </div>
                     <div class="meta-item">
                         <strong><?= $block->escapeHtml(__('Created:')) ?></strong>
-                        <span><?= $block->escapeHtml($block->formatDate($ticket->getCreatedAt())) ?></span>
+                        <span><?= $block->escapeHtml($ticket->getCreatedAt()) ?></span>
                     </div>
                     <?php if ($ticket->getOrderNumber()): ?>
                         <div class="meta-item">
@@ -57,13 +58,13 @@ $messages = $block->getMessages();
         <div class="ticket-description">
             <h3><?= $block->escapeHtml(__('Description')) ?></h3>
             <div class="description-content">
-                <?= $block->escapeHtml(nl2br($ticket->getDescription())) ?>
+                <?= nl2br($block->escapeHtml($ticket->getDescription())) ?>
             </div>
         </div>
 
         <div class="ticket-messages">
             <h3><?= $block->escapeHtml(__('Messages')) ?></h3>
-            
+
             <?php if (empty($messages)): ?>
                 <div class="message info empty">
                     <span><?= $block->escapeHtml(__('No messages yet.')) ?></span>
@@ -71,20 +72,23 @@ $messages = $block->getMessages();
             <?php else: ?>
                 <div class="messages-list">
                     <?php foreach ($messages as $message): ?>
-                        <div class="message-item <?= $block->escapeHtml($message->getSenderType()) ?>">
+                        <div class="message-item <?= $message->getSenderType() === 'admin' ? 'message-admin' : 'message-customer' ?>">
                             <div class="message-header">
                                 <span class="sender-name">
                                     <?= $block->escapeHtml($message->getSenderName()) ?>
                                 </span>
                                 <span class="sender-type">
-                                    (<?= $block->escapeHtml($block->getSenderTypeLabel($message->getSenderType())) ?>)
+                                    (<?= $message->getSenderType() === 'admin' ? __('Admin') : __('Customer') ?>)
                                 </span>
                                 <span class="message-date">
-                                    <?= $block->escapeHtml($block->formatDate($message->getCreatedAt())) ?>
+                                    <?= $block->escapeHtml($message->getCreatedAt()) ?>
                                 </span>
+                                <?php if ($message->getIsInternal()): ?>
+                                    <span class="internal-note"><?= $block->escapeHtml(__('Internal Note')) ?></span>
+                                <?php endif; ?>
                             </div>
                             <div class="message-content">
-                                <?= $block->escapeHtml(nl2br($message->getMessage())) ?>
+                                <?= nl2br($block->escapeHtml($message->getMessage())) ?>
                             </div>
                         </div>
                     <?php endforeach; ?>
@@ -94,41 +98,53 @@ $messages = $block->getMessages();
 
         <div class="add-message-form">
             <h3><?= $block->escapeHtml(__('Add Message')) ?></h3>
-            <form action="<?= $block->escapeUrl($block->getUrl('supporttickets/message/add')) ?>" method="post">
+            <form action="<?= $block->escapeUrl($block->getUrl('supporttickets/message/add')) ?>" method="post"
+                  id="add-message-form">
+                <?= $block->getBlockHtml('formkey') ?>
                 <input type="hidden" name="ticket_id" value="<?= $block->escapeHtml($ticket->getTicketId()) ?>">
+
                 <div class="field message-field">
                     <label for="message" class="label">
                         <span><?= $block->escapeHtml(__('Message')) ?></span>
                     </label>
                     <div class="control">
-                        <textarea name="message" 
-                                  id="message" 
-                                  class="input-text" 
-                                  rows="5" 
-                                  required></textarea>
+                <textarea name="message"
+                          id="message"
+                          class="input-text"
+                          rows="5"
+                          required
+                          placeholder="<?= $block->escapeHtml(__('Type your message here...')) ?>"></textarea>
                     </div>
                 </div>
+
                 <div class="field internal-field">
                     <div class="control">
                         <label class="checkbox-label">
-                            <input type="checkbox" name="is_internal" value="1">
+                            <input type="checkbox" name="is_internal" id="is_internal" value="1">
                             <span><?= $block->escapeHtml(__('Internal Note (not visible to customer)')) ?></span>
                         </label>
                     </div>
                 </div>
+
                 <div class="actions-toolbar">
                     <div class="primary">
-                        <button type="submit" class="action-primary">
+                        <button type="submit" class="action-primary" id="submit-message">
                             <?= $block->escapeHtml(__('Send Message')) ?>
                         </button>
                     </div>
                 </div>
             </form>
         </div>
+
     </div>
 </div>
 
 <style>
+    .admin-support-ticket-view {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
 .admin-support-ticket-view .page-header {
     display: flex;
     justify-content: space-between;
@@ -267,23 +283,29 @@ $messages = $block->getMessages();
     overflow-y: auto;
     border: 1px solid #ddd;
     border-radius: 4px;
+    background: #f8f9fa;
+    padding: 10px;
 }
 
 .admin-support-ticket-view .message-item {
+    margin-bottom: 15px;
     padding: 15px;
-    border-bottom: 1px solid #eee;
+    border-radius: 4px;
+    border-left: 4px solid #ddd;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .admin-support-ticket-view .message-item:last-child {
-    border-bottom: none;
+    margin-bottom: 0;
 }
 
-.admin-support-ticket-view .message-item.customer {
-    background-color: #f8f9fa;
+    .admin-support-ticket-view .message-item.message-customer {
+        border-left-color: #9c27b0;
 }
 
-.admin-support-ticket-view .message-item.admin {
-    background-color: #e3f2fd;
+    .admin-support-ticket-view .message-item.message-admin {
+        border-left-color: #2196f3;
 }
 
 .admin-support-ticket-view .message-header {
@@ -292,6 +314,7 @@ $messages = $block->getMessages();
     margin-bottom: 8px;
     font-size: 14px;
     color: #666;
+    flex-wrap: wrap;
 }
 
 .admin-support-ticket-view .sender-name {
@@ -300,6 +323,15 @@ $messages = $block->getMessages();
 
 .admin-support-ticket-view .message-content {
     line-height: 1.6;
+    color: #333;
+}
+
+    .admin-support-ticket-view .internal-note {
+        background: #ff9800;
+        color: white;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-size: 10px;
 }
 
 .admin-support-ticket-view .add-message-form {
@@ -330,6 +362,7 @@ $messages = $block->getMessages();
     border: 1px solid #ddd;
     border-radius: 4px;
     resize: vertical;
+    box-sizing: border-box;
 }
 
 .admin-support-ticket-view .checkbox-label {
@@ -357,6 +390,21 @@ $messages = $block->getMessages();
 .admin-support-ticket-view .action-primary:hover {
     background-color: #0056b3;
 }
+
+    @media (max-width: 768px) {
+        .admin-support-ticket-view .page-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .admin-support-ticket-view .ticket-meta {
+            grid-template-columns: 1fr;
+        }
+
+        .admin-support-ticket-view .message-header {
+            flex-direction: column;
+            gap: 5px;
+        }
+    }
 </style>
-
-
