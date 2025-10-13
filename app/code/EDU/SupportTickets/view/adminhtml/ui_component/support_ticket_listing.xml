@@ -12,14 +12,14 @@
                 <item name="name" xsi:type="string">add</item>
                 <item name="label" xsi:type="string" translate="true">Add New Ticket</item>
                 <item name="class" xsi:type="string">primary</item>
-                <item name="url" xsi:type="string">supporttickets/ticket/new</item>
+                <item name="url" xsi:type="string">supporttickets/ticket/newaction</item>
             </item>
         </item>
     </argument>
 
     <dataSource name="support_ticket_listing_data_source">
         <argument name="dataProvider" xsi:type="configurableObject">
-            <argument name="class" xsi:type="string">\EDU\SupportTickets\Ui\Component\TicketDataProvider</argument>
+            <argument name="class" xsi:type="string">EDU\SupportTickets\Ui\Component\TicketDataProvider</argument>
             <argument name="name" xsi:type="string">support_ticket_listing_data_source</argument>
             <argument name="primaryFieldName" xsi:type="string">ticket_id</argument>
             <argument name="requestFieldName" xsi:type="string">ticket_id</argument>

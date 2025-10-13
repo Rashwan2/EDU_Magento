@@ -1,0 +1,100 @@
+<?php
+/** @var \EDU\SupportTickets\Block\Adminhtml\Priority\Edit\Form $block */
+$priority = $block->getPriority();
+?>
+<div class="page-main-actions">
+    <div class="page-actions">
+        <div class="page-actions-buttons">
+            <button type="button" class="action-default scalable back" onclick="setLocation('<?= $block->escapeUrl($block->getBackUrl()) ?>')">
+                <span><?= $block->escapeHtml(__('Back')) ?></span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<form action="<?= $block->escapeUrl($block->getFormAction()) ?>" method="post" id="priority-edit-form">
+    <input name="form_key" type="hidden" value="<?= $block->escapeHtml($block->getFormKey()) ?>" />
+    <?php if ($priority): ?>
+        <input name="priority_id" type="hidden" value="<?= $block->escapeHtml($priority->getPriorityId()) ?>" />
+    <?php endif; ?>
+    
+    <div class="admin__fieldset-wrapper">
+        <div class="admin__fieldset-wrapper-content">
+            <fieldset class="admin__fieldset">
+                <legend class="admin__legend">
+                    <span><?= $block->escapeHtml(__('Priority Information')) ?></span>
+                </legend>
+                
+                <div class="admin__field">
+                    <label class="admin__field-label" for="name">
+                        <span><?= $block->escapeHtml(__('Name')) ?></span>
+                    </label>
+                    <div class="admin__field-control">
+                        <input type="text" 
+                               id="name" 
+                               name="name" 
+                               class="admin__control-text" 
+                               value="<?= $block->escapeHtml($priority ? $priority->getName() : '') ?>" 
+                               required="required" />
+                    </div>
+                </div>
+                
+                <div class="admin__field">
+                    <label class="admin__field-label" for="color">
+                        <span><?= $block->escapeHtml(__('Color (Hex)')) ?></span>
+                    </label>
+                    <div class="admin__field-control">
+                        <input type="color" 
+                               id="color" 
+                               name="color" 
+                               class="admin__control-text" 
+                               value="<?= $block->escapeHtml($priority ? $priority->getColor() : '#007bff') ?>" 
+                               required="required" />
+                    </div>
+                </div>
+                
+                <div class="admin__field">
+                    <label class="admin__field-label" for="sort_order">
+                        <span><?= $block->escapeHtml(__('Sort Order')) ?></span>
+                    </label>
+                    <div class="admin__field-control">
+                        <input type="number" 
+                               id="sort_order" 
+                               name="sort_order" 
+                               class="admin__control-text" 
+                               value="<?= $block->escapeHtml($priority ? $priority->getSortOrder() : '0') ?>" />
+                    </div>
+                </div>
+                
+                <div class="admin__field">
+                    <label class="admin__field-label" for="is_active">
+                        <span><?= $block->escapeHtml(__('Status')) ?></span>
+                    </label>
+                    <div class="admin__field-control">
+                        <select id="is_active" name="is_active" class="admin__control-select">
+                            <option value="1" <?= ($priority && $priority->getIsActive()) ? 'selected="selected"' : '' ?>>
+                                <?= $block->escapeHtml(__('Active')) ?>
+                            </option>
+                            <option value="0" <?= ($priority && !$priority->getIsActive()) ? 'selected="selected"' : '' ?>>
+                                <?= $block->escapeHtml(__('Inactive')) ?>
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    
+    <div class="page-main-actions">
+        <div class="page-actions">
+            <div class="page-actions-buttons">
+                <button type="submit" class="action-default scalable save primary">
+                    <span><?= $block->escapeHtml(__('Save Priority')) ?></span>
+                </button>
+                <button type="button" class="action-default scalable back" onclick="setLocation('<?= $block->escapeUrl($block->getBackUrl()) ?>')">
+                    <span><?= $block->escapeHtml(__('Cancel')) ?></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

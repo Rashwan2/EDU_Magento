@@ -1,0 +1,98 @@
+<?php
+/** @var \EDU\SupportTickets\Block\Adminhtml\Category\Edit\Form $block */
+$category = $block->getCategory();
+?>
+<div class="page-main-actions">
+    <div class="page-actions">
+        <div class="page-actions-buttons">
+            <button type="button" class="action-default scalable back" onclick="setLocation('<?= $block->escapeUrl($block->getBackUrl()) ?>')">
+                <span><?= $block->escapeHtml(__('Back')) ?></span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<form action="<?= $block->escapeUrl($block->getFormAction()) ?>" method="post" id="category-edit-form">
+    <input name="form_key" type="hidden" value="<?= $block->escapeHtml($block->getFormKey()) ?>" />
+    <?php if ($category): ?>
+        <input name="category_id" type="hidden" value="<?= $block->escapeHtml($category->getCategoryId()) ?>" />
+    <?php endif; ?>
+    
+    <div class="admin__fieldset-wrapper">
+        <div class="admin__fieldset-wrapper-content">
+            <fieldset class="admin__fieldset">
+                <legend class="admin__legend">
+                    <span><?= $block->escapeHtml(__('Category Information')) ?></span>
+                </legend>
+                
+                <div class="admin__field">
+                    <label class="admin__field-label" for="name">
+                        <span><?= $block->escapeHtml(__('Name')) ?></span>
+                    </label>
+                    <div class="admin__field-control">
+                        <input type="text" 
+                               id="name" 
+                               name="name" 
+                               class="admin__control-text" 
+                               value="<?= $block->escapeHtml($category ? $category->getName() : '') ?>" 
+                               required="required" />
+                    </div>
+                </div>
+                
+                <div class="admin__field">
+                    <label class="admin__field-label" for="description">
+                        <span><?= $block->escapeHtml(__('Description')) ?></span>
+                    </label>
+                    <div class="admin__field-control">
+                        <textarea id="description" 
+                                  name="description" 
+                                  class="admin__control-textarea" 
+                                  rows="4"><?= $block->escapeHtml($category ? $category->getDescription() : '') ?></textarea>
+                    </div>
+                </div>
+                
+                <div class="admin__field">
+                    <label class="admin__field-label" for="sort_order">
+                        <span><?= $block->escapeHtml(__('Sort Order')) ?></span>
+                    </label>
+                    <div class="admin__field-control">
+                        <input type="number" 
+                               id="sort_order" 
+                               name="sort_order" 
+                               class="admin__control-text" 
+                               value="<?= $block->escapeHtml($category ? $category->getSortOrder() : '0') ?>" />
+                    </div>
+                </div>
+                
+                <div class="admin__field">
+                    <label class="admin__field-label" for="is_active">
+                        <span><?= $block->escapeHtml(__('Status')) ?></span>
+                    </label>
+                    <div class="admin__field-control">
+                        <select id="is_active" name="is_active" class="admin__control-select">
+                            <option value="1" <?= ($category && $category->getIsActive()) ? 'selected="selected"' : '' ?>>
+                                <?= $block->escapeHtml(__('Active')) ?>
+                            </option>
+                            <option value="0" <?= ($category && !$category->getIsActive()) ? 'selected="selected"' : '' ?>>
+                                <?= $block->escapeHtml(__('Inactive')) ?>
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    
+    <div class="page-main-actions">
+        <div class="page-actions">
+            <div class="page-actions-buttons">
+                <button type="submit" class="action-default scalable save primary">
+                    <span><?= $block->escapeHtml(__('Save Category')) ?></span>
+                </button>
+                <button type="button" class="action-default scalable back" onclick="setLocation('<?= $block->escapeUrl($block->getBackUrl()) ?>')">
+                    <span><?= $block->escapeHtml(__('Cancel')) ?></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

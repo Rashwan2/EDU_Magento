@@ -11,11 +11,11 @@
 
         <add id="EDU_SupportTickets::categories" title="Categories" module="EDU_SupportTickets" sortOrder="20"
              parent="EDU_SupportTickets::support_tickets" resource="EDU_SupportTickets::categories"
-             action="supporttickets/ticket/category"/>
+             action="supporttickets/category/index"/>
 
-        <!--        <add id="EDU_SupportTickets::priorities" title="Priorities" module="EDU_SupportTickets" sortOrder="30"-->
-        <!--             parent="EDU_SupportTickets::support_tickets" resource="EDU_SupportTickets::priorities"-->
-        <!--             action="supporttickets/ticket/view"/>-->
+        <add id="EDU_SupportTickets::priorities" title="Priorities" module="EDU_SupportTickets" sortOrder="30"
+             parent="EDU_SupportTickets::support_tickets" resource="EDU_SupportTickets::priorities"
+             action="supporttickets/priority/index"/>
 
         <!--        <add id="EDU_SupportTickets::settings" title="Settings" module="EDU_SupportTickets" sortOrder="40"-->
         <!--             parent="EDU_SupportTickets::support_tickets" resource="EDU_SupportTickets::settings"-->

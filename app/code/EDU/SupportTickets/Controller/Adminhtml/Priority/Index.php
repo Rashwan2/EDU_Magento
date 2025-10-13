@@ -1,15 +1,14 @@
 <?php
-
-namespace EDU\SupportTickets\Controller\Adminhtml\Ticket;
+namespace EDU\SupportTickets\Controller\Adminhtml\Priority;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\View\Result\PageFactory;
 
-class Category extends Action
+class Index extends Action
 {
-    const ADMIN_RESOURCE = 'EDU_SupportTickets::categories';
-
+    const ADMIN_RESOURCE = 'EDU_SupportTickets::priorities';
+    
     protected $pageFactory;
 
     public function __construct(
@@ -23,8 +22,7 @@ class Category extends Action
     public function execute()
     {
         $resultPage = $this->pageFactory->create();
-        $resultPage->getConfig()->getTitle()->prepend(__('Support Categories'));
+        $resultPage->getConfig()->getTitle()->prepend(__('Support Priorities'));
         return $resultPage;
     }
 }
-
