@@ -12,7 +12,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 class View extends Action
 {
     const ADMIN_RESOURCE = 'EDU_SupportTickets::tickets';
-    
+
     protected $pageFactory;
     protected $ticketRepository;
     protected $messageRepository;
@@ -32,19 +32,20 @@ class View extends Action
     public function execute()
     {
         $ticketId = $this->getRequest()->getParam('id');
-        
+
         try {
             $ticket = $this->ticketRepository->getById($ticketId);
             $messages = $this->messageRepository->getByTicketId($ticketId);
-            
+
             $resultPage = $this->pageFactory->create();
-            $resultPage->getConfig()->getTitle()->prepend(__('Ticket #%1', $ticket->getTicketNumber()));
-            
+//            $resultPage->getConfig()->getTitle()->prepend(__('Ticket #%1', $ticket->getTicketNumber()));
+            $resultPage->getLayout()->getBlock('ticket.view')->setTicket($ticket);
+
             $resultPage->getLayout()->getBlock('ticket.view')->setData('ticket', $ticket);
             $resultPage->getLayout()->getBlock('ticket.view')->setData('messages', $messages);
-            
+
             return $resultPage;
-            
+
         } catch (NoSuchEntityException $e) {
             $this->messageManager->addErrorMessage(__('Ticket not found.'));
             return $this->_redirect('supporttickets/ticket/index');

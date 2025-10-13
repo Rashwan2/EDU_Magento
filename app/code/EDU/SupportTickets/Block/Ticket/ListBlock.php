@@ -58,13 +58,19 @@ class ListBlock extends Template
         return $statusClasses[$status] ?? 'status-default';
     }
 
-    public function formatDate($date)
+    /**
+     * Format published date
+     *
+     * @param string $date
+     * @return string
+     */
+    public function formatDate($date = null, $format = \IntlDateFormatter::MEDIUM, $showTime = false, $timezone = null)
     {
-        return $this->_localeDate->formatDateTime(
-            new \DateTime($date),
-            \IntlDateFormatter::MEDIUM,
-            \IntlDateFormatter::SHORT,
-            $this->localeResolver->getLocale()
-        );
+        if (!$date) {
+            return '';
+        }
+
+        return parent::formatDate($date, $format, $showTime, $timezone);
     }
+
 }

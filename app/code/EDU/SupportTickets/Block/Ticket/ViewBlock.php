@@ -81,19 +81,25 @@ class ViewBlock extends Template
         return $typeLabels[$senderType] ?? $senderType;
     }
 
-    public function formatDate($date)
+    /**
+     * Format published date
+     *
+     * @param string $date
+     * @return string
+     */
+    public function formatDate($date = null, $format = \IntlDateFormatter::MEDIUM, $showTime = false, $timezone = null)
     {
-        return $this->_localeDate->formatDateTime(
-            new \DateTime($date),
-            \IntlDateFormatter::MEDIUM,
-            \IntlDateFormatter::SHORT,
-            $this->localeResolver->getLocale()
-        );
+        if (!$date) {
+            return '';
+        }
+
+        return parent::formatDate($date, $format, $showTime, $timezone);
     }
+
 
     public function canAddMessage()
     {
-        return $this->ticket && 
+        return $this->ticket &&
                $this->ticket->getStatus() !== TicketInterface::STATUS_CLOSED;
     }
 }

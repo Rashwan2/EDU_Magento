@@ -8,6 +8,7 @@
             <argument name="collections" xsi:type="array">
                 <item name="support_ticket_listing_data_source" xsi:type="string">SupportTicketGridCollection</item>
                 <item name="support_category_listing_data_source" xsi:type="string">CategoryTicketGridCollection</item>
+                <item name="support_priority_listing_data_source" xsi:type="string">PriorityTicketGridCollection</item>
             </argument>
         </arguments>
     </type>
@@ -26,6 +27,14 @@
         <arguments>
             <argument name="mainTable" xsi:type="string">support_ticket_category</argument>
             <argument name="resourceModel" xsi:type="string">EDU\SupportTickets\Model\ResourceModel\Category</argument>
+        </arguments>
+    </virtualType>
+    <!-- Define your collection virtual type -->
+    <virtualType name="PriorityTicketGridCollection"
+                 type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">support_ticket_priority</argument>
+            <argument name="resourceModel" xsi:type="string">EDU\SupportTickets\Model\ResourceModel\Priority</argument>
         </arguments>
     </virtualType>
 </config>
