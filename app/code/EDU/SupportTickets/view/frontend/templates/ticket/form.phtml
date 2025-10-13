@@ -1,0 +1,232 @@
+<?php
+/** @var \EDU\SupportTickets\Block\Ticket\FormBlock $block */
+$categories = $block->getCategories();
+$priorities = $block->getPriorities();
+?>
+
+<div class="support-ticket-form">
+    <div class="page-title-wrapper">
+        <h1 class="page-title"><?= $block->escapeHtml(__('Create Support Ticket')) ?></h1>
+    </div>
+
+    <form action="<?= $block->escapeUrl($block->getFormAction()) ?>" method="post" class="ticket-form">
+        <fieldset class="fieldset">
+            <legend class="legend">
+                <span><?= $block->escapeHtml(__('Ticket Information')) ?></span>
+            </legend>
+
+            <div class="field required">
+                <label for="subject" class="label">
+                    <span><?= $block->escapeHtml(__('Subject')) ?></span>
+                </label>
+                <div class="control">
+                    <input type="text" 
+                           name="subject" 
+                           id="subject" 
+                           class="input-text required-entry" 
+                           required>
+                </div>
+            </div>
+
+            <div class="field required">
+                <label for="description" class="label">
+                    <span><?= $block->escapeHtml(__('Description')) ?></span>
+                </label>
+                <div class="control">
+                    <textarea name="description" 
+                              id="description" 
+                              class="input-text required-entry" 
+                              rows="8" 
+                              required></textarea>
+                </div>
+            </div>
+
+            <div class="field required">
+                <label for="category_id" class="label">
+                    <span><?= $block->escapeHtml(__('Category')) ?></span>
+                </label>
+                <div class="control">
+                    <select name="category_id" 
+                            id="category_id" 
+                            class="select required-entry" 
+                            required>
+                        <option value=""><?= $block->escapeHtml(__('Please select a category')) ?></option>
+                        <?php foreach ($categories as $category): ?>
+                            <option value="<?= $block->escapeHtml($category->getCategoryId()) ?>">
+                                <?= $block->escapeHtml($category->getName()) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+
+            <div class="field required">
+                <label for="priority_id" class="label">
+                    <span><?= $block->escapeHtml(__('Priority')) ?></span>
+                </label>
+                <div class="control">
+                    <select name="priority_id" 
+                            id="priority_id" 
+                            class="select required-entry" 
+                            required>
+                        <option value=""><?= $block->escapeHtml(__('Please select a priority')) ?></option>
+                        <?php foreach ($priorities as $priority): ?>
+                            <option value="<?= $block->escapeHtml($priority->getPriorityId()) ?>">
+                                <?= $block->escapeHtml($priority->getName()) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+
+            <?php if (!$block->isCustomerLoggedIn()): ?>
+                <div class="field required">
+                    <label for="customer_name" class="label">
+                        <span><?= $block->escapeHtml(__('Your Name')) ?></span>
+                    </label>
+                    <div class="control">
+                        <input type="text" 
+                               name="customer_name" 
+                               id="customer_name" 
+                               class="input-text required-entry" 
+                               value="<?= $block->escapeHtml($block->getCustomerName()) ?>"
+                               required>
+                    </div>
+                </div>
+
+                <div class="field required">
+                    <label for="customer_email" class="label">
+                        <span><?= $block->escapeHtml(__('Your Email')) ?></span>
+                    </label>
+                    <div class="control">
+                        <input type="email" 
+                               name="customer_email" 
+                               id="customer_email" 
+                               class="input-text required-entry validate-email" 
+                               value="<?= $block->escapeHtml($block->getCustomerEmail()) ?>"
+                               required>
+                    </div>
+                </div>
+            <?php endif; ?>
+        </fieldset>
+
+        <div class="actions-toolbar">
+            <div class="primary">
+                <button type="submit" class="action submit primary">
+                    <span><?= $block->escapeHtml(__('Create Ticket')) ?></span>
+                </button>
+            </div>
+            <div class="secondary">
+                <a href="<?= $block->escapeUrl($block->getUrl('supporttickets/index/index')) ?>" 
+                   class="action back">
+                    <?= $block->escapeHtml(__('Back to Tickets')) ?>
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+.support-ticket-form {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.support-ticket-form .ticket-form {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 30px;
+    margin: 20px 0;
+}
+
+.support-ticket-form .fieldset {
+    border: none;
+    margin: 0 0 30px 0;
+    padding: 0;
+}
+
+.support-ticket-form .legend {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.support-ticket-form .field {
+    margin-bottom: 20px;
+}
+
+.support-ticket-form .field.required .label::after {
+    content: ' *';
+    color: #e02b27;
+}
+
+.support-ticket-form .label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+}
+
+.support-ticket-form .control input,
+.support-ticket-form .control textarea,
+.support-ticket-form .control select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.support-ticket-form .control textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.support-ticket-form .actions-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.support-ticket-form .action.submit.primary {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.support-ticket-form .action.submit.primary:hover {
+    background-color: #0056b3;
+}
+
+.support-ticket-form .action.back {
+    color: #007bff;
+    text-decoration: none;
+    padding: 10px 20px;
+}
+
+.support-ticket-form .action.back:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .support-ticket-form .actions-toolbar {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .support-ticket-form .actions-toolbar .primary,
+    .support-ticket-form .actions-toolbar .secondary {
+        width: 100%;
+        text-align: center;
+    }
+}
+</style>

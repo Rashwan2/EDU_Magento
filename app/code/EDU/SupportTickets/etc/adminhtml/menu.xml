@@ -2,14 +2,23 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
-        <add id="EDU_SupportTickets::support_tickets" title="Support Tickets" module="EDU_SupportTickets" sortOrder="100" resource="EDU_SupportTickets::support_tickets"/>
-        
-        <add id="EDU_SupportTickets::tickets" title="Tickets" module="EDU_SupportTickets" sortOrder="10" parent="EDU_SupportTickets::support_tickets" resource="EDU_SupportTickets::tickets"/>
-        
-        <add id="EDU_SupportTickets::categories" title="Categories" module="EDU_SupportTickets" sortOrder="20" parent="EDU_SupportTickets::support_tickets" resource="EDU_SupportTickets::categories"/>
-        
-        <add id="EDU_SupportTickets::priorities" title="Priorities" module="EDU_SupportTickets" sortOrder="30" parent="EDU_SupportTickets::support_tickets" resource="EDU_SupportTickets::priorities"/>
-        
-        <add id="EDU_SupportTickets::settings" title="Settings" module="EDU_SupportTickets" sortOrder="40" parent="EDU_SupportTickets::support_tickets" resource="EDU_SupportTickets::settings"/>
+        <add id="EDU_SupportTickets::support_tickets" title="Support Tickets" module="EDU_SupportTickets"
+             sortOrder="100" resource="EDU_SupportTickets::support_tickets"/>
+
+        <add id="EDU_SupportTickets::tickets" title="Tickets" module="EDU_SupportTickets" sortOrder="10"
+             parent="EDU_SupportTickets::support_tickets" resource="EDU_SupportTickets::tickets"
+             action="supporttickets/ticket/index"/>
+
+        <add id="EDU_SupportTickets::categories" title="Categories" module="EDU_SupportTickets" sortOrder="20"
+             parent="EDU_SupportTickets::support_tickets" resource="EDU_SupportTickets::categories"
+             action="supporttickets/ticket/category"/>
+
+        <!--        <add id="EDU_SupportTickets::priorities" title="Priorities" module="EDU_SupportTickets" sortOrder="30"-->
+        <!--             parent="EDU_SupportTickets::support_tickets" resource="EDU_SupportTickets::priorities"-->
+        <!--             action="supporttickets/ticket/view"/>-->
+
+        <!--        <add id="EDU_SupportTickets::settings" title="Settings" module="EDU_SupportTickets" sortOrder="40"-->
+        <!--             parent="EDU_SupportTickets::support_tickets" resource="EDU_SupportTickets::settings"-->
+        <!--             action="supporttickets/ticket/view"/>-->
     </menu>
 </config>

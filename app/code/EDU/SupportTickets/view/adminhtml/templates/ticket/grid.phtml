@@ -1,0 +1,108 @@
+<?php
+/** @var \EDU\SupportTickets\Block\Adminhtml\Ticket\Grid $block */
+?>
+
+<div class="support-tickets-grid">
+    <div class="page-header">
+        <h1><?= $block->escapeHtml(__('Support Tickets')) ?></h1>
+    </div>
+
+    <div class="grid-container">
+        <?= $block->getChildHtml('grid') ?>
+    </div>
+</div>
+
+<style>
+.support-tickets-grid .page-header {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.support-tickets-grid .page-header h1 {
+    margin: 0;
+    color: #333;
+}
+
+.support-tickets-grid .grid-container {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.support-tickets-grid .admin__data-grid-wrap {
+    overflow-x: auto;
+}
+
+.support-tickets-grid .data-grid {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.support-tickets-grid .data-grid th,
+.support-tickets-grid .data-grid td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.support-tickets-grid .data-grid th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+    color: #333;
+}
+
+.support-tickets-grid .data-grid tr:hover {
+    background-color: #f5f5f5;
+}
+
+.support-tickets-grid .col-actions {
+    white-space: nowrap;
+}
+
+.support-tickets-grid .action {
+    color: #007bff;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+.support-tickets-grid .action:hover {
+    text-decoration: underline;
+}
+
+.support-tickets-grid .status-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.support-tickets-grid .status-open {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.support-tickets-grid .status-in-progress {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.support-tickets-grid .status-waiting {
+    background-color: #cce5ff;
+    color: #004085;
+}
+
+.support-tickets-grid .status-resolved {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+.support-tickets-grid .status-closed {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+</style>
+

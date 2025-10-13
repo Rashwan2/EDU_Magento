@@ -1,0 +1,142 @@
+<?php
+/** @var \EDU\SupportTickets\Block\Ticket\ListBlock $block */
+$tickets = $block->getTickets();
+?>
+
+<div class="support-tickets-list">
+    <div class="page-title-wrapper">
+        <h1 class="page-title"><?= $block->escapeHtml(__('My Support Tickets')) ?></h1>
+    </div>
+
+    <?php if (empty($tickets)): ?>
+        <div class="message info empty">
+            <span><?= $block->escapeHtml(__('You have no support tickets yet.')) ?></span>
+        </div>
+    <?php else: ?>
+        <div class="tickets-table-wrapper">
+            <table class="data table table-tickets">
+                <thead>
+                    <tr>
+                        <th class="col ticket-number"><?= $block->escapeHtml(__('Ticket Number')) ?></th>
+                        <th class="col subject"><?= $block->escapeHtml(__('Subject')) ?></th>
+                        <th class="col status"><?= $block->escapeHtml(__('Status')) ?></th>
+                        <th class="col created-at"><?= $block->escapeHtml(__('Created At')) ?></th>
+                        <th class="col actions"><?= $block->escapeHtml(__('Actions')) ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($tickets as $ticket): ?>
+                        <tr>
+                            <td class="col ticket-number">
+                                <strong><?= $block->escapeHtml($ticket->getTicketNumber()) ?></strong>
+                            </td>
+                            <td class="col subject">
+                                <?= $block->escapeHtml($ticket->getSubject()) ?>
+                            </td>
+                            <td class="col status">
+                                <span class="status-badge <?= $block->escapeHtml($block->getStatusClass($ticket->getStatus())) ?>">
+                                    <?= $block->escapeHtml($block->getStatusLabel($ticket->getStatus())) ?>
+                                </span>
+                            </td>
+                            <td class="col created-at">
+                                <?= $block->escapeHtml($block->formatDate($ticket->getCreatedAt())) ?>
+                            </td>
+                            <td class="col actions">
+                                <a href="<?= $block->escapeUrl($block->getUrl('supporttickets/index/view', ['id' => $ticket->getTicketId()])) ?>" 
+                                   class="action view">
+                                    <?= $block->escapeHtml(__('View')) ?>
+                                </a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    <?php endif; ?>
+
+    <div class="actions-toolbar">
+        <div class="primary">
+            <a href="<?= $block->escapeUrl($block->getUrl('supporttickets/index/create')) ?>" 
+               class="action primary">
+                <?= $block->escapeHtml(__('Create New Ticket')) ?>
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+.support-tickets-list .tickets-table-wrapper {
+    margin: 20px 0;
+}
+
+.support-tickets-list .table-tickets {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.support-tickets-list .table-tickets th,
+.support-tickets-list .table-tickets td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.support-tickets-list .table-tickets th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.status-open {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-in-progress {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-waiting {
+    background-color: #cce5ff;
+    color: #004085;
+}
+
+.status-resolved {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+.status-closed {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.actions-toolbar {
+    margin-top: 30px;
+    text-align: right;
+}
+
+.actions-toolbar .action.primary {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.actions-toolbar .action.primary:hover {
+    background-color: #0056b3;
+    color: white;
+}
+</style>
+

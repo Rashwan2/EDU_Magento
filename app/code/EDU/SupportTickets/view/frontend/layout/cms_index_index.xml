@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="header.panel">
+            <block class="Magento\Framework\View\Element\Html\Link\Current" 
+                   name="header.support.ticket.link"
+                   template="EDU_SupportTickets::support_link.phtml">
+                <arguments>
+                    <argument name="label" xsi:type="string">Support</argument>
+                    <argument name="path" xsi:type="string">supporttickets/index/create</argument>
+                    <argument name="title" xsi:type="string">Submit Support Ticket</argument>
+                    <argument name="class" xsi:type="string">support-ticket-link</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

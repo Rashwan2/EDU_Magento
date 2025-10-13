@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
-    
+
     <!-- Support Ticket Categories Table -->
     <table name="support_ticket_category" resource="default" engine="innodb" comment="Support Ticket Categories">
         <column xsi:type="int" name="category_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Category ID"/>
@@ -12,15 +12,15 @@
         <column xsi:type="int" name="sort_order" padding="10" unsigned="true" nullable="false" default="0" comment="Sort Order"/>
         <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
         <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
-        
+
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="category_id"/>
         </constraint>
-        
+
         <index referenceId="SUPPORT_TICKET_CATEGORY_SLUG" indexType="btree">
             <column name="slug"/>
         </index>
-        
+
         <index referenceId="SUPPORT_TICKET_CATEGORY_ACTIVE" indexType="btree">
             <column name="is_active"/>
         </index>
@@ -34,11 +34,11 @@
         <column xsi:type="int" name="sort_order" padding="10" unsigned="true" nullable="false" default="0" comment="Sort Order"/>
         <column xsi:type="tinyint" name="is_active" nullable="false" default="1" comment="Is Active"/>
         <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
-        
+
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="priority_id"/>
         </constraint>
-        
+
         <index referenceId="SUPPORT_TICKET_PRIORITY_SORT" indexType="btree">
             <column name="sort_order"/>
         </index>
@@ -63,55 +63,55 @@
         <column xsi:type="timestamp" name="resolved_at" nullable="true" comment="Resolved At"/>
         <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
         <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
-        
+
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="ticket_id"/>
         </constraint>
-        
-        <constraint xsi:type="foreign" referenceId="SUPPORT_TICKET_CUSTOMER_ID_CUSTOMER_ENTITY_ENTITY_ID" 
-                    table="support_ticket" column="customer_id" 
-                    referenceTable="customer_entity" referenceColumn="entity_id" 
+
+        <constraint xsi:type="foreign" referenceId="SUPPORT_TICKET_CUSTOMER_ID_CUSTOMER_ENTITY_ENTITY_ID"
+                    table="support_ticket" column="customer_id"
+                    referenceTable="customer_entity" referenceColumn="entity_id"
                     onDelete="SET NULL"/>
-        
-        <constraint xsi:type="foreign" referenceId="SUPPORT_TICKET_PRIORITY_ID_SUPPORT_TICKET_PRIORITY_PRIORITY_ID" 
-                    table="support_ticket" column="priority_id" 
-                    referenceTable="support_ticket_priority" referenceColumn="priority_id" 
-                    onDelete="RESTRICT"/>
-        
-        <constraint xsi:type="foreign" referenceId="SUPPORT_TICKET_CATEGORY_ID_SUPPORT_TICKET_CATEGORY_CATEGORY_ID" 
-                    table="support_ticket" column="category_id" 
-                    referenceTable="support_ticket_category" referenceColumn="category_id" 
-                    onDelete="RESTRICT"/>
-        
-        <constraint xsi:type="foreign" referenceId="SUPPORT_TICKET_ASSIGNED_TO_ADMIN_USER_USER_ID" 
-                    table="support_ticket" column="assigned_to" 
-                    referenceTable="admin_user" referenceColumn="user_id" 
+
+        <constraint xsi:type="foreign" referenceId="SUPPORT_TICKET_PRIORITY_ID_SUPPORT_TICKET_PRIORITY_PRIORITY_ID"
+                    table="support_ticket" column="priority_id"
+                    referenceTable="support_ticket_priority" referenceColumn="priority_id"
+                    onDelete="CASCADE"/>
+
+        <constraint xsi:type="foreign" referenceId="SUPPORT_TICKET_CATEGORY_ID_SUPPORT_TICKET_CATEGORY_CATEGORY_ID"
+                    table="support_ticket" column="category_id"
+                    referenceTable="support_ticket_category" referenceColumn="category_id"
+                    onDelete="CASCADE"/>
+
+        <constraint xsi:type="foreign" referenceId="SUPPORT_TICKET_ASSIGNED_TO_ADMIN_USER_USER_ID"
+                    table="support_ticket" column="assigned_to"
+                    referenceTable="admin_user" referenceColumn="user_id"
                     onDelete="SET NULL"/>
-        
+
         <index referenceId="SUPPORT_TICKET_NUMBER" indexType="btree">
             <column name="ticket_number"/>
         </index>
-        
+
         <index referenceId="SUPPORT_TICKET_CUSTOMER_ID" indexType="btree">
             <column name="customer_id"/>
         </index>
-        
+
         <index referenceId="SUPPORT_TICKET_STATUS" indexType="btree">
             <column name="status"/>
         </index>
-        
+
         <index referenceId="SUPPORT_TICKET_PRIORITY_ID" indexType="btree">
             <column name="priority_id"/>
         </index>
-        
+
         <index referenceId="SUPPORT_TICKET_CATEGORY_ID" indexType="btree">
             <column name="category_id"/>
         </index>
-        
+
         <index referenceId="SUPPORT_TICKET_ASSIGNED_TO" indexType="btree">
             <column name="assigned_to"/>
         </index>
-        
+
         <index referenceId="SUPPORT_TICKET_CREATED_AT" indexType="btree">
             <column name="created_at"/>
         </index>
@@ -129,25 +129,25 @@
         <column xsi:type="tinyint" name="is_internal" nullable="false" default="0" comment="Is Internal Note"/>
         <column xsi:type="varchar" name="attachment" length="500" nullable="true" comment="Attachment File Path"/>
         <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
-        
+
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="message_id"/>
         </constraint>
-        
-        <constraint xsi:type="foreign" referenceId="SUPPORT_TICKET_MESSAGE_TICKET_ID_SUPPORT_TICKET_TICKET_ID" 
-                    table="support_ticket_message" column="ticket_id" 
-                    referenceTable="support_ticket" referenceColumn="ticket_id" 
+
+        <constraint xsi:type="foreign" referenceId="SUPPORT_TICKET_MESSAGE_TICKET_ID_SUPPORT_TICKET_TICKET_ID"
+                    table="support_ticket_message" column="ticket_id"
+                    referenceTable="support_ticket" referenceColumn="ticket_id"
                     onDelete="CASCADE"/>
-        
+
         <index referenceId="SUPPORT_TICKET_MESSAGE_TICKET_ID" indexType="btree">
             <column name="ticket_id"/>
         </index>
-        
+
         <index referenceId="SUPPORT_TICKET_MESSAGE_SENDER" indexType="btree">
             <column name="sender_id"/>
             <column name="sender_type"/>
         </index>
-        
+
         <index referenceId="SUPPORT_TICKET_MESSAGE_CREATED_AT" indexType="btree">
             <column name="created_at"/>
         </index>
@@ -162,25 +162,25 @@
         <column xsi:type="int" name="changed_by" padding="10" unsigned="true" nullable="true" comment="Changed By Admin User"/>
         <column xsi:type="text" name="comment" nullable="true" comment="Status Change Comment"/>
         <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
-        
+
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="history_id"/>
         </constraint>
-        
-        <constraint xsi:type="foreign" referenceId="SUPPORT_TICKET_STATUS_HISTORY_TICKET_ID_SUPPORT_TICKET_TICKET_ID" 
-                    table="support_ticket_status_history" column="ticket_id" 
-                    referenceTable="support_ticket" referenceColumn="ticket_id" 
+
+        <constraint xsi:type="foreign" referenceId="SUPPORT_TICKET_STATUS_HISTORY_TICKET_ID_SUPPORT_TICKET_TICKET_ID"
+                    table="support_ticket_status_history" column="ticket_id"
+                    referenceTable="support_ticket" referenceColumn="ticket_id"
                     onDelete="CASCADE"/>
-        
-        <constraint xsi:type="foreign" referenceId="SUPPORT_TICKET_STATUS_HISTORY_CHANGED_BY_ADMIN_USER_USER_ID" 
-                    table="support_ticket_status_history" column="changed_by" 
-                    referenceTable="admin_user" referenceColumn="user_id" 
+
+        <constraint xsi:type="foreign" referenceId="SUPPORT_TICKET_STATUS_HISTORY_CHANGED_BY_ADMIN_USER_USER_ID"
+                    table="support_ticket_status_history" column="changed_by"
+                    referenceTable="admin_user" referenceColumn="user_id"
                     onDelete="SET NULL"/>
-        
+
         <index referenceId="SUPPORT_TICKET_STATUS_HISTORY_TICKET_ID" indexType="btree">
             <column name="ticket_id"/>
         </index>
-        
+
         <index referenceId="SUPPORT_TICKET_STATUS_HISTORY_CREATED_AT" indexType="btree">
             <column name="created_at"/>
         </index>

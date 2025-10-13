@@ -1,0 +1,131 @@
+//
+// Support Tickets Module Styles
+//
+
+.support-ticket-link {
+    color: #007bff !important;
+    text-decoration: none !important;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    display: inline-block;
+    
+    &:hover {
+        background-color: #007bff !important;
+        color: white !important;
+        text-decoration: none !important;
+    }
+}
+
+// Top links specific styling
+.top.links .support-ticket-link {
+    margin-right: 15px;
+    border: 1px solid #007bff;
+    
+    &:hover {
+        background-color: #007bff !important;
+        color: white !important;
+    }
+}
+
+// Header panel support link
+.header.panel .support-ticket-link {
+    margin-left: 15px;
+    display: inline-block;
+}
+
+// Top links support link
+.top.links .support-ticket-link {
+    margin-right: 15px;
+}
+
+// Customer account navigation
+.customer-account-navigation-support-tickets {
+    .item {
+        a {
+            color: #333;
+            text-decoration: none;
+            padding: 8px 0;
+            display: block;
+            border-bottom: 1px solid #eee;
+            
+            &:hover {
+                color: #007bff;
+            }
+        }
+        
+        &.current {
+            a {
+                color: #007bff;
+                font-weight: bold;
+            }
+        }
+    }
+}
+
+// Support tickets page specific styles
+.support-tickets-list,
+.support-ticket-view,
+.support-ticket-form {
+    .page-title-wrapper {
+        margin-bottom: 20px;
+        
+        .page-title {
+            color: #333;
+            font-size: 28px;
+            font-weight: 300;
+            margin: 0;
+        }
+    }
+}
+
+// Status badges
+.status-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    
+    &.status-open {
+        background-color: #d4edda;
+        color: #155724;
+    }
+    
+    &.status-in-progress {
+        background-color: #fff3cd;
+        color: #856404;
+    }
+    
+    &.status-waiting {
+        background-color: #cce5ff;
+        color: #004085;
+    }
+    
+    &.status-resolved {
+        background-color: #d1ecf1;
+        color: #0c5460;
+    }
+    
+    &.status-closed {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+    .header.panel .support-ticket-link {
+        margin-left: 5px;
+        padding: 6px 8px;
+        font-size: 14px;
+    }
+    
+    .top.links .support-ticket-link {
+        margin-right: 5px;
+        padding: 6px 8px;
+        font-size: 14px;
+    }
+}

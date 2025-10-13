@@ -4,6 +4,7 @@ namespace EDU\SupportTickets\Model;
 
 use EDU\SupportTickets\Api\Data\TicketInterface;
 use EDU\SupportTickets\Api\TicketRepositoryInterface;
+use EDU\SupportTickets\Api\StatusHistoryRepositoryInterface;
 use EDU\SupportTickets\Model\ResourceModel\Ticket as TicketResourceModel;
 use EDU\SupportTickets\Model\ResourceModel\Ticket\Collection as TicketCollection;
 use EDU\SupportTickets\Model\ResourceModel\Ticket\CollectionFactory as TicketCollectionFactory;
@@ -24,6 +25,7 @@ class TicketRepository implements TicketRepositoryInterface
     protected $searchResultsFactory;
     protected $collectionProcessor;
     protected $random;
+    protected $statusHistoryRepository;
 
     public function __construct(
         \EDU\SupportTickets\Model\TicketFactory $ticketFactory,
@@ -31,7 +33,8 @@ class TicketRepository implements TicketRepositoryInterface
         TicketCollectionFactory $ticketCollectionFactory,
         SearchResultsInterfaceFactory $searchResultsFactory,
         CollectionProcessorInterface $collectionProcessor,
-        Random $random
+        Random $random,
+        StatusHistoryRepositoryInterface $statusHistoryRepository
     ) {
         $this->ticketFactory = $ticketFactory;
         $this->ticketResourceModel = $ticketResourceModel;
@@ -39,6 +42,7 @@ class TicketRepository implements TicketRepositoryInterface
         $this->searchResultsFactory = $searchResultsFactory;
         $this->collectionProcessor = $collectionProcessor;
         $this->random = $random;
+        $this->statusHistoryRepository = $statusHistoryRepository;
     }
 
     public function save(TicketInterface $ticket)
@@ -147,13 +151,7 @@ class TicketRepository implements TicketRepositoryInterface
         $this->save($ticket);
 
         // Add status history record
-        $statusHistory = $this->ticketFactory->create();
-        $statusHistory->setTicketId($ticketId);
-        $statusHistory->setOldStatus($oldStatus);
-        $statusHistory->setNewStatus($status);
-        $statusHistory->setChangedBy($changedBy);
-        $statusHistory->setComment($comment);
-        $statusHistory->setCreatedAt(date('Y-m-d H:i:s'));
+        $this->statusHistoryRepository->addStatusChange($ticketId, $oldStatus, $status, $changedBy, $comment);
 
         return true;
     }

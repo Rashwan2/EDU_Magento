@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <!-- Link your data source name to your collection -->
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="support_ticket_listing_data_source" xsi:type="string">SupportTicketGridCollection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Define your collection virtual type -->
+    <virtualType name="SupportTicketGridCollection"
+                 type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">support_ticket</argument>
+            <argument name="resourceModel" xsi:type="string">EDU\SupportTickets\Model\ResourceModel\Ticket</argument>
+        </arguments>
+    </virtualType>
+</config>

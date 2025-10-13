@@ -381,7 +381,7 @@ return [
         'EDU_InventoryReport' => 1,
         'EDU_QuestionHub' => 1,
         'EDU_StoreBlogs' => 1,
-        'EDU_SupportTicket' => 1,
+        'EDU_SupportTickets' => 1,
         'MarkShust_DisableTwoFactorAuth' => 1,
         'PayPal_Braintree' => 1,
         'PayPal_BraintreeCustomerBalance' => 1,

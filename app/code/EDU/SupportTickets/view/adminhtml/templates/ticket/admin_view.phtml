@@ -1,0 +1,361 @@
+<?php
+/** @var \EDU\SupportTickets\Block\Ticket\ViewBlock $block */
+$ticket = $block->getTicket();
+$messages = $block->getMessages();
+?>
+
+<div class="admin-support-ticket-view">
+    <div class="page-header">
+        <h1><?= $block->escapeHtml(__('Ticket #%1', $ticket->getTicketNumber())) ?></h1>
+        <div class="page-actions">
+            <a href="<?= $block->escapeUrl($block->getUrl('supporttickets/ticket/edit', ['id' => $ticket->getTicketId()])) ?>" 
+               class="action-primary">
+                <?= $block->escapeHtml(__('Edit Ticket')) ?>
+            </a>
+            <a href="<?= $block->escapeUrl($block->getUrl('supporttickets/ticket/index')) ?>" 
+               class="action-secondary">
+                <?= $block->escapeHtml(__('Back to List')) ?>
+            </a>
+        </div>
+    </div>
+
+    <div class="ticket-details">
+        <div class="ticket-header">
+            <div class="ticket-info">
+                <div class="ticket-subject">
+                    <h2><?= $block->escapeHtml($ticket->getSubject()) ?></h2>
+                </div>
+                <div class="ticket-meta">
+                    <div class="meta-item">
+                        <strong><?= $block->escapeHtml(__('Status:')) ?></strong>
+                        <span class="status-badge <?= $block->escapeHtml($block->getStatusClass($ticket->getStatus())) ?>">
+                            <?= $block->escapeHtml($block->getStatusLabel($ticket->getStatus())) ?>
+                        </span>
+                    </div>
+                    <div class="meta-item">
+                        <strong><?= $block->escapeHtml(__('Customer:')) ?></strong>
+                        <span><?= $block->escapeHtml($ticket->getCustomerName()) ?></span>
+                    </div>
+                    <div class="meta-item">
+                        <strong><?= $block->escapeHtml(__('Email:')) ?></strong>
+                        <span><?= $block->escapeHtml($ticket->getCustomerEmail()) ?></span>
+                    </div>
+                    <div class="meta-item">
+                        <strong><?= $block->escapeHtml(__('Created:')) ?></strong>
+                        <span><?= $block->escapeHtml($block->formatDate($ticket->getCreatedAt())) ?></span>
+                    </div>
+                    <?php if ($ticket->getOrderNumber()): ?>
+                        <div class="meta-item">
+                            <strong><?= $block->escapeHtml(__('Order:')) ?></strong>
+                            <span><?= $block->escapeHtml($ticket->getOrderNumber()) ?></span>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="ticket-description">
+            <h3><?= $block->escapeHtml(__('Description')) ?></h3>
+            <div class="description-content">
+                <?= $block->escapeHtml(nl2br($ticket->getDescription())) ?>
+            </div>
+        </div>
+
+        <div class="ticket-messages">
+            <h3><?= $block->escapeHtml(__('Messages')) ?></h3>
+            
+            <?php if (empty($messages)): ?>
+                <div class="message info empty">
+                    <span><?= $block->escapeHtml(__('No messages yet.')) ?></span>
+                </div>
+            <?php else: ?>
+                <div class="messages-list">
+                    <?php foreach ($messages as $message): ?>
+                        <div class="message-item <?= $block->escapeHtml($message->getSenderType()) ?>">
+                            <div class="message-header">
+                                <span class="sender-name">
+                                    <?= $block->escapeHtml($message->getSenderName()) ?>
+                                </span>
+                                <span class="sender-type">
+                                    (<?= $block->escapeHtml($block->getSenderTypeLabel($message->getSenderType())) ?>)
+                                </span>
+                                <span class="message-date">
+                                    <?= $block->escapeHtml($block->formatDate($message->getCreatedAt())) ?>
+                                </span>
+                            </div>
+                            <div class="message-content">
+                                <?= $block->escapeHtml(nl2br($message->getMessage())) ?>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+
+        <div class="add-message-form">
+            <h3><?= $block->escapeHtml(__('Add Message')) ?></h3>
+            <form action="<?= $block->escapeUrl($block->getUrl('supporttickets/message/add')) ?>" method="post">
+                <input type="hidden" name="ticket_id" value="<?= $block->escapeHtml($ticket->getTicketId()) ?>">
+                <div class="field message-field">
+                    <label for="message" class="label">
+                        <span><?= $block->escapeHtml(__('Message')) ?></span>
+                    </label>
+                    <div class="control">
+                        <textarea name="message" 
+                                  id="message" 
+                                  class="input-text" 
+                                  rows="5" 
+                                  required></textarea>
+                    </div>
+                </div>
+                <div class="field internal-field">
+                    <div class="control">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="is_internal" value="1">
+                            <span><?= $block->escapeHtml(__('Internal Note (not visible to customer)')) ?></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="actions-toolbar">
+                    <div class="primary">
+                        <button type="submit" class="action-primary">
+                            <?= $block->escapeHtml(__('Send Message')) ?>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+.admin-support-ticket-view .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.admin-support-ticket-view .page-header h1 {
+    margin: 0;
+    color: #333;
+}
+
+.admin-support-ticket-view .page-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.admin-support-ticket-view .action-primary {
+    background-color: #007bff;
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.admin-support-ticket-view .action-primary:hover {
+    background-color: #0056b3;
+    color: white;
+}
+
+.admin-support-ticket-view .action-secondary {
+    color: #007bff;
+    text-decoration: none;
+    padding: 8px 16px;
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.admin-support-ticket-view .action-secondary:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.admin-support-ticket-view .ticket-details {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 20px;
+}
+
+.admin-support-ticket-view .ticket-header {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.admin-support-ticket-view .ticket-subject h2 {
+    margin: 0 0 15px 0;
+    color: #333;
+}
+
+.admin-support-ticket-view .ticket-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.admin-support-ticket-view .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.admin-support-ticket-view .status-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    width: fit-content;
+}
+
+.admin-support-ticket-view .status-open {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.admin-support-ticket-view .status-in-progress {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.admin-support-ticket-view .status-waiting {
+    background-color: #cce5ff;
+    color: #004085;
+}
+
+.admin-support-ticket-view .status-resolved {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+.admin-support-ticket-view .status-closed {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.admin-support-ticket-view .ticket-description {
+    margin-bottom: 30px;
+}
+
+.admin-support-ticket-view .ticket-description h3 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.admin-support-ticket-view .description-content {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 4px;
+    line-height: 1.6;
+}
+
+.admin-support-ticket-view .ticket-messages h3 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.admin-support-ticket-view .messages-list {
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.admin-support-ticket-view .message-item {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.admin-support-ticket-view .message-item:last-child {
+    border-bottom: none;
+}
+
+.admin-support-ticket-view .message-item.customer {
+    background-color: #f8f9fa;
+}
+
+.admin-support-ticket-view .message-item.admin {
+    background-color: #e3f2fd;
+}
+
+.admin-support-ticket-view .message-header {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #666;
+}
+
+.admin-support-ticket-view .sender-name {
+    font-weight: bold;
+}
+
+.admin-support-ticket-view .message-content {
+    line-height: 1.6;
+}
+
+.admin-support-ticket-view .add-message-form {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.admin-support-ticket-view .add-message-form h3 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.admin-support-ticket-view .field {
+    margin-bottom: 15px;
+}
+
+.admin-support-ticket-view .field .label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.admin-support-ticket-view .field .control textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+.admin-support-ticket-view .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.admin-support-ticket-view .actions-toolbar {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.admin-support-ticket-view .action-primary {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.admin-support-ticket-view .action-primary:hover {
+    background-color: #0056b3;
+}
+</style>
+
