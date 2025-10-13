@@ -5,10 +5,8 @@ namespace EDU\SupportTickets\Model;
 use EDU\SupportTickets\Api\Data\MessageInterface;
 use EDU\SupportTickets\Api\MessageRepositoryInterface;
 use EDU\SupportTickets\Model\ResourceModel\Message as MessageResourceModel;
-use EDU\SupportTickets\Model\ResourceModel\Message\Collection as MessageCollection;
 use EDU\SupportTickets\Model\ResourceModel\Message\CollectionFactory as MessageCollectionFactory;
 use Magento\Framework\Api\SearchCriteriaInterface;
-use Magento\Framework\Api\SearchResultsInterface;
 use Magento\Framework\Api\SearchResultsInterfaceFactory;
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
 use Magento\Framework\Exception\CouldNotSaveException;
@@ -17,14 +15,29 @@ use Magento\Framework\Exception\CouldNotDeleteException;
 
 class MessageRepository implements MessageRepositoryInterface
 {
+    /**
+     * @var MessageFactory
+     */
     protected $messageFactory;
+    /**
+     * @var MessageResourceModel
+     */
     protected $messageResourceModel;
+    /**
+     * @var MessageCollectionFactory
+     */
     protected $messageCollectionFactory;
+    /**
+     * @var SearchResultsInterfaceFactory
+     */
     protected $searchResultsFactory;
+    /**
+     * @var CollectionProcessorInterface
+     */
     protected $collectionProcessor;
 
     public function __construct(
-        \EDU\SupportTickets\Model\MessageFactory $messageFactory,
+        MessageFactory $messageFactory,
         MessageResourceModel $messageResourceModel,
         MessageCollectionFactory $messageCollectionFactory,
         SearchResultsInterfaceFactory $searchResultsFactory,
@@ -133,7 +146,7 @@ class MessageRepository implements MessageRepositoryInterface
         $collection->orderByCreatedAtDesc();
         $collection->setPageSize(1);
         $collection->load();
-        
+
         return $collection->getFirstItem();
     }
 }

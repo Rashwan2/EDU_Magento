@@ -2,6 +2,7 @@
 
 namespace EDU\SupportTickets\Model\ResourceModel\Ticket;
 
+use EDU\SupportTickets\Model\ResourceModel\Ticket;
 use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 
 class Collection extends AbstractCollection
@@ -10,7 +11,7 @@ class Collection extends AbstractCollection
     {
         $this->_init(
             \EDU\SupportTickets\Model\Ticket::class,
-            \EDU\SupportTickets\Model\ResourceModel\Ticket::class
+            Ticket::class
         );
     }
 

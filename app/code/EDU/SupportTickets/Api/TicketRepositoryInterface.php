@@ -3,8 +3,8 @@
 namespace EDU\SupportTickets\Api;
 
 use EDU\SupportTickets\Api\Data\TicketInterface;
+use EDU\SupportTickets\Api\Data\TicketSearchResultsInterface;
 use Magento\Framework\Api\SearchCriteriaInterface;
-use Magento\Framework\Api\SearchResultsInterface;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
 
@@ -81,7 +81,7 @@ interface TicketRepositoryInterface
      * Get ticket list
      *
      * @param SearchCriteriaInterface $searchCriteria
-     * @return SearchResultsInterface
+     * @return TicketSearchResultsInterface
      */
     public function getList(SearchCriteriaInterface $searchCriteria);
 

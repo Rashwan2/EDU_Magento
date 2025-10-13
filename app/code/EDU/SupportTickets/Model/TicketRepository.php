@@ -6,10 +6,8 @@ use EDU\SupportTickets\Api\Data\TicketInterface;
 use EDU\SupportTickets\Api\TicketRepositoryInterface;
 use EDU\SupportTickets\Api\StatusHistoryRepositoryInterface;
 use EDU\SupportTickets\Model\ResourceModel\Ticket as TicketResourceModel;
-use EDU\SupportTickets\Model\ResourceModel\Ticket\Collection as TicketCollection;
 use EDU\SupportTickets\Model\ResourceModel\Ticket\CollectionFactory as TicketCollectionFactory;
 use Magento\Framework\Api\SearchCriteriaInterface;
-use Magento\Framework\Api\SearchResultsInterface;
 use Magento\Framework\Api\SearchResultsInterfaceFactory;
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
 use Magento\Framework\Exception\CouldNotSaveException;
@@ -19,16 +17,37 @@ use Magento\Framework\Math\Random;
 
 class TicketRepository implements TicketRepositoryInterface
 {
+    /**
+     * @var TicketFactory
+     */
     protected $ticketFactory;
+    /**
+     * @var TicketResourceModel
+     */
     protected $ticketResourceModel;
+    /**
+     * @var TicketCollectionFactory
+     */
     protected $ticketCollectionFactory;
+    /**
+     * @var SearchResultsInterfaceFactory
+     */
     protected $searchResultsFactory;
+    /**
+     * @var CollectionProcessorInterface
+     */
     protected $collectionProcessor;
+    /**
+     * @var Random
+     */
     protected $random;
+    /**
+     * @var StatusHistoryRepositoryInterface
+     */
     protected $statusHistoryRepository;
 
     public function __construct(
-        \EDU\SupportTickets\Model\TicketFactory $ticketFactory,
+        TicketFactory $ticketFactory,
         TicketResourceModel $ticketResourceModel,
         TicketCollectionFactory $ticketCollectionFactory,
         SearchResultsInterfaceFactory $searchResultsFactory,
@@ -143,11 +162,11 @@ class TicketRepository implements TicketRepositoryInterface
         $ticket = $this->getById($ticketId);
         $oldStatus = $ticket->getStatus();
         $ticket->setStatus($status);
-        
+
         if ($status === TicketInterface::STATUS_RESOLVED || $status === TicketInterface::STATUS_CLOSED) {
             $ticket->setResolvedAt(date('Y-m-d H:i:s'));
         }
-        
+
         $this->save($ticket);
 
         // Add status history record

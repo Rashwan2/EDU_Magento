@@ -2,50 +2,78 @@
 
 namespace EDU\SupportTickets\Controller\Index;
 
-use Magento\Framework\App\Action\Action;
-use Magento\Framework\App\Action\Context;
+use EDU\SupportTickets\Api\Data\TicketInterface;
 use Magento\Customer\Model\Session as CustomerSession;
 use EDU\SupportTickets\Api\TicketRepositoryInterface;
 use EDU\SupportTickets\Api\Data\TicketInterfaceFactory;
+use Magento\Framework\App\Action\HttpPostActionInterface;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Message\ManagerInterface as MessageManager;
+use Magento\Framework\Controller\Result\RedirectFactory;
 use Magento\Framework\Exception\CouldNotSaveException;
 
-class Save extends Action
+class Save implements HttpPostActionInterface
 {
+    /**
+     * @var CustomerSession
+     */
     protected $customerSession;
+    /**
+     * @var TicketRepositoryInterface
+     */
     protected $ticketRepository;
+    /**
+     * @var TicketInterfaceFactory
+     */
     protected $ticketFactory;
+    /**
+     * @var RequestInterface
+     */
+    protected $request;
+    /**
+     * @var MessageManager
+     */
+    protected $messageManager;
+    /**
+     * @var RedirectFactory
+     */
+    protected $resultRedirectFactory;
 
     public function __construct(
-        Context $context,
         CustomerSession $customerSession,
         TicketRepositoryInterface $ticketRepository,
-        TicketInterfaceFactory $ticketFactory
+        TicketInterfaceFactory $ticketFactory,
+        RequestInterface $request,
+        MessageManager $messageManager,
+        RedirectFactory $resultRedirectFactory
     ) {
         $this->customerSession = $customerSession;
         $this->ticketRepository = $ticketRepository;
         $this->ticketFactory = $ticketFactory;
-        parent::__construct($context);
+        $this->request = $request;
+        $this->messageManager = $messageManager;
+        $this->resultRedirectFactory = $resultRedirectFactory;
     }
 
     public function execute()
     {
         $resultRedirect = $this->resultRedirectFactory->create();
-        
-        if (!$this->getRequest()->isPost()) {
+
+        if (!$this->request->isPost()) {
             return $resultRedirect->setPath('supporttickets/index/create');
         }
 
         try {
-            $data = $this->getRequest()->getPostValue();
-            
+            $data = $this->request->getPostValue();
+
             $ticket = $this->ticketFactory->create();
             $ticket->setSubject($data['subject']);
             $ticket->setDescription($data['description']);
             $ticket->setCategoryId($data['category_id']);
             $ticket->setPriorityId($data['priority_id']);
-            $ticket->setStatus(\EDU\SupportTickets\Api\Data\TicketInterface::STATUS_OPEN);
+            $ticket->setStatus(TicketInterface::STATUS_OPEN);
             $ticket->setTicketNumber($this->ticketRepository->generateTicketNumber());
-            
+
             if ($this->customerSession->isLoggedIn()) {
                 $customer = $this->customerSession->getCustomer();
                 $ticket->setCustomerId($customer->getId());
@@ -55,19 +83,24 @@ class Save extends Action
                 $ticket->setCustomerEmail($data['customer_email']);
                 $ticket->setCustomerName($data['customer_name']);
             }
-            
+
             $this->ticketRepository->save($ticket);
-            
-            $this->messageManager->addSuccessMessage(__('Your support ticket has been created successfully. Ticket number: %1', $ticket->getTicketNumber()));
+
+            $this->messageManager->addSuccessMessage(
+                __('Your support ticket has been created successfully. Ticket number: %1', $ticket->getTicketNumber())
+            );
             return $resultRedirect->setPath('supporttickets/index/view', ['id' => $ticket->getTicketId()]);
-            
+
         } catch (CouldNotSaveException $e) {
-            $this->messageManager->addErrorMessage(__('Unable to create support ticket. Please try again.'));
+            $this->messageManager->addErrorMessage(
+                __('Unable to create support ticket. Please try again.')
+            );
             return $resultRedirect->setPath('supporttickets/index/create');
         } catch (\Exception $e) {
-            $this->messageManager->addErrorMessage(__('An error occurred while creating the support ticket.'));
+            $this->messageManager->addErrorMessage(
+                __('An error occurred while creating the support ticket.')
+            );
             return $resultRedirect->setPath('supporttickets/index/create');
         }
     }
 }
-

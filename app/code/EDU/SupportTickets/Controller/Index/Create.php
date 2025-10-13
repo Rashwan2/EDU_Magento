@@ -2,22 +2,33 @@
 
 namespace EDU\SupportTickets\Controller\Index;
 
-use Magento\Framework\App\Action\Action;
-use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Customer\Model\Session as CustomerSession;
 use EDU\SupportTickets\Api\CategoryRepositoryInterface;
 use EDU\SupportTickets\Api\PriorityRepositoryInterface;
 
-class Create extends Action
+class Create implements HttpGetActionInterface
 {
-    protected $pageFactory;
-    protected $customerSession;
-    protected $categoryRepository;
-    protected $priorityRepository;
+    /**
+     * @var PageFactory
+     */
+    protected PageFactory $pageFactory;
+    /**
+     * @var CustomerSession
+     */
+    protected CustomerSession $customerSession;
+    /**
+     * @var CategoryRepositoryInterface
+     */
+    protected CategoryRepositoryInterface $categoryRepository;
+    /**
+     * @var PriorityRepositoryInterface
+     */
+    protected PriorityRepositoryInterface $priorityRepository;
 
     public function __construct(
-        Context $context,
+//        Context $context,
         PageFactory $pageFactory,
         CustomerSession $customerSession,
         CategoryRepositoryInterface $categoryRepository,
@@ -27,13 +38,11 @@ class Create extends Action
         $this->customerSession = $customerSession;
         $this->categoryRepository = $categoryRepository;
         $this->priorityRepository = $priorityRepository;
-        parent::__construct($context);
     }
 
     public function execute()
     {
         $resultPage = $this->pageFactory->create();
-//        $resultPage->getConfig()->getTitle()->set(__('Create Support Ticket'));
 
         // Get categories and priorities for form
         $categories = $this->categoryRepository->getActiveCategories();

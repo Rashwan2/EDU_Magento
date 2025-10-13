@@ -2,20 +2,27 @@
 
 namespace EDU\SupportTickets\Controller\Index;
 
-use Magento\Framework\App\Action\Action;
-use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Customer\Model\Session as CustomerSession;
 use EDU\SupportTickets\Api\TicketRepositoryInterface;
 
-class Index extends Action
+class Index implements HttpGetActionInterface
 {
+    /**
+     * @var PageFactory
+     */
     protected $pageFactory;
+    /**
+     * @var CustomerSession
+     */
     protected $customerSession;
+    /**
+     * @var TicketRepositoryInterface
+     */
     protected $ticketRepository;
 
     public function __construct(
-        Context $context,
         PageFactory $pageFactory,
         CustomerSession $customerSession,
         TicketRepositoryInterface $ticketRepository
@@ -23,7 +30,6 @@ class Index extends Action
         $this->pageFactory = $pageFactory;
         $this->customerSession = $customerSession;
         $this->ticketRepository = $ticketRepository;
-        parent::__construct($context);
     }
 
     public function execute()

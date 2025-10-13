@@ -5,10 +5,8 @@ namespace EDU\SupportTickets\Model;
 use EDU\SupportTickets\Api\Data\CategoryInterface;
 use EDU\SupportTickets\Api\CategoryRepositoryInterface;
 use EDU\SupportTickets\Model\ResourceModel\Category as CategoryResourceModel;
-use EDU\SupportTickets\Model\ResourceModel\Category\Collection as CategoryCollection;
 use EDU\SupportTickets\Model\ResourceModel\Category\CollectionFactory as CategoryCollectionFactory;
 use Magento\Framework\Api\SearchCriteriaInterface;
-use Magento\Framework\Api\SearchResultsInterface;
 use Magento\Framework\Api\SearchResultsInterfaceFactory;
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
 use Magento\Framework\Exception\CouldNotSaveException;
@@ -48,7 +46,7 @@ class CategoryRepository implements CategoryRepositoryInterface
             if (!$category->getSlug()) {
                 $category->setSlug($this->generateSlug($category->getName()));
             }
-            
+
             $this->categoryResourceModel->save($category);
         } catch (\Exception $exception) {
             throw new CouldNotSaveException(__('Could not save the category: %1', $exception->getMessage()));
