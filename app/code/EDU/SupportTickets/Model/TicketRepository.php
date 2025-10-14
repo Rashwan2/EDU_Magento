@@ -101,6 +101,13 @@ class TicketRepository implements TicketRepositoryInterface
         return $collection->getItems();
     }
 
+    public function getByCustomerEmail($customerEmail)
+    {
+        $collection = $this->ticketCollectionFactory->create();
+        $collection->addCustomerEmailFilter($customerEmail);
+        return $collection->getItems();
+    }
+
     public function getByStatus($status)
     {
         $collection = $this->ticketCollectionFactory->create();

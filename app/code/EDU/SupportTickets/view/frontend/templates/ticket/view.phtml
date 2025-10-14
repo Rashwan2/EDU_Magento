@@ -6,7 +6,7 @@ $messages = $block->getMessages();
 
 <div class="support-ticket-view">
     <div class="page-title-wrapper">
-        <h1 class="page-title"><?= $block->escapeHtml(__('Ticket #%1', $ticket->getTicketNumber())) ?></h1>
+        <h1 class="page-title"><?= $block->escapeHtml(__('Ticket Details')) ?></h1>
     </div>
 
     <div class="ticket-details">
@@ -35,7 +35,7 @@ $messages = $block->getMessages();
 
         <div class="ticket-messages">
             <h3><?= $block->escapeHtml(__('Messages')) ?></h3>
-            
+
             <?php if (empty($messages)): ?>
                 <div class="message info empty">
                     <span><?= $block->escapeHtml(__('No messages yet.')) ?></span>
@@ -74,9 +74,9 @@ $messages = $block->getMessages();
                             <span><?= $block->escapeHtml(__('Message')) ?></span>
                         </label>
                         <div class="control">
-                            <textarea name="message" id="message" 
-                                      class="input-text" 
-                                      rows="5" 
+                            <textarea name="message" id="message"
+                                      class="input-text"
+                                      rows="5"
                                       required></textarea>
                         </div>
                     </div>
@@ -94,7 +94,7 @@ $messages = $block->getMessages();
 
     <div class="actions-toolbar">
         <div class="secondary">
-            <a href="<?= $block->escapeUrl($block->getUrl('supporttickets/index/index')) ?>" 
+            <a href="<?= $block->escapeUrl($block->getUrl('supporttickets/index/index')) ?>"
                class="action back">
                 <?= $block->escapeHtml(__('Back to Tickets')) ?>
             </a>

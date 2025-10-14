@@ -5,7 +5,7 @@ $tickets = $block->getTickets();
 
 <div class="support-tickets-list">
     <div class="page-title-wrapper">
-        <h1 class="page-title"><?= $block->escapeHtml(__('My Support Tickets')) ?></h1>
+        <h1 class="page-title"><?= $block->escapeHtml(__('Tickets List')) ?></h1>
     </div>
 
     <?php if (empty($tickets)): ?>
@@ -42,7 +42,8 @@ $tickets = $block->getTickets();
                                 <?= $block->escapeHtml($block->formatDate($ticket->getCreatedAt())) ?>
                             </td>
                             <td class="col actions">
-                                <a href="<?= $block->escapeUrl($block->getUrl('supporttickets/index/view', ['id' => $ticket->getTicketId()])) ?>" 
+                                <a href="<?= $block->escapeUrl($block->getUrl('supporttickets/index/view',
+                                        ['id' => $ticket->getTicketId()])) ?>"
                                    class="action view">
                                     <?= $block->escapeHtml(__('View')) ?>
                                 </a>
@@ -56,7 +57,7 @@ $tickets = $block->getTickets();
 
     <div class="actions-toolbar">
         <div class="primary">
-            <a href="<?= $block->escapeUrl($block->getUrl('supporttickets/index/create')) ?>" 
+            <a href="<?= $block->escapeUrl($block->getUrl('supporttickets/index/create')) ?>"
                class="action primary">
                 <?= $block->escapeHtml(__('Create New Ticket')) ?>
             </a>

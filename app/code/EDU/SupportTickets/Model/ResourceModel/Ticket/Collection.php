@@ -28,6 +28,18 @@ class Collection extends AbstractCollection
     }
 
     /**
+     * Filter by customer ID
+     *
+     * @param string $customerEmail
+     * @return $this
+     */
+    public function addCustomerEmailFilter($customerEmail)
+    {
+        $this->addFieldToFilter('customer_email', $customerEmail);
+        return $this;
+    }
+
+    /**
      * Filter by status
      *
      * @param string $status

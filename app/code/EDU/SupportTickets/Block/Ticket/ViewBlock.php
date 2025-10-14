@@ -24,18 +24,14 @@ class ViewBlock extends Template
     ) {
         $this->localeResolver = $localeResolver;
         $this->messageCollectionFactory = $messageCollectionFactory;
+        $this->ticket = $this->getData('ticket') ?: [];
         parent::__construct($context, $data);
     }
 
-    public function setTicket($ticket)
-    {
-        $this->ticket = $ticket;
-        return $this;
-    }
 
     public function getTicket()
     {
-        return $this->ticket;
+        return $this->getData('ticket') ?: [];
     }
 
     public function getMessages()

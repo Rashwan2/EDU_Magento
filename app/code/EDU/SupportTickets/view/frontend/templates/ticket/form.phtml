@@ -160,9 +160,14 @@ $customerTickets = $block->getCustomerTickets();
                                 <div class="ticket-header">
                                     <div class="ticket-title">
                                         <h3>
-                                            <a href="<?= $block->escapeUrl($block->getUrl('supporttickets/index/view', ['id' => $ticket->getTicketId()])) ?>">
+                                            <?php if ($block->canAccessTicket($ticket->getTicketId())): ?>
+                                                <a href="<?= $block->escapeUrl($block->getUrl('supporttickets/index/view', ['id' => $ticket->getTicketId()])) ?>">
+                                                    <?= $block->escapeHtml($ticket->getSubject()) ?>
+                                                </a>
+                                            <?php else: ?>
                                                 <?= $block->escapeHtml($ticket->getSubject()) ?>
-                                            </a>
+                                                <span class="access-denied">(Access Denied)</span>
+                                            <?php endif; ?>
                                         </h3>
                                         <span class="ticket-number">#<?= $block->escapeHtml($ticket->getTicketNumber()) ?></span>
                                     </div>
@@ -188,11 +193,17 @@ $customerTickets = $block->getCustomerTickets();
                                     <p><?= $block->escapeHtml(substr($ticket->getDescription(), 0, 150)) ?><?= strlen($ticket->getDescription()) > 150 ? '...' : '' ?></p>
                                 </div>
                                 <div class="ticket-actions">
-                                    <a href="<?= $block->escapeUrl($block->getUrl('supporttickets/index/view',
-                                            ['id' => $ticket->getTicketId()])) ?>"
-                                       class="action view">
-                                        <?= $block->escapeHtml(__('View Details')) ?>
-                                    </a>
+                                    <?php if ($block->canAccessTicket($ticket->getTicketId())): ?>
+                                        <a href="<?= $block->escapeUrl($block->getUrl('supporttickets/index/view',
+                                                ['id' => $ticket->getTicketId()])) ?>"
+                                           class="action view">
+                                            <?= $block->escapeHtml(__('View Details')) ?>
+                                        </a>
+                                    <?php else: ?>
+                                        <span class="action disabled">
+                                            <?= $block->escapeHtml(__('Access Denied')) ?>
+                                        </span>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         <?php endforeach; ?>
@@ -413,6 +424,23 @@ $customerTickets = $block->getCustomerTickets();
 .ticket-actions .action.view:hover {
     background: #0056b3;
     color: white;
+}
+
+.ticket-actions .action.disabled {
+    background: #6c757d;
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.access-denied {
+    color: #dc3545;
+    font-size: 12px;
+    font-style: italic;
 }
 
 @media (max-width: 768px) {

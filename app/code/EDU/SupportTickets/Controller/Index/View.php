@@ -59,27 +59,44 @@ class View implements HttpGetActionInterface
     {
         $ticketId = $this->request->getParam('id');
 
+        // Validate ticket ID parameter
+        if (!$ticketId || !is_numeric($ticketId)) {
+            $this->messageManager->addErrorMessage(__('Invalid ticket ID.'));
+            $resultRedirect = $this->resultRedirectFactory->create();
+            return $resultRedirect->setPath('supporttickets/index/index');
+        }
+
         try {
             $ticket = $this->ticketRepository->getById($ticketId);
 
+            // Check if customer is logged in
+            if (!$this->customerSession->isLoggedIn()) {
+                $this->messageManager->addErrorMessage(__('You must be logged in to view tickets.'));
+                $resultRedirect = $this->resultRedirectFactory->create();
+                return $resultRedirect->setPath('customer/account/login');
+            }
+
             // Check if customer owns this ticket
-            if ($this->customerSession->isLoggedIn() &&
-                $ticket->getCustomerId() != $this->customerSession->getCustomerId()) {
+            if ($ticket->getCustomerId() != $this->customerSession->getCustomerId()) {
                 $this->messageManager->addErrorMessage(__('You are not authorized to view this ticket.'));
                 $resultRedirect = $this->resultRedirectFactory->create();
                 return $resultRedirect->setPath('supporttickets/index/index');
             }
 
-
             $resultPage = $this->pageFactory->create();
-            $resultPage->getConfig()->getTitle()->set(__('Ticket Info'));
-            $resultPage->getLayout()->getBlock('ticket.view')->setTicket($ticket);
+            $resultPage->getConfig()->getTitle()->set(__('Ticket #%1', $ticket->getTicketNumber()));
 
+            // Pass ticket to the layout
+            $resultPage->getLayout()->getBlock('ticket.view')->setData('ticket', $ticket);
 
             return $resultPage;
 
         } catch (NoSuchEntityException $e) {
             $this->messageManager->addErrorMessage(__('Ticket not found.'));
+            $resultRedirect = $this->resultRedirectFactory->create();
+            return $resultRedirect->setPath('supporttickets/index/index');
+        } catch (\Exception $e) {
+            $this->messageManager->addErrorMessage(__('An error occurred while loading the ticket.'));
             $resultRedirect = $this->resultRedirectFactory->create();
             return $resultRedirect->setPath('supporttickets/index/index');
         }

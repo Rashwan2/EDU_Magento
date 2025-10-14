@@ -21,15 +21,11 @@ class ListBlock extends Template
         parent::__construct($context, $data);
     }
 
-    public function setTickets($tickets)
-    {
-        $this->tickets = $tickets;
-        return $this;
-    }
+
 
     public function getTickets()
     {
-        return $this->tickets;
+        return $this->getData('tickets') ?: [];
     }
 
     public function getStatusLabel($status)

@@ -105,13 +105,22 @@ class FormBlock extends Template
     {
         if (empty($this->customerTickets) && $this->isCustomerLoggedIn()) {
             $customerId = $this->customerSession->getCustomerId();
+            
+            // Security check: Ensure we have a valid customer ID
+            if (!$customerId) {
+                return [];
+            }
+            
             $collection = $this->ticketCollectionFactory->create();
             $collection->addFieldToFilter('customer_id', $customerId);
             $collection->setOrder('created_at', 'DESC');
             $collection->setPageSize(20); // Limit to 20 most recent tickets
 
             foreach ($collection as $ticket) {
-                $this->customerTickets[] = $ticket;
+                // Additional security check: Verify ticket belongs to customer
+                if ($ticket->getCustomerId() == $customerId) {
+                    $this->customerTickets[] = $ticket;
+                }
             }
         }
         return $this->customerTickets;
@@ -154,5 +163,34 @@ class FormBlock extends Template
         }
 
         return parent::formatDate($date, $format, $showTime, $timezone);
+    }
+
+    /**
+     * Check if current customer can access a specific ticket
+     *
+     * @param int $ticketId
+     * @return bool
+     */
+    public function canAccessTicket($ticketId)
+    {
+        if (!$this->isCustomerLoggedIn()) {
+            return false;
+        }
+
+        $customerId = $this->customerSession->getCustomerId();
+        if (!$customerId) {
+            return false;
+        }
+
+        try {
+            $collection = $this->ticketCollectionFactory->create();
+            $collection->addFieldToFilter('ticket_id', $ticketId);
+            $collection->addFieldToFilter('customer_id', $customerId);
+            $collection->setPageSize(1);
+
+            return $collection->getSize() > 0;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 }
