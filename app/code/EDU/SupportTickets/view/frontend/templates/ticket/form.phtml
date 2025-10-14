@@ -147,7 +147,7 @@ $customerTickets = $block->getCustomerTickets();
         <div class="tab-panel" id="my-tickets">
             <div class="my-tickets-content">
                 <h2><?= $block->escapeHtml(__('My Support Tickets')) ?></h2>
-                
+
                 <?php if (empty($customerTickets)): ?>
                     <div class="no-tickets">
                         <p><?= $block->escapeHtml(__('You haven\'t submitted any support tickets yet.')) ?></p>
@@ -188,7 +188,8 @@ $customerTickets = $block->getCustomerTickets();
                                     <p><?= $block->escapeHtml(substr($ticket->getDescription(), 0, 150)) ?><?= strlen($ticket->getDescription()) > 150 ? '...' : '' ?></p>
                                 </div>
                                 <div class="ticket-actions">
-                                    <a href="<?= $block->escapeUrl($block->getUrl('supporttickets/index/view', ['id' => $ticket->getTicketId()])) ?>" 
+                                    <a href="<?= $block->escapeUrl($block->getUrl('supporttickets/index/view',
+                                            ['id' => $ticket->getTicketId()])) ?>"
                                        class="action view">
                                         <?= $block->escapeHtml(__('View Details')) ?>
                                     </a>
@@ -418,23 +419,23 @@ $customerTickets = $block->getCustomerTickets();
     .tab-headers {
         flex-direction: column;
     }
-    
+
     .tab-header {
         text-align: center;
         border-bottom: 1px solid #e0e0e0;
         border-right: none;
     }
-    
+
     .ticket-header {
         flex-direction: column;
         gap: 10px;
     }
-    
+
     .ticket-meta {
         flex-direction: column;
         gap: 10px;
     }
-    
+
     .ticket-actions {
         text-align: center;
     }
@@ -493,7 +494,6 @@ $customerTickets = $block->getCustomerTickets();
     min-height: 44px;
     padding: 10px 12px;
     background-color: #fff;
-    background-image: none;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -620,11 +620,11 @@ require(['jquery'], function($) {
         // Tab functionality
         $('.tab-header').on('click', function() {
             var targetTab = $(this).data('tab');
-            
+
             // Remove active class from all tabs and panels
             $('.tab-header').removeClass('active');
             $('.tab-panel').removeClass('active');
-            
+
             // Add active class to clicked tab and corresponding panel
             $(this).addClass('active');
             $('#' + targetTab).addClass('active');
