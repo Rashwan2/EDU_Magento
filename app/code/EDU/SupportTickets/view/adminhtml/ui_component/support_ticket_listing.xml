@@ -53,6 +53,81 @@
                     <item name="indexField" xsi:type="string">ticket_id</item>
                 </item>
             </argument>
+            <action name="set_open">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">set_open</item>
+                        <item name="label" xsi:type="string" translate="true">Set to Open</item>
+                        <item name="url" xsi:type="url" path="supporttickets/ticket/massStatus">
+                            <param name="status">open</param>
+                        </item>
+                        <item name="confirm" xsi:type="array">
+                            <item name="title" xsi:type="string" translate="true">Set to Open</item>
+                            <item name="message" xsi:type="string" translate="true">Are you sure you want to set selected tickets to Open status?</item>
+                        </item>
+                    </item>
+                </argument>
+            </action>
+            <action name="set_in_progress">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">set_in_progress</item>
+                        <item name="label" xsi:type="string" translate="true">Set to In Progress</item>
+                        <item name="url" xsi:type="url" path="supporttickets/ticket/massStatus">
+                            <param name="status">in_progress</param>
+                        </item>
+                        <item name="confirm" xsi:type="array">
+                            <item name="title" xsi:type="string" translate="true">Set to In Progress</item>
+                            <item name="message" xsi:type="string" translate="true">Are you sure you want to set selected tickets to In Progress status?</item>
+                        </item>
+                    </item>
+                </argument>
+            </action>
+            <action name="set_waiting_customer">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">set_waiting_customer</item>
+                        <item name="label" xsi:type="string" translate="true">Set to Waiting for Customer</item>
+                        <item name="url" xsi:type="url" path="supporttickets/ticket/massStatus">
+                            <param name="status">waiting_customer</param>
+                        </item>
+                        <item name="confirm" xsi:type="array">
+                            <item name="title" xsi:type="string" translate="true">Set to Waiting for Customer</item>
+                            <item name="message" xsi:type="string" translate="true">Are you sure you want to set selected tickets to Waiting for Customer status?</item>
+                        </item>
+                    </item>
+                </argument>
+            </action>
+            <action name="set_resolved">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">set_resolved</item>
+                        <item name="label" xsi:type="string" translate="true">Set to Resolved</item>
+                        <item name="url" xsi:type="url" path="supporttickets/ticket/massStatus">
+                            <param name="status">resolved</param>
+                        </item>
+                        <item name="confirm" xsi:type="array">
+                            <item name="title" xsi:type="string" translate="true">Set to Resolved</item>
+                            <item name="message" xsi:type="string" translate="true">Are you sure you want to set selected tickets to Resolved status?</item>
+                        </item>
+                    </item>
+                </argument>
+            </action>
+            <action name="set_closed">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">set_closed</item>
+                        <item name="label" xsi:type="string" translate="true">Set to Closed</item>
+                        <item name="url" xsi:type="url" path="supporttickets/ticket/massStatus">
+                            <param name="status">closed</param>
+                        </item>
+                        <item name="confirm" xsi:type="array">
+                            <item name="title" xsi:type="string" translate="true">Set to Closed</item>
+                            <item name="message" xsi:type="string" translate="true">Are you sure you want to set selected tickets to Closed status?</item>
+                        </item>
+                    </item>
+                </argument>
+            </action>
             <action name="delete">
                 <argument name="data" xsi:type="array">
                     <item name="config" xsi:type="array">
