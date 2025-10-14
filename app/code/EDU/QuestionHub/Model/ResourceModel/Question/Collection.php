@@ -2,6 +2,8 @@
 
 namespace EDU\QuestionHub\Model\ResourceModel\Question;
 
+use EDU\QuestionHub\Model\Question;
+use EDU\QuestionHub\Model\ResourceModel\Question as QuestionResourceModel;
 use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 
 class Collection extends AbstractCollection
@@ -13,8 +15,8 @@ class Collection extends AbstractCollection
     protected function _construct()
     {
         $this->_init(
-            \EDU\QuestionHub\Model\Question::class,
-            \EDU\QuestionHub\Model\ResourceModel\Question::class
+            Question::class,
+            QuestionResourceModel::class
         );
     }
 
