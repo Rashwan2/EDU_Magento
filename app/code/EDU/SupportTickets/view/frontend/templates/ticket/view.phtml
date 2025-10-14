@@ -24,6 +24,12 @@ $messages = $block->getMessages();
                     </span>
                 </div>
             </div>
+            <div class="ticket-actions-header">
+                <a href="<?= $block->escapeUrl($block->getUrl('supporttickets/index/index')) ?>" 
+                   class="action primary view-all-tickets">
+                    <span><?= $block->escapeHtml(__('View All My Tickets')) ?></span>
+                </a>
+            </div>
         </div>
 
         <div class="ticket-description">
@@ -93,10 +99,16 @@ $messages = $block->getMessages();
     </div>
 
     <div class="actions-toolbar">
+        <div class="primary">
+            <a href="<?= $block->escapeUrl($block->getUrl('supporttickets/index/index')) ?>" 
+               class="action primary back-to-tickets">
+                <span><?= $block->escapeHtml(__('Back to All Tickets')) ?></span>
+            </a>
+        </div>
         <div class="secondary">
-            <a href="<?= $block->escapeUrl($block->getUrl('supporttickets/index/index')) ?>"
-               class="action back">
-                <?= $block->escapeHtml(__('Back to Tickets')) ?>
+            <a href="<?= $block->escapeUrl($block->getUrl('supporttickets/index/create')) ?>" 
+               class="action secondary create-new-ticket">
+                <span><?= $block->escapeHtml(__('Create New Ticket')) ?></span>
             </a>
         </div>
     </div>
@@ -115,6 +127,32 @@ $messages = $block->getMessages();
     border-bottom: 1px solid #eee;
     padding-bottom: 15px;
     margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.support-ticket-view .ticket-actions-header {
+    margin-left: 20px;
+    flex-shrink: 0;
+}
+
+.support-ticket-view .view-all-tickets {
+    background-color: #28a745;
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+
+.support-ticket-view .view-all-tickets:hover {
+    background-color: #218838;
+    color: white;
+    text-decoration: none;
 }
 
 .support-ticket-view .ticket-subject h2 {
@@ -253,30 +291,79 @@ $messages = $block->getMessages();
 }
 
 .support-ticket-view .actions-toolbar {
-    margin-top: 20px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.support-ticket-view .actions-toolbar .primary {
+    flex: 1;
+}
+
+.support-ticket-view .actions-toolbar .secondary {
+    flex: 1;
     text-align: right;
 }
 
-.support-ticket-view .actions-toolbar .action.primary {
+.support-ticket-view .back-to-tickets {
     background-color: #007bff;
     color: white;
-    padding: 10px 20px;
-    border: none;
+    padding: 12px 24px;
+    text-decoration: none;
     border-radius: 4px;
-    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    display: inline-block;
+    transition: background-color 0.3s ease;
 }
 
-.support-ticket-view .actions-toolbar .action.primary:hover {
+.support-ticket-view .back-to-tickets:hover {
     background-color: #0056b3;
-}
-
-.support-ticket-view .actions-toolbar .action.back {
-    color: #007bff;
+    color: white;
     text-decoration: none;
 }
 
-.support-ticket-view .actions-toolbar .action.back:hover {
-    text-decoration: underline;
+.support-ticket-view .create-new-ticket {
+    background-color: #6c757d;
+    color: white;
+    padding: 12px 24px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 500;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+
+.support-ticket-view .create-new-ticket:hover {
+    background-color: #5a6268;
+    color: white;
+    text-decoration: none;
+}
+
+@media (max-width: 768px) {
+    .support-ticket-view .ticket-header {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .support-ticket-view .ticket-actions-header {
+        margin-left: 0;
+        align-self: flex-start;
+    }
+    
+    .support-ticket-view .actions-toolbar {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .support-ticket-view .actions-toolbar .secondary {
+        text-align: center;
+    }
 }
 </style>
 
