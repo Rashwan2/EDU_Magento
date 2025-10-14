@@ -8,6 +8,7 @@ use EDU\SupportTickets\Api\TicketRepositoryInterface;
 use EDU\SupportTickets\Api\Data\TicketInterfaceFactory;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use function PHPUnit\Framework\isEmpty;
 
 class Save extends Action
 {
@@ -50,7 +51,7 @@ class Save extends Action
             $ticket->setCategoryId($data['category_id']);
             $ticket->setPriorityId($data['priority_id']);
             $ticket->setStatus($data['status']);
-            $ticket->setAssignedTo($data['assigned_to'] ?? 1);
+            $ticket->setAssignedTo(isEmpty($data['assigned_to']) ? null : $data['assigned_to']);
             $ticket->setOrderNumber($data['order_number'] ?? null);
 
             if (!$ticketId) {
