@@ -18,6 +18,8 @@ This guide provides a step-by-step approach to building the Support Ticket Syste
 - Add proper columns, indexes, and foreign key relationships
 - Consider data types and constraints for each field
 
+![support_ticket.png](images/support_ticket.png)
+
 ### 3. Initial Data Population
 - Create data patch in `Setup/Patch/Data/`
 - Insert default categories (Technical, Billing, General, etc.)
