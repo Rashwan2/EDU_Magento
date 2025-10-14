@@ -79,6 +79,9 @@ class Save implements HttpPostActionInterface
                 $ticket->setCustomerId($customer->getId());
                 $ticket->setCustomerEmail($customer->getEmail());
                 $ticket->setCustomerName($customer->getName());
+                
+                // Update any existing tickets with the same email to have the customer ID
+                $this->updateExistingTicketsWithCustomerId($customer->getId(), $customer->getEmail());
             } else {
                 $ticket->setCustomerEmail($data['customer_email']);
                 $ticket->setCustomerName($data['customer_name']);
@@ -101,6 +104,31 @@ class Save implements HttpPostActionInterface
                 __('An error occurred while creating the support ticket.')
             );
             return $resultRedirect->setPath('supporttickets/index/create');
+        }
+    }
+
+    /**
+     * Update existing tickets with customer ID when customer registers
+     *
+     * @param int $customerId
+     * @param string $customerEmail
+     * @return void
+     */
+    private function updateExistingTicketsWithCustomerId($customerId, $customerEmail)
+    {
+        try {
+            $existingTickets = $this->ticketRepository->getByCustomerEmail($customerEmail);
+            
+            foreach ($existingTickets as $ticket) {
+                // Only update tickets that don't have a customer ID yet
+                if (!$ticket->getCustomerId()) {
+                    $ticket->setCustomerId($customerId);
+                    $this->ticketRepository->save($ticket);
+                }
+            }
+        } catch (\Exception $e) {
+            // Log error but don't break the main flow
+            // Could add logging here if needed
         }
     }
 }

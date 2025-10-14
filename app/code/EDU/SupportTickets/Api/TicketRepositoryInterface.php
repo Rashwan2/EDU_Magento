@@ -46,6 +46,14 @@ interface TicketRepositoryInterface
     public function getByCustomerId($customerId);
 
     /**
+     * Get tickets by customer email
+     *
+     * @param string $customerEmail
+     * @return TicketInterface[]
+     */
+    public function getByCustomerEmail($customerEmail);
+
+    /**
      * Get tickets by status
      *
      * @param string $status

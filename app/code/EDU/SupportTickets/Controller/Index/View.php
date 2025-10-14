@@ -71,13 +71,15 @@ class View implements HttpGetActionInterface
 
             // Check if customer is logged in
             if (!$this->customerSession->isLoggedIn()) {
-                $this->messageManager->addErrorMessage(__('You must be logged in to view tickets.'));
+                $this->messageManager->addErrorMessage(__('You must be logged in to view tickets, if you don`t have account yet, please create one with
+                the same email you used to create the ticket.'));
                 $resultRedirect = $this->resultRedirectFactory->create();
                 return $resultRedirect->setPath('customer/account/login');
             }
 
-            // Check if customer owns this ticket
-            if ($ticket->getCustomerId() != $this->customerSession->getCustomerId()) {
+            // Check if customer owns this ticket (by email)
+            $customer = $this->customerSession->getCustomer();
+            if ($ticket->getCustomerEmail() != $customer->getEmail()) {
                 $this->messageManager->addErrorMessage(__('You are not authorized to view this ticket.'));
                 $resultRedirect = $this->resultRedirectFactory->create();
                 return $resultRedirect->setPath('supporttickets/index/index');

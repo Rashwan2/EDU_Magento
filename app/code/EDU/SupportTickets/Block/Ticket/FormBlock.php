@@ -104,21 +104,23 @@ class FormBlock extends Template
     public function getCustomerTickets()
     {
         if (empty($this->customerTickets) && $this->isCustomerLoggedIn()) {
-            $customerId = $this->customerSession->getCustomerId();
+            $customer = $this->customerSession->getCustomer();
+            $customerEmail = $customer->getEmail();
             
-            // Security check: Ensure we have a valid customer ID
-            if (!$customerId) {
+            // Security check: Ensure we have a valid customer email
+            if (!$customerEmail) {
                 return [];
             }
             
             $collection = $this->ticketCollectionFactory->create();
-            $collection->addFieldToFilter('customer_id', $customerId);
+            // Fetch tickets by email instead of customer ID
+            $collection->addFieldToFilter('customer_email', $customerEmail);
             $collection->setOrder('created_at', 'DESC');
             $collection->setPageSize(20); // Limit to 20 most recent tickets
 
             foreach ($collection as $ticket) {
-                // Additional security check: Verify ticket belongs to customer
-                if ($ticket->getCustomerId() == $customerId) {
+                // Additional security check: Verify ticket belongs to customer email
+                if ($ticket->getCustomerEmail() == $customerEmail) {
                     $this->customerTickets[] = $ticket;
                 }
             }
@@ -177,15 +179,16 @@ class FormBlock extends Template
             return false;
         }
 
-        $customerId = $this->customerSession->getCustomerId();
-        if (!$customerId) {
+        $customer = $this->customerSession->getCustomer();
+        $customerEmail = $customer->getEmail();
+        if (!$customerEmail) {
             return false;
         }
 
         try {
             $collection = $this->ticketCollectionFactory->create();
             $collection->addFieldToFilter('ticket_id', $ticketId);
-            $collection->addFieldToFilter('customer_id', $customerId);
+            $collection->addFieldToFilter('customer_email', $customerEmail);
             $collection->setPageSize(1);
 
             return $collection->getSize() > 0;

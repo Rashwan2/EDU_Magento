@@ -104,7 +104,8 @@ class TicketRepository implements TicketRepositoryInterface
     public function getByCustomerEmail($customerEmail)
     {
         $collection = $this->ticketCollectionFactory->create();
-        $collection->addCustomerEmailFilter($customerEmail);
+        $collection->addFieldToFilter('customer_email', $customerEmail);
+        $collection->setOrder('created_at', 'DESC');
         return $collection->getItems();
     }
 

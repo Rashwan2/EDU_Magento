@@ -39,10 +39,9 @@ class Index implements HttpGetActionInterface
 
         // Get customer tickets
         if ($this->customerSession->isLoggedIn()) {
-            $customerId = $this->customerSession->getCustomerId();
-//            $customerId = $this->customerSession->getCustomerId();
-            // $this->customerSession->getCustomer()->getData()['email']
-            $tickets = $this->ticketRepository->getByCustomerId($customerId);
+            $customer = $this->customerSession->getCustomer();
+            $customerEmail = $customer->getEmail();
+            $tickets = $this->ticketRepository->getByCustomerEmail($customerEmail);
             $resultPage->getLayout()->getBlock('ticket.list')->setData('tickets', $tickets);
         }
 
