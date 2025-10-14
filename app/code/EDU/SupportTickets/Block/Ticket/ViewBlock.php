@@ -24,14 +24,14 @@ class ViewBlock extends Template
     ) {
         $this->localeResolver = $localeResolver;
         $this->messageCollectionFactory = $messageCollectionFactory;
-        $this->ticket = $this->getData('ticket') ?: [];
         parent::__construct($context, $data);
     }
 
 
     public function getTicket()
     {
-        return $this->getData('ticket') ?: [];
+        $this->ticket = $this->getData('ticket');
+        return $this->ticket;
     }
 
     public function getMessages()
@@ -39,6 +39,7 @@ class ViewBlock extends Template
         if (!$this->messages && $this->getTicket()) {
             $collection = $this->messageCollectionFactory->create();
             $collection->addFieldToFilter('ticket_id', $this->getTicket()->getTicketId());
+            $collection->addInternalFilter(false);
             $collection->setOrder('created_at', 'ASC');
             $this->messages = $collection->getItems();
         }
@@ -100,6 +101,6 @@ class ViewBlock extends Template
     public function canAddMessage()
     {
         return $this->ticket &&
-               $this->ticket->getStatus() !== TicketInterface::STATUS_CLOSED;
+            $this->ticket->getStatus() !== TicketInterface::STATUS_CLOSED;
     }
 }
