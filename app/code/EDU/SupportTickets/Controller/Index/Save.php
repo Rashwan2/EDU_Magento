@@ -79,7 +79,7 @@ class Save implements HttpPostActionInterface
                 $ticket->setCustomerId($customer->getId());
                 $ticket->setCustomerEmail($customer->getEmail());
                 $ticket->setCustomerName($customer->getName());
-                
+
                 // Update any existing tickets with the same email to have the customer ID
                 $this->updateExistingTicketsWithCustomerId($customer->getId(), $customer->getEmail());
             } else {
@@ -88,11 +88,19 @@ class Save implements HttpPostActionInterface
             }
 
             $this->ticketRepository->save($ticket);
-
-            $this->messageManager->addSuccessMessage(
-                __('Your support ticket has been created successfully. Ticket number: %1', $ticket->getTicketNumber())
-            );
-            return $resultRedirect->setPath('supporttickets/index/view', ['id' => $ticket->getTicketId()]);
+            if ($this->customerSession->isLoggedIn()) {
+                $this->messageManager->addSuccessMessage(
+                    __('Your support ticket has been created successfully. Ticket number: %1',
+                        $ticket->getTicketNumber())
+                );
+                return $resultRedirect->setPath('supporttickets/index/view', ['id' => $ticket->getTicketId()]);
+            } else {
+                $this->messageManager->addSuccessMessage(
+                    __('Your support ticket has been created successfully. Ticket number: %1. Please log in or create an account to track your ticket.',
+                        $ticket->getTicketNumber())
+                );
+                return $resultRedirect->setPath('supporttickets/index/create', ['id' => $ticket->getTicketId()]);
+            }
 
         } catch (CouldNotSaveException $e) {
             $this->messageManager->addErrorMessage(
@@ -118,7 +126,7 @@ class Save implements HttpPostActionInterface
     {
         try {
             $existingTickets = $this->ticketRepository->getByCustomerEmail($customerEmail);
-            
+
             foreach ($existingTickets as $ticket) {
                 // Only update tickets that don't have a customer ID yet
                 if (!$ticket->getCustomerId()) {

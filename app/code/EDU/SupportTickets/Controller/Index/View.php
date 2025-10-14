@@ -71,7 +71,7 @@ class View implements HttpGetActionInterface
 
             // Check if customer is logged in
             if (!$this->customerSession->isLoggedIn()) {
-                $this->messageManager->addErrorMessage(__('You must be logged in to view tickets, if you don`t have account yet, please create one with
+                $this->messageManager->addSuccessMessage(__('You must be logged in to view tickets, if you don`t have account yet, please create one with
                 the same email you used to create the ticket.'));
                 $resultRedirect = $this->resultRedirectFactory->create();
                 return $resultRedirect->setPath('customer/account/login');
